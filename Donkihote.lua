@@ -28,7 +28,7 @@ Tab:AddToggle({
     if Value == true and VoteTime < 1 then
       VoteTime += 1
       -- Gọi hàm từ server
-      local result = remote:InvokeServer()
+      local result = Vote_Start:InvokeServer()
     end
   end
 })
