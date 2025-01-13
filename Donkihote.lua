@@ -1,5 +1,3 @@
-print("TEST")
-
 local Vote_Start = game:GetService("ReplicatedStorage"):WaitForChild("endpoints"):WaitForChild("client_to_server"):WaitForChild("vote_start")
 
 local VoteTime = 0
