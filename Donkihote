@@ -7,28 +7,28 @@ local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shl
 local Window = OrionLib:MakeWindow({Name = "MrHub", HidePremium = false, SaveConfig = true, ConfigFolder = "OrionTest"})
 
 local Tab = Window:MakeTab({
-Name = "Farm",
-Icon = "rbxassetid://4483345998",
+  Name = "Farm",
+  Icon = "rbxassetid://4483345998",
     PremiumOnly = false
 })
 
 Tab:AddButton({
   Name = "Test_Button!",
-Callback = function()
+  Callback = function()
     print("button pressed")
   end    
 })
 
 Tab:AddToggle({
   Name = "Auto Start",
-Default = false,
-Callback = function(Value)
+  Default = false,
+  Callback = function(Value)
     print(Value)
     if Value == true and VoteTime < 1 then
       VoteTime += 1
       -- Gọi hàm từ server
       local result = remote:InvokeServer()
     end
-end
+  end
 })
 
