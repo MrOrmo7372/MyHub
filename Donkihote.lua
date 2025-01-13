@@ -10,7 +10,7 @@ local Window = OrionLib:MakeWindow({Name = "MrHub", HidePremium = false, SaveCon
 local Tab = Window:MakeTab({
   Name = "Farm",
   Icon = "rbxassetid://4483345998",
-    PremiumOnly = false
+  PremiumOnly = false
 })
 
 Tab:AddButton({
@@ -27,9 +27,8 @@ Tab:AddToggle({
     print(Value)
     if Value == true and VoteTime < 1 then
       VoteTime += 1
-      -- Gọi hàm từ server
+      -- Gọi hàm từ server
       local result = Vote_Start:InvokeServer()
-    end
+    end
   end
 })
-
