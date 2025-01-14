@@ -30,7 +30,7 @@ Tab:AddToggle({
   Save = true, -- Lưu giá trị vào file config
   Flag = "AutoStartGame_Toggle", -- Đặt flag cho toggle
   Callback = function(Value)
-    OrionLib.Flags["AutoStartGame_Toggle"].Value = Value
+    OrionLib.Flags["AutoStartGame_Toggle"] = Value
     if OrionLib.Flags["AutoStartGame_Toggle"] == true and VoteTime < 1 then
       VoteTime += 1
       -- Gọi hàm từ server
@@ -41,7 +41,7 @@ Tab:AddToggle({
 
 -------------------------------------------------------------------------------------------------Load Config
 if OrionLib.Flags["AutoStartGame_Toggle"] then
-  local savedValue = OrionLib.Flags["AutoStartGame_Toggle"].Value
+  local savedValue = OrionLib.Flags["AutoStartGame_Toggle"]
   print("Loaded value for AutoStart:", savedValue)
 end
 
