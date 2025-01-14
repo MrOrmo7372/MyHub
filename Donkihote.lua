@@ -4,59 +4,44 @@ local VoteTime = 0
 
 local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
 
-------------------------------------------------------------all FlagsConfig
-AutoStartGameCF = OrionLib.Flags["AutoStartGame_Toggle"]
-
-if AutoStartGameCF then
-  local savedValue = AutoStartGameCF
-  print("Loaded value for AutoStart:", savedValue)
-end
----------------------------------------------------------------------------
-
+-- Tạo giao diện chính
 local Window = OrionLib:MakeWindow({
     Name = "MrHub", 
     HidePremium = false, 
-    SaveConfig = true, 
-    ConfigFolder = "MrHubConfig",
+    SaveConfig = true, -- Bật lưu config
+    ConfigFolder = "MrHubConfig" -- Tên thư mục lưu config
 })
 
+-- Tạo tab
 local Tab = Window:MakeTab({
-  Name = "Farm",
-  Icon = "rbxassetid://4483345998",
-  PremiumOnly = false,
+    Name = "Farm",
+    Icon = "rbxassetid://4483345998",
+    PremiumOnly = false,
 })
 
-Tab:AddButton({
-  Name = "AutoStart_IsTrueOrNot",
-  Callback = function()
-    print(AutoStartGameCF)
-  end
-})
-
+-- Thêm Toggle có lưu cấu hình
 Tab:AddToggle({
-  Name = "AutoStart",
-  Default = AutoStartGameCF,
-  Save = true, -- Lưu giá trị vào file config
-  Flag = "AutoStartGame_Toggle", -- Đặt flag cho toggle
-  Callback = function(Value)
-    AutoStartGameCF = Value
-    if AutoStartGameCF == true and VoteTime < 1 then
-      VoteTime += 1
-      -- Gọi hàm từ server
-      local result = Vote_Start:InvokeServer()
+    Name = "Auto Start", -- Tên toggle
+    Default = false, -- Giá trị mặc định nếu không có file config
+    Save = true, -- Lưu giá trị vào config
+    Flag = "AutoStartGame_Toggle", -- Tên flag để lưu
+    Callback = function(Value)
+        print("Auto Start:", Value) -- In ra giá trị hiện tại
+        if Value and VoteTime < 1 then
+            VoteTime += 1
+            -- Gọi hàm từ server
+            local result = Vote_Start:InvokeServer()
+        end
     end
-  end
 })
 
+-- Hiển thị GUI
 OrionLib:Init()
 
--------------------------------------------------------------------------------------------------Load Config
-if AutoStartGameCF then
-  local savedValue = AutoStartGameCF
-  print("Loaded value for AutoStart:", savedValue)
-end
+-- Lấy giá trị sau khi giao diện được khởi tạo
+local AutoStartGameCF = OrionLib.Flags["AutoStartGame_Toggle"].Value
+print("AutoStartGameCF:", AutoStartGameCF)
 
-if AutoStartGameCF == true then
-  AutoStart:Set(true)
+if AutoStartGameCF then
+    print("Auto Start đã bật từ file config!")
 end
-------------------------------------------------------------------------------------------------------------
