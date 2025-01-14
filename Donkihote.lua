@@ -47,8 +47,6 @@ end
 
 if OrionLib.Flags["AutoStartGame_Toggle"] == true then
   AutoStart:Set(true)
-else
-  AutoStart:Set(false)
 end
 ------------------------------------------------------------------------------------------------------------
 
