@@ -42,7 +42,7 @@ Tab:AddToggle({
 -------------------------------------------------------------------------------------------------Load Config
 if OrionLib.Flags["AutoStartGame_Toggle"] == true then
   AutoStart:Set(true)
-else
+elseif OrionLib.Flags["AutoStartGame_Toggle"] == false then
   AutoStart:Set(false)
 end
 ------------------------------------------------------------------------------------------------------------
