@@ -40,7 +40,6 @@ Tab:AddToggle({
   Flag = "AutoStartGame_Toggle", -- Đặt flag cho toggle
   Callback = function(Value)
     AutoStartGameCF = Value
-    AutoStartGameCF.Save
     if AutoStartGameCF == true and VoteTime < 1 then
       VoteTime += 1
       -- Gọi hàm từ server
