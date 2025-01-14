@@ -25,7 +25,7 @@ Tab:AddButton({
 })
 
 Tab:AddToggle({
-  Name = "Auto_Start",
+  Name = "AutoStart",
   Default = false,
   Save = true, -- Lưu giá trị vào file config
   Flag = "AutoStartGame_Toggle", -- Đặt flag cho toggle
@@ -41,9 +41,9 @@ Tab:AddToggle({
 
 -------------------------------------------------------------------------------------------------Load Config
 if OrionLib.Flags["AutoStartGame_Toggle"].Value == true then
-  Auto_Start:Set(true)
+  AutoStart:Set(true)
 else
-  Auto_Start:Set(false)
+  AutoStart:Set(false)
 end
 ------------------------------------------------------------------------------------------------------------
 
