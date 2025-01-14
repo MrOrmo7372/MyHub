@@ -40,4 +40,14 @@ local Window = Rayfield:CreateWindow({
 
 local AutoFarm = Window:CreateTab("Auto Farm", "rewind")
 
+local AutoStart = AutoFarm:CreateToggle({
+   Name = "Auto Start",
+   CurrentValue = false,
+   Flag = "Auto_Start", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+   -- The function that takes place when the toggle is pressed
+   -- The variable (Value) is a boolean on whether the toggle is true or false
+   end,
+})
+
 Rayfield:LoadConfiguration()
