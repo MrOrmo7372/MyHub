@@ -4,12 +4,17 @@ local VoteTime = 0
 
 local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
 
-local Window = OrionLib:MakeWindow({Name = "MrHub", HidePremium = false, SaveConfig = true, ConfigFolder = "MrHubConfig"})
+local Window = OrionLib:MakeWindow({
+    Name = "MrHub", 
+    HidePremium = false, 
+    SaveConfig = true, 
+    ConfigFolder = "MrHubConfig",
+})
 
 local Tab = Window:MakeTab({
   Name = "Farm",
   Icon = "rbxassetid://4483345998",
-  PremiumOnly = false
+  PremiumOnly = false,
 })
 
 Tab:AddButton({
