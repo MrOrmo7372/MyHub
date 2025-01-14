@@ -8,8 +8,12 @@ local Spawn_Unit = game:GetService("ReplicatedStorage"):WaitForChild("endpoints"
 --game.Players.LocalPlayer:WaitForChild("PlayerGui").spawn_units.lives.Frame.Units /unit = [number].Main.View.WorldModel.[name_unit]
 ---------------------------------------------------------------------------------------
 
+local Unit_Table = {
+   
+}
+
 local VoteTime = 0
-local UnitsEquip_Player = game.Players.LocalPlayer:WaitForChild("PlayerGui").spawn_units.lives.Frame.Units
+--local UnitsEquip_Player = game.Players.LocalPlayer:WaitForChild("PlayerGui").spawn_units.lives.Frame.Units
 
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
@@ -81,18 +85,6 @@ local PrintAllUnit_OwnerEquip = StillCheck:CreateButton({
    Name = "Print All Unit Equip",
    Callback = function()
    -- The function that takes place when the button is pressed
-         for i = 1, 6 do
-            Unit_Table = {}
-            
-            local Target_WorldModel = UnitsEquip_Player[i].Main.View.WorldModel
-            for index, Unit in Target_WorldModel do
-               table.insert(Unit_Table, Unit)
-            end   
-            
-            if #Unit_Table > 5 then
-               print(Unit_Table)
-            end
-         end
    end,
 })
 
