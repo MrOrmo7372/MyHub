@@ -38,4 +38,6 @@ local Window = Rayfield:CreateWindow({
    }
 })
 
+local AutoFarm = Window:CreateTab("Auto Farm", "rewind")
+
 Rayfield:LoadConfiguration()
