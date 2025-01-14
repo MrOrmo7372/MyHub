@@ -6,7 +6,7 @@ local VoteTime = 0
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
 local Window = Rayfield:CreateWindow({
-   Name = "MrHub AA V0.0012 Alpha",
+   Name = "MrHub AA V0.0013 Alpha",
    Icon = 0, -- Icon in Topbar. Can use Lucide Icons (string) or Roblox Image (number). 0 to use no icon (default).
    LoadingTitle = "Waiting For AA Script Load",
    LoadingSubtitle = "by MrHub",
@@ -62,7 +62,9 @@ local AutoRetry = AutoFarm:CreateToggle({
    Callback = function(Value)
    -- The function that takes place when the toggle is pressed
    -- The variable (Value) is a boolean on whether the toggle is true or false
-         local auto_replay = Set_Game_Finish_Vote:InvokeServer("replay")
+         if Value == true and game.PlaceId ~= 8304191830 then
+            local auto_replay = Set_Game_Finish_Vote:InvokeServer("replay")
+         end
    end,
 })
 
