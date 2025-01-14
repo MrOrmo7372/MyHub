@@ -5,7 +5,7 @@ local VoteTime = 0
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
 local Window = Rayfield:CreateWindow({
-   Name = "MrHub AA V0.001 Alpha",
+   Name = "MrHub AA V0.0011 Alpha",
    Icon = 0, -- Icon in Topbar. Can use Lucide Icons (string) or Roblox Image (number). 0 to use no icon (default).
    LoadingTitle = "Waiting For AA Script Load",
    LoadingSubtitle = "by MrHub",
@@ -38,7 +38,7 @@ local Window = Rayfield:CreateWindow({
    }
 })
 
-local AutoFarm = Window:CreateTab("Auto Farm", "rewind")
+local AutoFarm = Window:CreateTab("Auto Farm", "apple")
 
 local AutoStart = AutoFarm:CreateToggle({
    Name = "Auto Start",
@@ -51,6 +51,17 @@ local AutoStart = AutoFarm:CreateToggle({
             VoteTime += 1
             local result = Vote_Start:InvokeServer()
          end
+   end,
+})
+
+local AutoRetry = AutoFarm:CreateToggle({
+   Name = "Auto Retry",
+   CurrentValue = false,
+   Flag = "Auto_Retry", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+   -- The function that takes place when the toggle is pressed
+   -- The variable (Value) is a boolean on whether the toggle is true or false
+         print("Still Test")
    end,
 })
 
