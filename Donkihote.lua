@@ -5,7 +5,7 @@ local VoteTime = 0
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
 local Window = Rayfield:CreateWindow({
-   Name = "MrHub AA",
+   Name = "MrHub AA V0.001 Alpha",
    Icon = 0, -- Icon in Topbar. Can use Lucide Icons (string) or Roblox Image (number). 0 to use no icon (default).
    LoadingTitle = "Waiting For AA Script Load",
    LoadingSubtitle = "by MrHub",
