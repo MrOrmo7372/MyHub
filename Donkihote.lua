@@ -45,7 +45,7 @@ if OrionLib.Flags["AutoStartGame_Toggle"] then
   print("Loaded value for AutoStart:", savedValue)
 end
 
-if OrionLib.Flags["AutoStartGame_Toggle"].Value == true then
+if OrionLib.Flags["AutoStartGame_Toggle"] == true then
   AutoStart:Set(true)
 else
   AutoStart:Set(false)
