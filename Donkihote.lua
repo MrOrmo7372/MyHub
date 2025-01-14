@@ -47,7 +47,7 @@ local AutoStart = AutoFarm:CreateToggle({
    Callback = function(Value)
    -- The function that takes place when the toggle is pressed
    -- The variable (Value) is a boolean on whether the toggle is true or false
-         if Value == true and VoteTime < 0 and game.PlaceId ~= 8304191830 then
+         if Value == true and VoteTime < 1 and game.PlaceId ~= 8304191830 then
             VoteTime += 1
             local result = Vote_Start:InvokeServer()
          end
