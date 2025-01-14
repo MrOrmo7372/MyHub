@@ -29,7 +29,7 @@ local Tab = Window:MakeTab({
 Tab:AddButton({
   Name = "AutoStart_IsTrueOrNot",
   Callback = function()
-    print(OrionLib.Flags["AutoStartGame_Toggle"])
+    print(AutoStartGameCF)
   end
 })
 
