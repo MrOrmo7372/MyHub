@@ -35,7 +35,7 @@ Tab:AddButton({
 
 Tab:AddToggle({
   Name = "AutoStart",
-  Default = AutoStartGameCF or false,
+  Default = AutoStartGameCF,
   Save = true, -- Lưu giá trị vào file config
   Flag = "AutoStartGame_Toggle", -- Đặt flag cho toggle
   Callback = function(Value)
