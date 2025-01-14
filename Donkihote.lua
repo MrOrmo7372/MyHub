@@ -2,7 +2,8 @@ local Vote_Start = game:GetService("ReplicatedStorage"):WaitForChild("endpoints"
 
 local VoteTime = 0
 
-local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
+--local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
+local OrionLib = loadstring(game:HttpGet('https://sirius.menu/sirius'))()
 
 local Window = OrionLib:MakeWindow({Name = "MrHub", HidePremium = false, SaveConfig = true, ConfigFolder = "OrionTest"})
 
