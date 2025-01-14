@@ -23,7 +23,7 @@ Tab:AddToggle({
   Name = "Auto_Start",
   Default = false,
   Save = true, -- Lưu giá trị vào file config
-  Flag = "AutoStartGame_Toggle" -- Đặt flag cho toggle
+  Flag = "AutoStartGame_Toggle", -- Đặt flag cho toggle
   Callback = function(Value)
     print(Value)
     if Value == true and VoteTime < 1 then
