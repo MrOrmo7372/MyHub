@@ -2,8 +2,8 @@ local Vote_Start = game:GetService("ReplicatedStorage"):WaitForChild("endpoints"
 
 local VoteTime = 0
 
---local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
-local OrionLib = loadstring(game:HttpGet('https://sirius.menu/sirius'))()
+local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
+--local OrionLib = loadstring(game:HttpGet('https://sirius.menu/sirius'))()
 
 local Window = OrionLib:MakeWindow({Name = "MrHub", HidePremium = false, SaveConfig = true, ConfigFolder = "OrionTest"})
 
@@ -26,9 +26,9 @@ Tab:AddToggle({
   Callback = function(Value)
     print(Value)
     if Value == true and VoteTime < 1 then
-    VoteTime += 1
-    -- Gọi hàm từ server
-    local result = Vote_Start:InvokeServer()
+      VoteTime += 1
+      -- Gọi hàm từ server
+      local result = Vote_Start:InvokeServer()
     end
   end
 })
