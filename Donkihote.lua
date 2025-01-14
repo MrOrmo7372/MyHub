@@ -3,7 +3,6 @@ local Vote_Start = game:GetService("ReplicatedStorage"):WaitForChild("endpoints"
 local VoteTime = 0
 
 local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
---local OrionLib = loadstring(game:HttpGet('https://sirius.menu/sirius'))()
 
 local Window = OrionLib:MakeWindow({Name = "MrHub", HidePremium = false, SaveConfig = true, ConfigFolder = "MrHubConfig"})
 
@@ -21,8 +20,10 @@ Tab:AddButton({
 })
 
 Tab:AddToggle({
-  Name = "Auto Start",
+  Name = "Auto_Start",
   Default = false,
+  Save = true, -- Lưu giá trị vào file config
+  Flag = "AutoStartGame_Toggle" -- Đặt flag cho toggle
   Callback = function(Value)
     print(Value)
     if Value == true and VoteTime < 1 then
@@ -32,5 +33,13 @@ Tab:AddToggle({
     end
   end
 })
+
+-------------------------------------------------------------------------------------------------Load Config
+if OrionLib.Flags["AutoStartGame_Toggle"].Value == true then
+  Auto_Start:Set(true)
+else
+  Auto_Start:Set(false)
+end
+------------------------------------------------------------------------------------------------------------
 
 OrionLib:Init()
