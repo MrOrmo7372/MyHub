@@ -6,6 +6,11 @@ local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shl
 
 ------------------------------------------------------------all FlagsConfig
 AutoStartGameCF = OrionLib.Flags["AutoStartGame_Toggle"]
+
+if AutoStartGameCF then
+  local savedValue = AutoStartGameCF.Value
+  print("Loaded value for AutoStart:", savedValue)
+end
 ---------------------------------------------------------------------------
 
 local Window = OrionLib:MakeWindow({
@@ -30,12 +35,12 @@ Tab:AddButton({
 
 Tab:AddToggle({
   Name = "AutoStart",
-  Default = AutoStartGameCF.Value or false,
+  Default = AutoStartGameCF or false,
   Save = true, -- Lưu giá trị vào file config
   Flag = "AutoStartGame_Toggle", -- Đặt flag cho toggle
   Callback = function(Value)
     AutoStartGameCF.Value = Value
-    if AutoStartGameCF.Value == true and VoteTime < 1 then
+    if AutoStartGameCF == true and VoteTime < 1 then
       VoteTime += 1
       -- Gọi hàm từ server
       local result = Vote_Start:InvokeServer()
@@ -49,7 +54,7 @@ if AutoStartGameCF then
   print("Loaded value for AutoStart:", savedValue)
 end
 
-if AutoStartGameCF.Value == true then
+if AutoStartGameCF == true then
   AutoStart:Set(true)
 end
 ------------------------------------------------------------------------------------------------------------
