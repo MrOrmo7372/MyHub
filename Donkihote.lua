@@ -26,8 +26,8 @@ Tab:AddButton({
 
 Tab:AddToggle({
   Name = "AutoStart",
-  Default = OrionLib.Flags["AutoStartGame_Toggle"],
-  Save = OrionLib.Flags["AutoStartGame_Toggle"], -- Lưu giá trị vào file config
+  Default = OrionLib.Flags["AutoStartGame_Toggle"] or false,
+  Save = true, -- Lưu giá trị vào file config
   Flag = "AutoStartGame_Toggle", -- Đặt flag cho toggle
   Callback = function(Value)
     OrionLib.Flags["AutoStartGame_Toggle"] = Value
@@ -40,6 +40,11 @@ Tab:AddToggle({
 })
 
 -------------------------------------------------------------------------------------------------Load Config
+if OrionLib.Flags["AutoStartGame_Toggle"] then
+  local savedValue = OrionLib.Flags["AutoStartGame_Toggle"].Value
+  print("Loaded value for AutoStart:", savedValue)
+end
+
 if OrionLib.Flags["AutoStartGame_Toggle"] == true then
   AutoStart:Set(true)
 else
