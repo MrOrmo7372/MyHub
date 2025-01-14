@@ -32,3 +32,5 @@ Tab:AddToggle({
     end
   end
 })
+
+OrionLib:Init()
