@@ -8,13 +8,13 @@ local Window = OrionLib:MakeWindow({
     Name = "MrHub", 
     HidePremium = false, 
     SaveConfig = true, 
-    ConfigFolder = "MrHubConfig",
+    ConfigFolder = "MrHubConfig"
 })
 
 local Tab = Window:MakeTab({
   Name = "Farm",
   Icon = "rbxassetid://4483345998",
-  PremiumOnly = false,
+  PremiumOnly = false
 })
 
 Tab:AddButton({
