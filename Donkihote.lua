@@ -1,14 +1,20 @@
 local Vote_Start = game:GetService("ReplicatedStorage"):WaitForChild("endpoints"):WaitForChild("client_to_server"):WaitForChild("vote_start")
 local Set_Game_Finish_Vote = game:GetService("ReplicatedStorage"):WaitForChild("endpoints"):WaitForChild("client_to_server"):WaitForChild("set_game_finished_vote")
+local Spawn_Unit = game:GetService("ReplicatedStorage"):WaitForChild("endpoints"):WaitForChild("client_to_server"):WaitForChild("spawn_unit")
+
+--------------------------------------------------------------------------------Info AA
+--game.Players.LocalPlayer:WaitForChild("PlayerGui").spawn_units.lives.Frame.Units /unit = [number].Main.View.WorldModel.[name_unit]
+---------------------------------------------------------------------------------------
 
 local VoteTime = 0
+local UnitsEquip_Player = game.Players.LocalPlayer:WaitForChild("PlayerGui").spawn_units.lives.Frame.Units
 
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
 local Window = Rayfield:CreateWindow({
-   Name = "MrHub AA V0.0013 Alpha",
+   Name = "MrHub AA V0.0015 Alpha",
    Icon = 0, -- Icon in Topbar. Can use Lucide Icons (string) or Roblox Image (number). 0 to use no icon (default).
-   LoadingTitle = "Waiting AA Script (MrHub V0.0013)",
+   LoadingTitle = "Waiting AA Script (MrHub V0.0015)",
    LoadingSubtitle = "by MrHub",
    Theme = "Default", -- Check https://docs.sirius.menu/rayfield/configuration/themes
 
@@ -40,6 +46,7 @@ local Window = Rayfield:CreateWindow({
 })
 
 local AutoFarm = Window:CreateTab("Auto Farm", "apple")
+local StillCheck = Window:CreateTab("Still Check", "badge-alert")
 
 local AutoStart = AutoFarm:CreateToggle({
    Name = "Auto Start",
@@ -64,6 +71,25 @@ local AutoRetry = AutoFarm:CreateToggle({
    -- The variable (Value) is a boolean on whether the toggle is true or false
          if Value == true and game.PlaceId ~= 8304191830 then
             local auto_replay = Set_Game_Finish_Vote:InvokeServer("replay")
+         end
+   end,
+})
+
+local PrintAllUnit_OwnerEquip = StillCheck:CreateButton({
+   Name = "Print All Unit Equip",
+   Callback = function()
+   -- The function that takes place when the button is pressed
+         for i = 1, 6 do
+            Unit_Table = {}
+            
+            local Target_WorldModel = UnitsEquip_Player[i].Main.View.WorldModel
+            for index, Unit in Target_WorldModel do
+               table.insert(Unit_Table, Unit)
+            end   
+            
+            if #Unit_Table > 5 then
+               print(Unit_Table)
+            end
          end
    end,
 })
