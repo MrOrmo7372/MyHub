@@ -48,6 +48,8 @@ Tab:AddToggle({
   end
 })
 
+OrionLib:Init()
+
 -------------------------------------------------------------------------------------------------Load Config
 if AutoStartGameCF then
   local savedValue = AutoStartGameCF
@@ -58,5 +60,3 @@ if AutoStartGameCF == true then
   AutoStart:Set(true)
 end
 ------------------------------------------------------------------------------------------------------------
-
-OrionLib:Init()
