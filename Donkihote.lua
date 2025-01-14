@@ -29,9 +29,9 @@ Tab:AddToggle({
   Default = false,
   Save = true, -- Lưu giá trị vào file config
   Flag = "AutoStartGame_Toggle", -- Đặt flag cho toggle
-  Callback = function(Value)
-    OrionLib.Flags["AutoStartGame_Toggle"].Value == Value
-    if Value == true and VoteTime < 1 then
+  Callback = function(Bool)
+    OrionLib.Flags["AutoStartGame_Toggle"].Value == Bool
+    if Bool == true and VoteTime < 1 then
       VoteTime += 1
       -- Gọi hàm từ server
       local result = Vote_Start:InvokeServer()
