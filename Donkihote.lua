@@ -18,9 +18,9 @@ local Tab = Window:MakeTab({
 })
 
 Tab:AddButton({
-  Name = "Test_Button!",
+  Name = "AutoStart_IsTrueOrNot",
   Callback = function()
-    print("button pressed")
+    print(OrionLib.Flags["AutoStartGame_Toggle"].Value)
   end
 })
 
