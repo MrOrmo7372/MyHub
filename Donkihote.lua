@@ -119,9 +119,9 @@ local ToggleFarmGems = FarmGems:CreateToggle({
    -- The variable (Value) is a boolean on whether the toggle is true or false
          if Value == true and game.PlaceId ~= 8304191830 then
             local Sakura_Table = {
-               [1] = {nil, nil},
-               [2] = {nil, nil},
-               [3] = {nil, nil}
+               [1] = {"{27b582bb-e814-4847-a519-ed1d9062c748}", nil},
+               [2] = {"{27b582bb-e814-4847-a519-ed1d9062c748}", nil},
+               [3] = {"{27b582bb-e814-4847-a519-ed1d9062c748}", nil}
             }
             for i=1, 3 do
                while tonumber(MoneyPlayerText.Text) < 600 do
