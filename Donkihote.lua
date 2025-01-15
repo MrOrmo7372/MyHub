@@ -20,9 +20,9 @@ local VoteTime = 0
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
 local Window = Rayfield:CreateWindow({
-   Name = "MrHub AA V0.0016 Alpha",
+   Name = "MrHub AA V0.0017 Alpha",
    Icon = 0, -- Icon in Topbar. Can use Lucide Icons (string) or Roblox Image (number). 0 to use no icon (default).
-   LoadingTitle = "Waiting AA Script (MrHub V0.0016)",
+   LoadingTitle = "Waiting AA Script (MrHub V0.0017)",
    LoadingSubtitle = "by MrHub",
    Theme = "Default", -- Check https://docs.sirius.menu/rayfield/configuration/themes
 
@@ -55,6 +55,9 @@ local Window = Rayfield:CreateWindow({
 
 local AutoFarm = Window:CreateTab("Auto Farm", "apple")
 local StillCheck = Window:CreateTab("Still Check", "badge-alert")
+local FarmGems = Window:CreateTab("FarmGems(Alpha)", "book-dashed")
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------AUTO FARM ZONE
 
 local AutoStart = AutoFarm:CreateToggle({
    Name = "Auto Start",
@@ -83,6 +86,8 @@ local AutoRetry = AutoFarm:CreateToggle({
    end,
 })
 
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------STILL CHECK ZONE
+
 local Press_ToPlace = StillCheck:CreateButton({
    Name = "Place Christmas Luffy",
    Callback = function()
@@ -102,5 +107,27 @@ local PrintMoneyPlayer = StillCheck:CreateButton({
          end
    end,
 })
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------FARM GEMS ZONE
+
+local ToggleFarmGems = FarmGems:CreateToggle({
+   Name = "Auto Farm Gems",
+   CurrentValue = false,
+   Flag = "Auto_Farm_Gems", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+   -- The function that takes place when the toggle is pressed
+   -- The variable (Value) is a boolean on whether the toggle is true or false
+         if Value == true and game.PlaceId ~= 8304191830 then
+            print("Still Check")
+         end
+   end,
+})
+
+local Paragraph = FarmGems:CreateParagraph({
+      Title = "Paragraph Example", 
+      Content = "Paragraph Example"
+})
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Rayfield:LoadConfiguration()
