@@ -5,6 +5,11 @@ local Set_Game_Finish_Vote = game:GetService("ReplicatedStorage"):WaitForChild("
 local Spawn_Unit = game:GetService("ReplicatedStorage"):WaitForChild("endpoints"):WaitForChild("client_to_server"):WaitForChild("spawn_unit")
 
 local MoneyPlayerText = game.Players.LocalPlayer:WaitForChild("PlayerGui"):WaitForChild("spawn_units").Lives.Frame.Resource.Money.text
+local HealthGui = game.Players.LocalPlayer:WaitForChild("PlayerGui"):WaitForChild("Waves").HealthBar.HPDisplay --150/150 text
+local VoteStartGui = game.Players.LocalPlayer:WaitForChild("PlayerGui"):WaitForChild("VoteStart")
+
+local textHealth = HealthGui.Text
+local numberHealth = tonumber(string.match(textHealth, "(%d+)/")
 
 --------------------------------------------------------------------------------Info AA
 --game.Players.LocalPlayer:WaitForChild("PlayerGui").spawn_units.lives.Frame.Units /unit = [number].Main.View.WorldModel.[name_unit]
@@ -14,15 +19,14 @@ local Unit_Table = {
    luffy_christmas
 }
 
-local VoteTime = 0
 --local UnitsEquip_Player = game.Players.LocalPlayer:WaitForChild("PlayerGui").spawn_units.lives.Frame.Units
 
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
 local Window = Rayfield:CreateWindow({
-   Name = "MrHub AA V0.0025 Alpha",
+   Name = "MrHub AA V0.0026 Alpha",
    Icon = 0, -- Icon in Topbar. Can use Lucide Icons (string) or Roblox Image (number). 0 to use no icon (default).
-   LoadingTitle = "Waiting AA Script (MrHub V0.0025)",
+   LoadingTitle = "Waiting AA Script (MrHub V0.0026)",
    LoadingSubtitle = "by MrHub",
    Theme = "Default", -- Check https://docs.sirius.menu/rayfield/configuration/themes
 
@@ -66,8 +70,8 @@ local AutoStart = AutoFarm:CreateToggle({
    Callback = function(Value)
    -- The function that takes place when the toggle is pressed
    -- The variable (Value) is a boolean on whether the toggle is true or false
-         if Value == true and VoteTime < 1 and game.PlaceId ~= 8304191830 then
-            VoteTime += 1
+         if Value == true and game.PlaceId ~= 8304191830 and VoteStartGui.Enabled == true then
+            --repeat wait() until VoteStartGui.Enabled == true
             local auto_start = Vote_Start:InvokeServer()
          end
    end,
@@ -80,7 +84,7 @@ local AutoRetry = AutoFarm:CreateToggle({
    Callback = function(Value)
    -- The function that takes place when the toggle is pressed
    -- The variable (Value) is a boolean on whether the toggle is true or false
-         if Value == true and game.PlaceId ~= 8304191830 then
+         if Value == true and game.PlaceId ~= 8304191830 and numberHealth < 1 then
             local auto_replay = Set_Game_Finish_Vote:InvokeServer("replay")
          end
    end,
