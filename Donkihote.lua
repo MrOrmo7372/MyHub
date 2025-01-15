@@ -1,3 +1,4 @@
+task.wait(5)
 print("THIS IS THE START OF THE SCRIPT")
 
 local Vote_Start = game:GetService("ReplicatedStorage"):WaitForChild("endpoints"):WaitForChild("client_to_server"):WaitForChild("vote_start")
