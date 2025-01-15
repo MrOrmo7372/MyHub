@@ -20,9 +20,9 @@ local VoteTime = 0
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
 local Window = Rayfield:CreateWindow({
-   Name = "MrHub AA V0.0021 Alpha",
+   Name = "MrHub AA V0.0022 Alpha",
    Icon = 0, -- Icon in Topbar. Can use Lucide Icons (string) or Roblox Image (number). 0 to use no icon (default).
-   LoadingTitle = "Waiting AA Script (MrHub V0.0021)",
+   LoadingTitle = "Waiting AA Script (MrHub V0.0022)",
    LoadingSubtitle = "by MrHub",
    Theme = "Default", -- Check https://docs.sirius.menu/rayfield/configuration/themes
 
@@ -126,20 +126,13 @@ local ToggleFarmGems = FarmGems:CreateToggle({
             }
             local function onMoneyChanged()
                local money = tonumber(MoneyPlayerText.Text)
-               while money >= 600 and Num_Sakura < 4 do
-                  task.wait(0.1)
+               if money >= 600 and Num_Sakura < 4 then
                   Spawn_Unit:InvokeServer(Sakura_Table[Num_Sakura][1], Sakura_Table[Num_Sakura][2])
                   Num_Sakura += 1
                end
             end
 
-            local function CheckEnoughMoney()
-               if tonumber(MoneyPlayerText.Text) >= 600 then
-                  onMoneyChanged()
-               end
-            end
-
-            MoneyPlayerText:GetPropertyChangedSignal("Text"):Connect(CheckEnoughMoney)
+            MoneyPlayerText:GetPropertyChangedSignal("Text"):Connect(onMoneyChanged)
          end
    end,
 })
