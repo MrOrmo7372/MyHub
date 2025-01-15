@@ -20,9 +20,9 @@ local VoteTime = 0
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
 local Window = Rayfield:CreateWindow({
-   Name = "MrHub AA V0.0015 Alpha",
+   Name = "MrHub AA V0.0016 Alpha",
    Icon = 0, -- Icon in Topbar. Can use Lucide Icons (string) or Roblox Image (number). 0 to use no icon (default).
-   LoadingTitle = "Waiting AA Script (MrHub V0.0015)",
+   LoadingTitle = "Waiting AA Script (MrHub V0.0016)",
    LoadingSubtitle = "by MrHub",
    Theme = "Default", -- Check https://docs.sirius.menu/rayfield/configuration/themes
 
@@ -87,7 +87,9 @@ local Press_ToPlace = StillCheck:CreateButton({
    Name = "Place Christmas Luffy",
    Callback = function()
    -- The function that takes place when the button is pressed
-         Spawn_Unit:InvokeServer("{563b4847-1e72-46f2-82e5-81a3091e6c29}", CFrame.new(-2946.20361, 91.8062057, -740.202026, 1, 0, 0, 0, 1, 0, 0, 0, 1))
+         if game.PlaceId ~= 8304191830 then
+            Spawn_Unit:InvokeServer("{563b4847-1e72-46f2-82e5-81a3091e6c29}", CFrame.new(-2946.20361, 91.8062057, -740.202026, 1, 0, 0, 0, 1, 0, 0, 0, 1))
+         end
    end,
 })
 
@@ -95,7 +97,9 @@ local PrintMoneyPlayer = StillCheck:CreateButton({
    Name = "Print Money Player",
    Callback = function()
    -- The function that takes place when the button is pressed
-         print(MoneyPlayerText.Text)
+         if game.PlaceId ~= 8304191830 then
+            print(MoneyPlayerText.Text)
+         end
    end,
 })
 
