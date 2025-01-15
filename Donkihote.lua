@@ -127,6 +127,7 @@ local ToggleFarmGems = FarmGems:CreateToggle({
             local function onMoneyChanged()
                local money = tonumber(MoneyPlayerText.Text)
                while money >= 600 and Num_Sakura < 4 do
+                  task.wait(0.1)
                   Spawn_Unit:InvokeServer(Sakura_Table[Num_Sakura][1], Sakura_Table[Num_Sakura][2])
                   Num_Sakura += 1
                end
