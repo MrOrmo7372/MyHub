@@ -129,6 +129,7 @@ local ToggleFarmGems = FarmGems:CreateToggle({
                if money >= 600 and Num_Sakura < 4 then
                   Spawn_Unit:InvokeServer(Sakura_Table[Num_Sakura][1], Sakura_Table[Num_Sakura][2])
                   Num_Sakura += 1
+                  task.wait(0.5)
                   if money >= 600 and Num_Sakura < 4 then
                      Spawn_Unit:InvokeServer(Sakura_Table[Num_Sakura][1], Sakura_Table[Num_Sakura][2])
                      Num_Sakura += 1
