@@ -9,7 +9,7 @@ local HealthGui = game.Players.LocalPlayer:WaitForChild("PlayerGui"):WaitForChil
 local VoteStartGui = game.Players.LocalPlayer:WaitForChild("PlayerGui"):WaitForChild("VoteStart")
 
 local textHealth = HealthGui.Text
-local numberHealth = tonumber(string.match(textHealth, "(%d+)/")
+local numberHealth = tonumber(string.match(textHealth, "(%d+)/"))
 
 --------------------------------------------------------------------------------Info AA
 --game.Players.LocalPlayer:WaitForChild("PlayerGui").spawn_units.lives.Frame.Units /unit = [number].Main.View.WorldModel.[name_unit]
