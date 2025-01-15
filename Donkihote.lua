@@ -130,7 +130,7 @@ local ToggleFarmGems = FarmGems:CreateToggle({
                   for i=1, 3 do
                      Spawn_Unit:InvokeServer(Sakura_Table[i][1], Sakura_Table[i][2])
                      Num_Sakura += 1
-                     task.wait(0.1)
+                     task.wait(1)
                   end
                end
             end
