@@ -118,14 +118,25 @@ local ToggleFarmGems = FarmGems:CreateToggle({
    -- The function that takes place when the toggle is pressed
    -- The variable (Value) is a boolean on whether the toggle is true or false
          if Value == true and game.PlaceId ~= 8304191830 then
-            print("Still Check")
+            local Sakura_Table = {
+               [1] = nil,
+               [2] = nil,
+               [3] = nil
+            }
+            for i=1, 3 do
+               while tonumber(MoneyPlayerText.Text) < 600 do
+                  task.wait(0.1)
+               end
+
+               Spawn_Unit:InvokeServer("{563b4847-1e72-46f2-82e5-81a3091e6c29}", CFrame.new(-2946.20361, 91.8062057, -740.202026, 1, 0, 0, 0, 1, 0, 0, 0, 1))
+            end
          end
    end,
 })
 
-local Paragraph = FarmGems:CreateParagraph({
-      Title = "Paragraph Example", 
-      Content = "Paragraph Example"
+local Info_AutoFarmGems = FarmGems:CreateParagraph({
+      Title = "How To Use This AutoFarm Gems", 
+      Content = "Equip Sakura and Join INF Attack On Titan, Turn On AutoRetry And AutoStart, Enjoy!"
 })
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
