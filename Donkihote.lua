@@ -20,9 +20,9 @@ local VoteTime = 0
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
 local Window = Rayfield:CreateWindow({
-   Name = "MrHub AA V0.0023 Alpha",
+   Name = "MrHub AA V0.0024 Alpha",
    Icon = 0, -- Icon in Topbar. Can use Lucide Icons (string) or Roblox Image (number). 0 to use no icon (default).
-   LoadingTitle = "Waiting AA Script (MrHub V0.0023)",
+   LoadingTitle = "Waiting AA Script (MrHub V0.0024)",
    LoadingSubtitle = "by MrHub",
    Theme = "Default", -- Check https://docs.sirius.menu/rayfield/configuration/themes
 
@@ -119,6 +119,7 @@ local ToggleFarmGems = FarmGems:CreateToggle({
    -- The variable (Value) is a boolean on whether the toggle is true or false
          if Value == true and game.PlaceId ~= 8304191830 then
             local Num_Sakura = 1
+            local Is_Sakura = false
             local Sakura_Table = {
                [1] = {"{27b582bb-e814-4847-a519-ed1d9062c748}", CFrame.new(-2967.56396, 33.7417984, -715.313049, 1, 0, 0, 0, 1, 0, 0, 0, 1)},
                [2] = {"{27b582bb-e814-4847-a519-ed1d9062c748}", CFrame.new(-2967.56396, 33.7417984, -710.313049, 1, 0, 0, 0, 1, 0, 0, 0, 1)},
@@ -126,13 +127,19 @@ local ToggleFarmGems = FarmGems:CreateToggle({
             }
             local function onMoneyChanged()
                local money = tonumber(MoneyPlayerText.Text)
-               if money >= 600 and Num_Sakura < 4 then
+               if money >= 600 and Num_Sakura <= 3 then
+                  if Is_Sakura then return end
+                  Is_Sakura = true
                   Spawn_Unit:InvokeServer(Sakura_Table[Num_Sakura][1], Sakura_Table[Num_Sakura][2])
                   Num_Sakura += 1
+                  Is_Sakura = false
                   task.wait(0.5)
-                  if money >= 600 and Num_Sakura < 4 then
+                  if money >= 600 and Num_Sakura <= 3 then
+                     if Is_Sakura then return end
+                     Is_Sakura = true
                      Spawn_Unit:InvokeServer(Sakura_Table[Num_Sakura][1], Sakura_Table[Num_Sakura][2])
                      Num_Sakura += 1
+                     Is_Sakura = false
                   end
                end
             end
