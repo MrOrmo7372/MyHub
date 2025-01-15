@@ -4,7 +4,7 @@ local Vote_Start = game:GetService("ReplicatedStorage"):WaitForChild("endpoints"
 local Set_Game_Finish_Vote = game:GetService("ReplicatedStorage"):WaitForChild("endpoints"):WaitForChild("client_to_server"):WaitForChild("set_game_finished_vote")
 local Spawn_Unit = game:GetService("ReplicatedStorage"):WaitForChild("endpoints"):WaitForChild("client_to_server"):WaitForChild("spawn_unit")
 
-local MoneyPlayerText = game.Players.LocalPlayer:WaitForChild("PlayerGui").spawn_units.Lives.Frame.Resource.Money.text
+local MoneyPlayerText = game.Players.LocalPlayer:WaitForChild("PlayerGui"):WaitForChild("spawn_units").Lives.Frame.Resource.Money.text
 
 --------------------------------------------------------------------------------Info AA
 --game.Players.LocalPlayer:WaitForChild("PlayerGui").spawn_units.lives.Frame.Units /unit = [number].Main.View.WorldModel.[name_unit]
