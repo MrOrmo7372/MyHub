@@ -70,8 +70,13 @@ local AutoStart = AutoFarm:CreateToggle({
    Callback = function(Value)
    -- The function that takes place when the toggle is pressed
    -- The variable (Value) is a boolean on whether the toggle is true or false
-         if Value == true and game.PlaceId ~= 8304191830 and VoteStartGui.Enabled == true then
+         if Value == true and game.PlaceId ~= 8304191830 then
             --repeat wait() until VoteStartGui.Enabled == true
+            while VoteStartGui.Enabled ~= true do
+               task.wait()
+               coroutine.yield() -------------------NEED TO BE DONE
+            end
+            
             local auto_start = Vote_Start:InvokeServer()
          end
    end,
@@ -153,6 +158,11 @@ local DangerInfo_AutoFarmGems = FarmGems:CreateParagraph({
       Title = "ONLY TURN ON AUTOSTART, AUTORETRY AND AUTOFARMGEMS", 
       Content = ""
 })
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------COROUTINE ZONE
+
+local coA = coroutine.create(processA)
+local coB = coroutine.create(processB)
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
