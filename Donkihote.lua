@@ -128,7 +128,7 @@ local ToggleFarmGems = FarmGems:CreateToggle({
                   task.wait(0.1)
                end
 
-               Spawn_Unit:InvokeServer(Sakura_Table[i][1], CFrame.new(-2946.20361, 91.8062057, -740.202026, 1, 0, 0, 0, 1, 0, 0, 0, 1))
+               Spawn_Unit:InvokeServer(Sakura_Table[i][1], Sakura_Table[i][2])
             end
          end
    end,
@@ -137,6 +137,11 @@ local ToggleFarmGems = FarmGems:CreateToggle({
 local Info_AutoFarmGems = FarmGems:CreateParagraph({
       Title = "How To Use This AutoFarm Gems", 
       Content = "Equip Sakura and Join INF Attack On Titan, Turn On AutoRetry And AutoStart, Enjoy!"
+})
+
+local DangerInfo_AutoFarmGems = FarmGems:CreateParagraph({
+      Title = "ONLY TURN ON AUTOSTART, AUTORETRY AND AUTOFARMGEMS", 
+      Content = ""
 })
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
