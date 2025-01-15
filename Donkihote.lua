@@ -4,6 +4,8 @@ local Vote_Start = game:GetService("ReplicatedStorage"):WaitForChild("endpoints"
 local Set_Game_Finish_Vote = game:GetService("ReplicatedStorage"):WaitForChild("endpoints"):WaitForChild("client_to_server"):WaitForChild("set_game_finished_vote")
 local Spawn_Unit = game:GetService("ReplicatedStorage"):WaitForChild("endpoints"):WaitForChild("client_to_server"):WaitForChild("spawn_unit")
 
+local MoneyPlayerText = game.Players.LocalPlayer:WaitForChild("PlayerGui").spawn_units.Lives.Frame.Resource.Money.text
+
 --------------------------------------------------------------------------------Info AA
 --game.Players.LocalPlayer:WaitForChild("PlayerGui").spawn_units.lives.Frame.Units /unit = [number].Main.View.WorldModel.[name_unit]
 ---------------------------------------------------------------------------------------
@@ -86,6 +88,14 @@ local Press_ToPlace = StillCheck:CreateButton({
    Callback = function()
    -- The function that takes place when the button is pressed
          Spawn_Unit:InvokeServer("{563b4847-1e72-46f2-82e5-81a3091e6c29}", CFrame.new(-2946.20361, 91.8062057, -740.202026, 1, 0, 0, 0, 1, 0, 0, 0, 1))
+   end,
+})
+
+local PrintMoneyPlayer = StillCheck:CreateButton({
+   Name = "Print Money Player",
+   Callback = function()
+   -- The function that takes place when the button is pressed
+         print(MoneyPlayerText.Text)
    end,
 })
 
