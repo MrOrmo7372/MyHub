@@ -122,8 +122,8 @@ local ToggleFarmGems = FarmGems:CreateToggle({
             local Is_Sakura = false
             local Sakura_Table = {
                [1] = {"{27b582bb-e814-4847-a519-ed1d9062c748}", CFrame.new(-2967.56396, 33.7417984, -715.313049, 1, 0, 0, 0, 1, 0, 0, 0, 1)},
-               [2] = {"{27b582bb-e814-4847-a519-ed1d9062c748}", CFrame.new(-2967.56396, 33.7417984, -710.313049, 1, 0, 0, 0, 1, 0, 0, 0, 1)},
-               [3] = {"{27b582bb-e814-4847-a519-ed1d9062c748}", CFrame.new(-2967.56396, 33.7417984, -705.313049, 1, 0, 0, 0, 1, 0, 0, 0, 1)}
+               [2] = {"{27b582bb-e814-4847-a519-ed1d9062c748}", CFrame.new(-2967.56396, 33.7417984, -714.313049, 1, 0, 0, 0, 1, 0, 0, 0, 1)},
+               [3] = {"{27b582bb-e814-4847-a519-ed1d9062c748}", CFrame.new(-2967.56396, 33.7417984, -713.313049, 1, 0, 0, 0, 1, 0, 0, 0, 1)}
             }
             local function onMoneyChanged()
                local money = tonumber(MoneyPlayerText.Text)
