@@ -118,8 +118,7 @@ local ToggleFarmGems = FarmGems:CreateToggle({
    -- The function that takes place when the toggle is pressed
    -- The variable (Value) is a boolean on whether the toggle is true or false
          if Value == true and game.PlaceId ~= 8304191830 then
-            local Num_Sakura = 1
-            local Is_Sakura = false
+            Num_Sakura = 1
             local Sakura_Table = {
                [1] = {"{27b582bb-e814-4847-a519-ed1d9062c748}", CFrame.new(-2967.56396, 33.7417984, -715.313049, 1, 0, 0, 0, 1, 0, 0, 0, 1)},
                [2] = {"{27b582bb-e814-4847-a519-ed1d9062c748}", CFrame.new(-2967.56396, 33.7417984, -714.313049, 1, 0, 0, 0, 1, 0, 0, 0, 1)},
@@ -127,19 +126,11 @@ local ToggleFarmGems = FarmGems:CreateToggle({
             }
             local function onMoneyChanged()
                local money = tonumber(MoneyPlayerText.Text)
-               if money >= 600 and Num_Sakura <= 3 then
-                  if Is_Sakura then return end
-                  Is_Sakura = true
-                  Spawn_Unit:InvokeServer(Sakura_Table[Num_Sakura][1], Sakura_Table[Num_Sakura][2])
-                  Num_Sakura += 1
-                  Is_Sakura = false
-                  task.wait(0.5)
-                  if money >= 600 and Num_Sakura <= 3 then
-                     if Is_Sakura then return end
-                     Is_Sakura = true
-                     Spawn_Unit:InvokeServer(Sakura_Table[Num_Sakura][1], Sakura_Table[Num_Sakura][2])
+               if money >= 1800 and Num_Sakura <= 3 then
+                  for i=1, 3 do
+                     Spawn_Unit:InvokeServer(Sakura_Table[i][1], Sakura_Table[i][2])
                      Num_Sakura += 1
-                     Is_Sakura = false
+                     task.wait(0.1)
                   end
                end
             end
