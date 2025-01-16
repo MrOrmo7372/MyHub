@@ -155,21 +155,6 @@ local DangerInfo_AutoFarmGems = FarmGems:CreateParagraph({
       Content = ""
 })
 
-----------------------------------------------------------------------------------------------------------------------------------------------------------------COROUTINE ZONE
-
-local coA = coroutine.create(F_AutoStart)
-local coB = coroutine.create(F_AutoRetry)
-
-while coroutine.status(coA) ~= "dead" or coroutine.status(coB) ~= "dead" do
-    if coroutine.status(coA) ~= "dead" then
-        coroutine.resume(coA) -- Tiếp tục coroutine A
-    end
-    if coroutine.status(coB) ~= "dead" then
-        coroutine.resume(coB) -- Tiếp tục coroutine A
-    end
-    task.wait(0.1)
-end
-
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Rayfield:LoadConfiguration()
