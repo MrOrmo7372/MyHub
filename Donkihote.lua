@@ -91,7 +91,7 @@ local AutoRetry = AutoFarm:CreateToggle({
    -- The variable (Value) is a boolean on whether the toggle is true or false
          if Value == true and game.PlaceId ~= 8304191830 then
 
-            while numberHealth > 1 then
+            while numberHealth > 1 do
                task.wait()
                coroutine.yield()
             end
