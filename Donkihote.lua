@@ -71,17 +71,8 @@ local AutoStart = AutoFarm:CreateToggle({
    -- The function that takes place when the toggle is pressed
    -- The variable (Value) is a boolean on whether the toggle is true or false
          if Value == true and game.PlaceId ~= 8304191830 then
-            --repeat wait() until VoteStartGui.Enabled == true
-            function F_AutoStart()
-               while VoteStartGui.Enabled ~= true do
-                  task.wait()
-                  coroutine.yield()
-               end
-
-               local auto_start = Vote_Start:InvokeServer()
-            end
-
-            F_AutoStart()
+            repeat wait(1) until VoteStartGui.Enabled == true
+            local auto_start = Vote_Start:InvokeServer()
          end
    end,
 })
@@ -93,17 +84,9 @@ local AutoRetry = AutoFarm:CreateToggle({
    Callback = function(Value)
    -- The function that takes place when the toggle is pressed
    -- The variable (Value) is a boolean on whether the toggle is true or false
-         if Value == true and game.PlaceId ~= 8304191830 then
-            function F_AutoRetry()
-               while numberHealth > 1 do
-                  task.wait()
-                  coroutine.yield()
-               end
-
-               local auto_replay = Set_Game_Finish_Vote:InvokeServer("replay")
-            end
-
-            F_AutoRetry()
+         if Value == true and game.PlaceId ~= 8304191830 then --numberHealth > 1 do
+            repeat wait(1) until numberHealth < 1
+            local auto_replay = Set_Game_Finish_Vote:InvokeServer("replay")
          end
    end,
 })
