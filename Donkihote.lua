@@ -167,8 +167,8 @@ local DangerInfo_AutoFarmGems = FarmGems:CreateParagraph({
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------COROUTINE ZONE
 
-local coA = coroutine.create(processA)
-local coB = coroutine.create(processB)
+local coA = coroutine.create(AutoStart)
+local coB = coroutine.create(AutoRetry)
 
 while coroutine.status(coA) ~= "dead" or coroutine.status(coB) ~= "dead" do
     if coroutine.status(coA) ~= "dead" then
