@@ -123,6 +123,16 @@ local PrintHealthBase = StillCheck:CreateButton({
    end,
 })
 
+local PrintRetryButton = StillCheck:CreateButton({
+   Name = "Print Retry Button",
+   Callback = function()
+   -- The function that takes place when the button is pressed
+         if game.PlaceId ~= 8304191830 then
+            print(AutoRetry)
+         end
+   end,
+})
+
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------FARM GEMS ZONE
 
 local ToggleFarmGems = FarmGems:CreateToggle({
