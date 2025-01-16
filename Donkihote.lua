@@ -72,12 +72,16 @@ local AutoStart = AutoFarm:CreateToggle({
    -- The variable (Value) is a boolean on whether the toggle is true or false
          if Value == true and game.PlaceId ~= 8304191830 then
             --repeat wait() until VoteStartGui.Enabled == true
-            while VoteStartGui.Enabled ~= true do
-               task.wait()
-               coroutine.yield()
+            function F_AutoStart()
+               while VoteStartGui.Enabled ~= true do
+                  task.wait()
+                  coroutine.yield()
+               end
+
+               local auto_start = Vote_Start:InvokeServer()
             end
-            
-            local auto_start = Vote_Start:InvokeServer()
+
+            F_AutoStart()
          end
    end,
 })
@@ -90,13 +94,16 @@ local AutoRetry = AutoFarm:CreateToggle({
    -- The function that takes place when the toggle is pressed
    -- The variable (Value) is a boolean on whether the toggle is true or false
          if Value == true and game.PlaceId ~= 8304191830 then
+            function F_AutoRetry()
+               while numberHealth > 1 do
+                  task.wait()
+                  coroutine.yield()
+               end
 
-            while numberHealth > 1 do
-               task.wait()
-               coroutine.yield()
+               local auto_replay = Set_Game_Finish_Vote:InvokeServer("replay")
             end
-            
-            local auto_replay = Set_Game_Finish_Vote:InvokeServer("replay")
+
+            F_AutoRetry()
          end
    end,
 })
@@ -167,8 +174,8 @@ local DangerInfo_AutoFarmGems = FarmGems:CreateParagraph({
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------COROUTINE ZONE
 
-local coA = coroutine.create(AutoStart)
-local coB = coroutine.create(AutoRetry)
+local coA = coroutine.create(F_AutoStart)
+local coB = coroutine.create(F_AutoRetry)
 
 while coroutine.status(coA) ~= "dead" or coroutine.status(coB) ~= "dead" do
     if coroutine.status(coA) ~= "dead" then
