@@ -24,9 +24,9 @@ local Unit_Table = {
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
 local Window = Rayfield:CreateWindow({
-   Name = "MrHub AA V0.0026 Alpha",
+   Name = "MrHub AA V0.0027 Alpha",
    Icon = 0, -- Icon in Topbar. Can use Lucide Icons (string) or Roblox Image (number). 0 to use no icon (default).
-   LoadingTitle = "Waiting AA Script (MrHub V0.0026)",
+   LoadingTitle = "Waiting AA Script (MrHub V0.0027)",
    LoadingSubtitle = "by MrHub",
    Theme = "Default", -- Check https://docs.sirius.menu/rayfield/configuration/themes
 
@@ -74,7 +74,7 @@ local AutoStart = AutoFarm:CreateToggle({
             --repeat wait() until VoteStartGui.Enabled == true
             while VoteStartGui.Enabled ~= true do
                task.wait()
-               coroutine.yield() -------------------NEED TO BE DONE
+               coroutine.yield()
             end
             
             local auto_start = Vote_Start:InvokeServer()
@@ -89,7 +89,13 @@ local AutoRetry = AutoFarm:CreateToggle({
    Callback = function(Value)
    -- The function that takes place when the toggle is pressed
    -- The variable (Value) is a boolean on whether the toggle is true or false
-         if Value == true and game.PlaceId ~= 8304191830 and numberHealth < 1 then
+         if Value == true and game.PlaceId ~= 8304191830 then
+
+            while numberHealth > 1 then
+               task.wait()
+               coroutine.yield()
+            end
+            
             local auto_replay = Set_Game_Finish_Vote:InvokeServer("replay")
          end
    end,
@@ -163,6 +169,16 @@ local DangerInfo_AutoFarmGems = FarmGems:CreateParagraph({
 
 local coA = coroutine.create(processA)
 local coB = coroutine.create(processB)
+
+while coroutine.status(coA) ~= "dead" or coroutine.status(coB) ~= "dead" do
+    if coroutine.status(coA) ~= "dead" then
+        coroutine.resume(coA) -- Tiếp tục coroutine A
+    end
+    if coroutine.status(coB) ~= "dead" then
+        coroutine.resume(coB) -- Tiếp tục coroutine A
+    end
+    task.wait(0.1)
+end
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
