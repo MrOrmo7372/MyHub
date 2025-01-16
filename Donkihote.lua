@@ -113,6 +113,16 @@ local PrintMoneyPlayer = StillCheck:CreateButton({
    end,
 })
 
+local PrintHealthBase = StillCheck:CreateButton({
+   Name = "Print Health Base",
+   Callback = function()
+   -- The function that takes place when the button is pressed
+         if game.PlaceId ~= 8304191830 then
+            print(numberHealth)
+         end
+   end,
+})
+
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------FARM GEMS ZONE
 
 local ToggleFarmGems = FarmGems:CreateToggle({
