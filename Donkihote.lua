@@ -64,11 +64,16 @@ local FarmGems = Window:CreateTab("FarmGems(Alpha)", "book-dashed")
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ALL VALUE LOADING WORKING
 local Auto_Start_L = false
 
-VoteStartGui.Holder:GetPropertyChangedSignal("Position"):Connect(function()
-    if Auto_Start_L == true and VoteStartGui.Enabled == true and game.PlaceId ~= 8304191830 then
-       local auto_start = Vote_Start:InvokeServer()
-    end
-end)
+--VoteStartGui.Holder:GetPropertyChangedSignal("Position"):Connect(function()
+    --if Auto_Start_L == true and VoteStartGui.Enabled == true and game.PlaceId ~= 8304191830 then
+       --local auto_start = Vote_Start:InvokeServer()
+    --end
+--end)
+
+function StartGame()
+   task.wait(5)
+   local auto_start = Vote_Start:InvokeServer()
+end
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------AUTO FARM ZONE
 
@@ -184,3 +189,7 @@ local DangerInfo_AutoFarmGems = FarmGems:CreateParagraph({
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Rayfield:LoadConfiguration()
+
+if Auto_Start_L == true then
+   StartGame()
+end
