@@ -63,7 +63,7 @@ local Auto_Start_L = false
 local Auto_Retry_L = false
 local Sakura_FarmGems = false
 
-local Allow_Place = false
+local Allow_Place = true
 
 local Sakura_Unit = 1
 
