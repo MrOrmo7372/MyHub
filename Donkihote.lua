@@ -84,17 +84,17 @@ local Sakura_Table = {
 function Sakura_Farm()
    Allow_Place = false
    local Money = tonumber(MoneyPlayerText.Text)
-   if Money >= 600 and Sakura_Unit < 4 then
+   if Money >= 600 and Sakura_Unit < 3 then
       Spawn_Unit:InvokeServer(Sakura_Table[Sakura_Unit][1], Sakura_Table[Sakura_Unit][2])
       local Money = tonumber(MoneyPlayerText.Text)
       Sakura_Unit += 1
       task.wait(0.5)
-      if Money >= 600 and Sakura_Unit < 4 then
+      if Money >= 600 and Sakura_Unit < 3 then
          Spawn_Unit:InvokeServer(Sakura_Table[Sakura_Unit][1], Sakura_Table[Sakura_Unit][2])
          local Money = tonumber(MoneyPlayerText.Text)
          Sakura_Unit += 1
          task.wait(0.5)
-         if Money >= 600 and Sakura_Unit < 4 then
+         if Money >= 600 and Sakura_Unit < 3 then
             Spawn_Unit:InvokeServer(Sakura_Table[Sakura_Unit][1], Sakura_Table[Sakura_Unit][2])
             local Money = tonumber(MoneyPlayerText.Text)
             Sakura_Unit += 1
@@ -200,7 +200,7 @@ ResultsUI:GetPropertyChangedSignal("Enabled"):Connect(function()
 end)
 
 MoneyPlayerText:GetPropertyChangedSignal("Text"):Connect(function()
-   if Sakura_FarmGems == true and Allow_Place == true and Sakura_Unit < 4 and game.PlaceId ~= 8304191830 then
+   if Sakura_FarmGems == true and Allow_Place == true and Sakura_Unit < 3 and game.PlaceId ~= 8304191830 then
       Sakura_Farm()
    end
 end)
