@@ -6,6 +6,7 @@ local Spawn_Unit = game:GetService("ReplicatedStorage"):WaitForChild("endpoints"
 
 local MoneyPlayerText = game.Players.LocalPlayer:WaitForChild("PlayerGui"):WaitForChild("spawn_units").Lives.Frame.Resource.Money.text
 local ResultsUI = game.Players.LocalPlayer:WaitForChild("PlayerGui"):WaitForChild("ResultsUI")
+local FileName_User = "File_" .. game.Players.LocalPlayer.Name .. "_User"
 
 --------------------------------------------------------------------------------Info AA
 --game.Players.LocalPlayer:WaitForChild("PlayerGui").spawn_units.lives.Frame.Units /unit = [number].Main.View.WorldModel.[name_unit]
@@ -31,7 +32,7 @@ local Window = Rayfield:CreateWindow({
 
    ConfigurationSaving = {
       Enabled = true,
-      FolderName = nil, -- Create a custom folder for your hub/game
+      FolderName = FileName_User, -- Create a custom folder for your hub/game
       FileName = "MrHub"
    },
 
