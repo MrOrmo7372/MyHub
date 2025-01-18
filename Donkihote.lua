@@ -24,9 +24,9 @@ local Unit_Table = {
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
 local Window = Rayfield:CreateWindow({
-   Name = "MrHub AA V0.0027 Alpha",
+   Name = "MrHub AA V0.0028 Alpha",
    Icon = 0, -- Icon in Topbar. Can use Lucide Icons (string) or Roblox Image (number). 0 to use no icon (default).
-   LoadingTitle = "Waiting AA Script (MrHub V0.0027)",
+   LoadingTitle = "Waiting AA Script (MrHub V0.0028)",
    LoadingSubtitle = "by MrHub",
    Theme = "Default", -- Check https://docs.sirius.menu/rayfield/configuration/themes
 
@@ -63,16 +63,17 @@ local FarmGems = Window:CreateTab("FarmGems(Alpha)", "book-dashed")
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ALL VALUE LOADING WORKING
 local Auto_Start_L = false
-
---VoteStartGui.Holder:GetPropertyChangedSignal("Position"):Connect(function()
-    --if Auto_Start_L == true and VoteStartGui.Enabled == true and game.PlaceId ~= 8304191830 then
-       --local auto_start = Vote_Start:InvokeServer()
-    --end
---end)
+local Auto_Retry_L = false
 
 function StartGame()
-   task.wait(5)
+   task.wait(1)
    local auto_start = Vote_Start:InvokeServer()
+end
+
+function RetryGame()
+   if numberHealth < 1 and game.PlaceId ~= 8304191830 then
+      local auto_replay = Set_Game_Finish_Vote:InvokeServer("replay")
+   end
 end
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------AUTO FARM ZONE
@@ -80,10 +81,8 @@ end
 local AutoStart = AutoFarm:CreateToggle({
    Name = "Auto Start",
    CurrentValue = false,
-   Flag = "Auto_Start", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Flag = "Auto_Start",
    Callback = function(Value)
-   -- The function that takes place when the toggle is pressed
-   -- The variable (Value) is a boolean on whether the toggle is true or false
          Auto_Start_L = Value
    end,
 })
@@ -91,14 +90,9 @@ local AutoStart = AutoFarm:CreateToggle({
 local AutoRetry = AutoFarm:CreateToggle({
    Name = "Auto Retry",
    CurrentValue = false,
-   Flag = "Auto_Retry", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Flag = "Auto_Retry",
    Callback = function(Value)
-   -- The function that takes place when the toggle is pressed
-   -- The variable (Value) is a boolean on whether the toggle is true or false
-         --if Value == true and game.PlaceId ~= 8304191830 then --numberHealth > 1 do
-            --repeat wait(1) until numberHealth < 1
-            --local auto_replay = Set_Game_Finish_Vote:InvokeServer("replay")
-         --end
+         Auto_Retry_L = Value
    end,
 })
 
@@ -190,6 +184,8 @@ local DangerInfo_AutoFarmGems = FarmGems:CreateParagraph({
 
 Rayfield:LoadConfiguration()
 
-if Auto_Start_L == true then
+if Auto_Start_L == true and game.PlaceId ~= 8304191830 then
    StartGame()
 end
+
+numberHealth.Changed:Connect()
