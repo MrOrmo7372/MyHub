@@ -5,15 +5,7 @@ local Set_Game_Finish_Vote = game:GetService("ReplicatedStorage"):WaitForChild("
 local Spawn_Unit = game:GetService("ReplicatedStorage"):WaitForChild("endpoints"):WaitForChild("client_to_server"):WaitForChild("spawn_unit")
 
 local MoneyPlayerText = game.Players.LocalPlayer:WaitForChild("PlayerGui"):WaitForChild("spawn_units").Lives.Frame.Resource.Money.text
-local HealthGui = game.Players.LocalPlayer:WaitForChild("PlayerGui"):WaitForChild("Waves").HealthBar.HPDisplay --150/150 text
-local VoteStartGui = game.Players.LocalPlayer:WaitForChild("PlayerGui"):WaitForChild("VoteStart")
-
-local textHealth = HealthGui.Text
-local numberHealth = tonumber(string.match(textHealth, "(%d+)/"))
-
-local HealthBase = Instance.new("IntValue")
-HealthBase.Parent = game.Players.LocalPlayer
-HealthBase.Value = numberHealth
+local ResultsUI = game.Players.LocalPlayer:WaitForChild("PlayerGui"):WaitForChild("ResultsUI")
 
 --------------------------------------------------------------------------------Info AA
 --game.Players.LocalPlayer:WaitForChild("PlayerGui").spawn_units.lives.Frame.Units /unit = [number].Main.View.WorldModel.[name_unit]
@@ -28,9 +20,9 @@ local Unit_Table = {
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
 local Window = Rayfield:CreateWindow({
-   Name = "MrHub AA V0.0031 Alpha",
+   Name = "MrHub AA V0.0032 Alpha",
    Icon = 0, -- Icon in Topbar. Can use Lucide Icons (string) or Roblox Image (number). 0 to use no icon (default).
-   LoadingTitle = "Waiting AA Script (MrHub V0.0031)",
+   LoadingTitle = "Waiting AA Script (MrHub V0.0032)",
    LoadingSubtitle = "by MrHub",
    Theme = "Default", -- Check https://docs.sirius.menu/rayfield/configuration/themes
 
@@ -74,11 +66,7 @@ function StartGame()
 end
 
 function RetryGame()
-   print("They Call ME!")
-   print(HealthBase.Value)
-   if Auto_Retry_L == true and HealthBase.Value < 1 and game.PlaceId ~= 8304191830 then
-      local auto_replay = Set_Game_Finish_Vote:InvokeServer("replay")
-   end
+   local auto_retry = Set_Game_Finish_Vote:InvokeServer("replay")
 end
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------AUTO FARM ZONE
@@ -189,14 +177,12 @@ local DangerInfo_AutoFarmGems = FarmGems:CreateParagraph({
 
 Rayfield:LoadConfiguration()
 
-HealthGui:GetPropertyChangedSignal("Text"):Connect(function()
-    local numberHealth = tonumber(string.match(textHealth, "(%d+)/"))
-    HealthBase.Value = numberHealth
-end)
-
-
 if Auto_Start_L == true and game.PlaceId ~= 8304191830 then
    StartGame()
 end
 
-HealthBase.Changed:Connect(RetryGame)
+ResultsUI:GetPropertyChangedSignal("Enabled"):Connect(function()
+   if Auto_Retry_L == true then
+      RetryGame()
+   end
+end)
