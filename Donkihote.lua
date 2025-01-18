@@ -75,7 +75,7 @@ function StartGame()
 end
 
 function RetryGame()
-   if numberHealth < 1 and game.PlaceId ~= 8304191830 then
+   if and Auto_Retry_L == true and HealthBase.Value < 1 and game.PlaceId ~= 8304191830 then
       local auto_replay = Set_Game_Finish_Vote:InvokeServer("replay")
    end
 end
@@ -192,4 +192,4 @@ if Auto_Start_L == true and game.PlaceId ~= 8304191830 then
    StartGame()
 end
 
-HealthBase.Changed:Connect()
+HealthBase.Changed:Connect(RetryGame)
