@@ -21,9 +21,9 @@ local Unit_Table = {
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
 local Window = Rayfield:CreateWindow({
-   Name = "MrHub AA V0.0032 Alpha",
+   Name = "MrHub AA V0.0034 Alpha",
    Icon = 0, -- Icon in Topbar. Can use Lucide Icons (string) or Roblox Image (number). 0 to use no icon (default).
-   LoadingTitle = "Waiting AA Script (MrHub V0.0032)",
+   LoadingTitle = "Waiting AA Script (MrHub V0.0034)",
    LoadingSubtitle = "by MrHub",
    Theme = "Default", -- Check https://docs.sirius.menu/rayfield/configuration/themes
 
@@ -56,7 +56,7 @@ local Window = Rayfield:CreateWindow({
 
 local AutoFarm = Window:CreateTab("Auto Farm", "apple")
 local StillCheck = Window:CreateTab("Still Check", "badge-alert")
-local FarmGems = Window:CreateTab("FarmGems(Alpha)", "book-dashed")
+local FarmGems = Window:CreateTab("FarmGems(Beta)", "book-dashed")
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ALL VALUE LOADING WORKING
 local Auto_Start_L = false
