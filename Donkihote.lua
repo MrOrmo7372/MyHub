@@ -64,8 +64,8 @@ local FarmGems = Window:CreateTab("FarmGems(Alpha)", "book-dashed")
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ALL VALUE LOADING WORKING
 local Auto_Start_L = false
 
-VoteStartGui:GetPropertyChangedSignal("Position"):Connect(function()
-    if Auto_Start_L == true and VoteStartGui.Enabled == true then
+VoteStartGui:GetPropertyChangedSignal("Enabled"):Connect(function()
+    if Auto_Start_L == true and VoteStartGui.Enabled == true and game.PlaceId ~= 8304191830 then
        local auto_start = Vote_Start:InvokeServer()
     end
 end)
@@ -79,10 +79,6 @@ local AutoStart = AutoFarm:CreateToggle({
    Callback = function(Value)
    -- The function that takes place when the toggle is pressed
    -- The variable (Value) is a boolean on whether the toggle is true or false
-         --if Value == true and game.PlaceId ~= 8304191830 then
-           -- repeat wait(1) until VoteStartGui.Enabled == true
-            --local auto_start = Vote_Start:InvokeServer()
-         --end
          Auto_Start_L = Value
    end,
 })
