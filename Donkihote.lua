@@ -28,9 +28,9 @@ local Unit_Table = {
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
 local Window = Rayfield:CreateWindow({
-   Name = "MrHub AA V0.0029 Alpha",
+   Name = "MrHub AA V0.0030 Alpha",
    Icon = 0, -- Icon in Topbar. Can use Lucide Icons (string) or Roblox Image (number). 0 to use no icon (default).
-   LoadingTitle = "Waiting AA Script (MrHub V0.0029)",
+   LoadingTitle = "Waiting AA Script (MrHub V0.0030)",
    LoadingSubtitle = "by MrHub",
    Theme = "Default", -- Check https://docs.sirius.menu/rayfield/configuration/themes
 
@@ -74,6 +74,8 @@ function StartGame()
 end
 
 function RetryGame()
+   print("They Call ME!")
+   print(HealthBase.Value)
    if Auto_Retry_L == true and HealthBase.Value < 1 and game.PlaceId ~= 8304191830 then
       local auto_replay = Set_Game_Finish_Vote:InvokeServer("replay")
    end
