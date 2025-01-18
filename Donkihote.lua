@@ -191,4 +191,4 @@ if Auto_Start_L == true and game.PlaceId ~= 8304191830 then
    StartGame()
 end
 
-HealthBase.Changed:Connect(RetryGame)
+HealthBase.Changed:Connect(RetryGame())
