@@ -189,7 +189,7 @@ local DangerInfo_AutoFarmGems = FarmGems:CreateParagraph({
 
 Rayfield:LoadConfiguration()
 
-textHealth:GetPropertyChangedSignal("Text"):Connect(function()
+textHealth.Changed:Connect(function()
     local numberHealth = tonumber(string.match(textHealth, "(%d+)/"))
     HealthBase.Value = numberHealth
 end)
