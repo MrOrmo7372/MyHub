@@ -85,17 +85,17 @@ function Sakura_Farm()
       Spawn_Unit:InvokeServer(Sakura_Table[Sakura_Unit][1], Sakura_Table[Sakura_Unit][2])
       local Money = tonumber(MoneyPlayerText.Text)
       Sakura_Unit += 1
-      task.wait(0.5)
+      task.wait(2)
       if Money >= 600 and Sakura_Unit < 4 then
          Spawn_Unit:InvokeServer(Sakura_Table[Sakura_Unit][1], Sakura_Table[Sakura_Unit][2])
          local Money = tonumber(MoneyPlayerText.Text)
          Sakura_Unit += 1
-         task.wait(0.5)
+         task.wait(2)
          if Money >= 600 and Sakura_Unit < 4 then
             Spawn_Unit:InvokeServer(Sakura_Table[Sakura_Unit][1], Sakura_Table[Sakura_Unit][2])
             local Money = tonumber(MoneyPlayerText.Text)
             Sakura_Unit += 1
-            task.wait(0.5)
+            task.wait(2)
          end
       end
    end
