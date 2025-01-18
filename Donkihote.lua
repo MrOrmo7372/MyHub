@@ -28,9 +28,9 @@ local Unit_Table = {
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
 local Window = Rayfield:CreateWindow({
-   Name = "MrHub AA V0.0028 Alpha",
+   Name = "MrHub AA V0.0029 Alpha",
    Icon = 0, -- Icon in Topbar. Can use Lucide Icons (string) or Roblox Image (number). 0 to use no icon (default).
-   LoadingTitle = "Waiting AA Script (MrHub V0.0028)",
+   LoadingTitle = "Waiting AA Script (MrHub V0.0029)",
    LoadingSubtitle = "by MrHub",
    Theme = "Default", -- Check https://docs.sirius.menu/rayfield/configuration/themes
 
@@ -70,7 +70,6 @@ local Auto_Start_L = false
 local Auto_Retry_L = false
 
 function StartGame()
-   task.wait(1)
    local auto_start = Vote_Start:InvokeServer()
 end
 
