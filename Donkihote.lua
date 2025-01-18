@@ -11,6 +11,10 @@ local VoteStartGui = game.Players.LocalPlayer:WaitForChild("PlayerGui"):WaitForC
 local textHealth = HealthGui.Text
 local numberHealth = tonumber(string.match(textHealth, "(%d+)/"))
 
+local HealthBase = Instance.new("IntValue")
+HealthBase.Parent = game.Players.LocalPlayer
+HealthBase.Value = numberHealth
+
 --------------------------------------------------------------------------------Info AA
 --game.Players.LocalPlayer:WaitForChild("PlayerGui").spawn_units.lives.Frame.Units /unit = [number].Main.View.WorldModel.[name_unit]
 ---------------------------------------------------------------------------------------
@@ -188,4 +192,4 @@ if Auto_Start_L == true and game.PlaceId ~= 8304191830 then
    StartGame()
 end
 
-numberHealth.Changed:Connect()
+HealthBase.Changed:Connect()
