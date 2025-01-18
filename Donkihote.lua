@@ -61,6 +61,9 @@ local FarmGems = Window:CreateTab("FarmGems(Alpha)", "book-dashed")
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ALL VALUE LOADING WORKING
 local Auto_Start_L = false
 local Auto_Retry_L = false
+local Sakura_FarmGems = false
+
+local Sakura_Unit = 1
 
 function StartGame()
    local auto_start = Vote_Start:InvokeServer()
@@ -68,6 +71,31 @@ end
 
 function RetryGame()
    local auto_retry = Set_Game_Finish_Vote:InvokeServer("replay")
+end
+
+local Sakura_Table = {
+   [1] = {"{27b582bb-e814-4847-a519-ed1d9062c748}", CFrame.new(-2967.56396, 33.7417984, -715.313049, 1, 0, 0, 0, 1, 0, 0, 0, 1)},
+   [2] = {"{27b582bb-e814-4847-a519-ed1d9062c748}", CFrame.new(-2967.56396, 33.7417984, -714.313049, 1, 0, 0, 0, 1, 0, 0, 0, 1)},
+   [3] = {"{27b582bb-e814-4847-a519-ed1d9062c748}", CFrame.new(-2967.56396, 33.7417984, -713.313049, 1, 0, 0, 0, 1, 0, 0, 0, 1)}
+}
+
+function Sakura_Farm()
+   local Money = tonumber(MoneyPlayerText.Text)
+   if Money >= 600 and Sakura_Unit < 4 then
+      Spawn_Unit:InvokeServer(Sakura_Table[Sakura_Unit][1], Sakura_Table[Sakura_Unit][2])
+      Sakura_Unit += 1
+      task.wait(0.5)
+      if Money >= 600 and Sakura_Unit < 4 then
+         Spawn_Unit:InvokeServer(Sakura_Table[Sakura_Unit][1], Sakura_Table[Sakura_Unit][2])
+         Sakura_Unit += 1
+         task.wait(0.5)
+         if Money >= 600 and Sakura_Unit < 4 then
+            Spawn_Unit:InvokeServer(Sakura_Table[Sakura_Unit][1], Sakura_Table[Sakura_Unit][2])
+            Sakura_Unit += 1
+            task.wait(0.5)
+         end
+      end
+   end
 end
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------AUTO FARM ZONE
@@ -92,42 +120,12 @@ local AutoRetry = AutoFarm:CreateToggle({
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------STILL CHECK ZONE
 
-local Press_ToPlace = StillCheck:CreateButton({
-   Name = "Place Christmas Luffy",
-   Callback = function()
-   -- The function that takes place when the button is pressed
-         if game.PlaceId ~= 8304191830 then
-            Spawn_Unit:InvokeServer("{563b4847-1e72-46f2-82e5-81a3091e6c29}", CFrame.new(-2946.20361, 91.8062057, -740.202026, 1, 0, 0, 0, 1, 0, 0, 0, 1))
-         end
-   end,
-})
-
 local PrintMoneyPlayer = StillCheck:CreateButton({
    Name = "Print Money Player",
    Callback = function()
    -- The function that takes place when the button is pressed
          if game.PlaceId ~= 8304191830 then
             print(MoneyPlayerText.Text)
-         end
-   end,
-})
-
-local PrintHealthBase = StillCheck:CreateButton({
-   Name = "Print Health Base",
-   Callback = function()
-   -- The function that takes place when the button is pressed
-         if game.PlaceId ~= 8304191830 then
-            print(HealthBase.Value)
-         end
-   end,
-})
-
-local PrintRetryButton = StillCheck:CreateButton({
-   Name = "Print Retry Button",
-   Callback = function()
-   -- The function that takes place when the button is pressed
-         if game.PlaceId ~= 8304191830 then
-            print(AutoRetry)
          end
    end,
 })
@@ -141,26 +139,27 @@ local ToggleFarmGems = FarmGems:CreateToggle({
    Callback = function(Value)
    -- The function that takes place when the toggle is pressed
    -- The variable (Value) is a boolean on whether the toggle is true or false
-         if Value == true and game.PlaceId ~= 8304191830 then
-            Num_Sakura = 1
-            local Sakura_Table = {
-               [1] = {"{27b582bb-e814-4847-a519-ed1d9062c748}", CFrame.new(-2967.56396, 33.7417984, -715.313049, 1, 0, 0, 0, 1, 0, 0, 0, 1)},
-               [2] = {"{27b582bb-e814-4847-a519-ed1d9062c748}", CFrame.new(-2967.56396, 33.7417984, -714.313049, 1, 0, 0, 0, 1, 0, 0, 0, 1)},
-               [3] = {"{27b582bb-e814-4847-a519-ed1d9062c748}", CFrame.new(-2967.56396, 33.7417984, -713.313049, 1, 0, 0, 0, 1, 0, 0, 0, 1)}
-            }
-            local function onMoneyChanged()
-               local money = tonumber(MoneyPlayerText.Text)
-               if money >= 1800 and Num_Sakura <= 3 then
-                  for i=1, 3 do
-                     Spawn_Unit:InvokeServer(Sakura_Table[i][1], Sakura_Table[i][2])
-                     Num_Sakura += 1
-                     task.wait(1)
-                  end
-               end
-            end
+         --if Value == true and game.PlaceId ~= 8304191830 then
+            --Num_Sakura = 1
+            --local Sakura_Table = {
+               --[1] = {"{27b582bb-e814-4847-a519-ed1d9062c748}", CFrame.new(-2967.56396, 33.7417984, -715.313049, 1, 0, 0, 0, 1, 0, 0, 0, 1)},
+               --[2] = {"{27b582bb-e814-4847-a519-ed1d9062c748}", CFrame.new(-2967.56396, 33.7417984, -714.313049, 1, 0, 0, 0, 1, 0, 0, 0, 1)},
+               --[3] = {"{27b582bb-e814-4847-a519-ed1d9062c748}", CFrame.new(-2967.56396, 33.7417984, -713.313049, 1, 0, 0, 0, 1, 0, 0, 0, 1)}
+            --}
+            --local function onMoneyChanged()
+               --local money = tonumber(MoneyPlayerText.Text)
+               --if money >= 1800 and Num_Sakura <= 3 then
+                  --for i=1, 3 do
+                     --Spawn_Unit:InvokeServer(Sakura_Table[i][1], Sakura_Table[i][2])
+                     --Num_Sakura += 1
+                     --task.wait(1)
+                  --end
+               --end
+            --end
 
-            MoneyPlayerText:GetPropertyChangedSignal("Text"):Connect(onMoneyChanged)
-         end
+            --MoneyPlayerText:GetPropertyChangedSignal("Text"):Connect(onMoneyChanged)
+         --end
+         Sakura_FarmGems = Value
    end,
 })
 
@@ -185,5 +184,11 @@ end
 ResultsUI:GetPropertyChangedSignal("Enabled"):Connect(function()
    if Auto_Retry_L == true then
       RetryGame()
+   end
+end)
+
+MoneyPlayerText:GetPropertyChangedSignal("Text"):Connect(function()
+   if Sakura_FarmGems == true and game.PlaceId ~= 8304191830 then
+      Sakura_Farm()
    end
 end)
