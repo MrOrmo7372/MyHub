@@ -61,6 +61,15 @@ local AutoFarm = Window:CreateTab("Auto Farm", "apple")
 local StillCheck = Window:CreateTab("Still Check", "badge-alert")
 local FarmGems = Window:CreateTab("FarmGems(Alpha)", "book-dashed")
 
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------ALL VALUE LOADING WORKING
+local Auto_Start_L = false
+
+VoteStartGui:GetPropertyChangedSignal("Position"):Connect(function()
+    if Auto_Start_L == true and VoteStartGui.Enabled == true then
+       local auto_start = Vote_Start:InvokeServer()
+    end
+end)
+
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------AUTO FARM ZONE
 
 local AutoStart = AutoFarm:CreateToggle({
@@ -70,10 +79,11 @@ local AutoStart = AutoFarm:CreateToggle({
    Callback = function(Value)
    -- The function that takes place when the toggle is pressed
    -- The variable (Value) is a boolean on whether the toggle is true or false
-         if Value == true and game.PlaceId ~= 8304191830 then
-            repeat wait(1) until VoteStartGui.Enabled == true
-            local auto_start = Vote_Start:InvokeServer()
-         end
+         --if Value == true and game.PlaceId ~= 8304191830 then
+           -- repeat wait(1) until VoteStartGui.Enabled == true
+            --local auto_start = Vote_Start:InvokeServer()
+         --end
+         Auto_Start_L = Value
    end,
 })
 
@@ -84,10 +94,10 @@ local AutoRetry = AutoFarm:CreateToggle({
    Callback = function(Value)
    -- The function that takes place when the toggle is pressed
    -- The variable (Value) is a boolean on whether the toggle is true or false
-         if Value == true and game.PlaceId ~= 8304191830 then --numberHealth > 1 do
-            repeat wait(1) until numberHealth < 1
-            local auto_replay = Set_Game_Finish_Vote:InvokeServer("replay")
-         end
+         --if Value == true and game.PlaceId ~= 8304191830 then --numberHealth > 1 do
+            --repeat wait(1) until numberHealth < 1
+            --local auto_replay = Set_Game_Finish_Vote:InvokeServer("replay")
+         --end
    end,
 })
 
