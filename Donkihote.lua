@@ -218,6 +218,10 @@ local CreateMarco = MarcoZone:CreateInput({
    -- The function that takes place when the input is changed
    -- The variable (Text) is a string for the value in the text box
       local function saveMarco(fileName, data)
+         if not fileName:match("%.json$") then
+            fileName = fileName .. ".json"
+         end
+            
          local jsonData = HttpService:JSONEncode(data)
          writefile(Fullpath .. "/" .. fileName, jsonData)
          print("Macro saved:", fileName)
