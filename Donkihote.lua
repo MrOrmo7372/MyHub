@@ -315,7 +315,7 @@ function CHECK_EVENT_SERVER()
            local arguments = args -- Gán toàn bộ dữ liệu vào bảng
            -- Sử dụng arguments[i] để truy cập dữ liệu cụ thể
 
-           if #args > 1 then
+           if #args > 1 and self.Name == "spawn_unit" then
               TABLE_RECORD.Type_Event = self.Name
               TABLE_RECORD.Unit_Id = arguments[1]
               TABLE_RECORD.Position = arguments[2]
@@ -325,6 +325,8 @@ function CHECK_EVENT_SERVER()
               table.insert(Online_RecordTable, Step_Record, TABLE_RECORD)
               Step_Record += 1
            end
+
+           print(Online_RecordTable)
 
            -- Duyệt qua từng argument và in ra thông tin
            --for i, arg in ipairs(args) do
@@ -355,12 +357,12 @@ ResultsUI:GetPropertyChangedSignal("Enabled"):Connect(function()
    end
 end)
 
+if Record_Marco_BOOLEAN == true and Choose_MarcoOrigin ~= nil then
+      CHECK_EVENT_SERVER()
+end
+
 MoneyPlayerText:GetPropertyChangedSignal("Text"):Connect(function()
    if Sakura_FarmGems == true and Allow_Place == true and Sakura_Unit < 4 and game.PlaceId ~= 8304191830 then
       Sakura_Farm()
-   end
-
-   if Record_Marco_BOOLEAN == true and Choose_MarcoOrigin ~= nil then
-      CHECK_EVENT_SERVER()
    end
 end)
