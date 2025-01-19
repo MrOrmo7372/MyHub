@@ -217,7 +217,7 @@ local CreateMarco = MarcoZone:CreateInput({
    Callback = function(Text)
    -- The function that takes place when the input is changed
    -- The variable (Text) is a string for the value in the text box
-      local function saveMacro(fileName, data)
+      local function saveMarco(fileName, data)
          local jsonData = HttpService:JSONEncode(data)
          writefile(Fullpath .. "/" .. fileName, jsonData)
          print("Macro saved:", fileName)
