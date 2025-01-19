@@ -58,7 +58,6 @@ local Window = Rayfield:CreateWindow({
 local AutoFarm = Window:CreateTab("Auto Farm", "apple")
 local StillCheck = Window:CreateTab("Still Check", "badge-alert")
 local FarmGems = Window:CreateTab("FarmGems", "book-dashed")
-local MarcoZone = Window:CreateTab("Marco Zone (Alpha)", "clapperboard")
 
 local MarcoFolder = "MrHub_Marco"
 
@@ -169,108 +168,6 @@ local Info_AutoFarmGems = FarmGems:CreateParagraph({
 local DangerInfo_AutoFarmGems = FarmGems:CreateParagraph({
       Title = "ONLY TURN ON AUTOSTART, AUTORETRY AND AUTOFARMGEMS", 
       Content = ""
-})
-
-----------------------------------------------------------------------------------------------------------------------------------------------------------------------MARCO ZONE
-local Cooldown = 4
-local Choose_TableMarco = nil
-
-local Record_Marco_BOOLEAN = false
-local Replay_Marco_BOOLEAN = false
-
-local function listMacros()
-    if isfolder(Fullpath) then
-        local files = listfiles(Fullpath)
-        local fileNames = {}
-        for _, filePath in ipairs(files) do
-           table.insert(fileNames, filePath:match("([^/]+)$")) -- Lấy tên file
-        end
-        return fileNames
-    else
-        print("Folder not found!")
-        return {}
-    end
-end
-
-local function isNumeric(text)
-    return string.match(text, "^%d+$") ~= nil
-end
-
-local MarcoList = MarcoZone:CreateDropdown({
-   Name = "Marco List",
-   Options = listMacros(),
-   CurrentOption = {"nil"},
-   MultipleOptions = false,
-   Flag = "Marco_List", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
-   Callback = function(Options)
-   -- The function that takes place when the selected option is changed
-   -- The variable (Options) is a table of strings for the current selected options
-         Choose_TableMarco = Options
-   end,
-})
-
-local RecordMarco = MarcoZone:CreateToggle({
-   Name = "Record Marco",
-   CurrentValue = false,
-   Flag = "Record_Marco",
-   Callback = function(Value)
-         Record_Marco_BOOLEAN = Value
-   end,
-})
-
-local ReplayMarco = MarcoZone:CreateToggle({
-   Name = "Replay Marco",
-   CurrentValue = false,
-   Flag = "Replay_Marco",
-   Callback = function(Value)
-         Replay_Marco_BOOLEAN = Value
-   end,
-})
-
-local Cooldown_PlaceUnit = MarcoZone:CreateInput({
-   Name = "Cooldown",
-   CurrentValue = "",
-   PlaceholderText = "Cooldown",
-   RemoveTextAfterFocusLost = false,
-   Flag = "Cooldown_Unit",
-   Callback = function(Text)
-   -- The function that takes place when the input is changed
-   -- The variable (Text) is a string for the value in the text box
-         local CheckNumber = isNumeric(Text)
-         if CheckNumber == true then
-            Cooldown = tonumber(Text)
-         else
-            Cooldown = 4
-         end
-   end,
-})
-
-local CreateMarco = MarcoZone:CreateInput({
-   Name = "Create Marco",
-   CurrentValue = "",
-   PlaceholderText = "Name Marco",
-   RemoveTextAfterFocusLost = false,
-   Flag = "Create_Marco",
-   Callback = function(Text)
-   -- The function that takes place when the input is changed
-   -- The variable (Text) is a string for the value in the text box
-   local function saveMacro(fileName, data)
-      -- Đảm bảo tên file có đuôi .json
-      if not fileName:match("%.json$") then
-         fileName = fileName .. ".json"
-      end
-
-      -- Kiểm tra file có tồn tại hay không
-      local fullPath = Fullpath .. "/" .. fileName
-      if isfile(fullPath) then
-         return -- Thoát hàm nếu file đã tồn tại
-      end
-
-      -- Mã hóa dữ liệu thành JSON và lưu vào file
-      local jsonData = HttpService:JSONEncode(data)
-      writefile(FullPath, jsonData)
-      print("Macro saved:", fileName)
-   end
 })
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
