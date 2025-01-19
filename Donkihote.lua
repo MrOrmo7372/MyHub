@@ -205,7 +205,7 @@ local MarcoList = MarcoZone:CreateDropdown({
    Callback = function(Options)
    -- The function that takes place when the selected option is changed
    -- The variable (Options) is a table of strings for the current selected options
-         --Choose_TableMarco = Options
+         Choose_TableMarco = Options
    end,
 })
 
@@ -275,57 +275,7 @@ local CreateMarco = MarcoZone:CreateInput({
    end
 })
 
------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------EVENT ZONE
-
--- Danh sách tên event cần theo dõi (bạn có thể thêm vào nếu cần)
-local TargetEventNames = {
-    "spawn_unit",
-}
-
-local MARCO_TABLE = {}
-
-local STEP = 1
-
--- Lấy metatable của game
-local mt = getrawmetatable(game)
-setreadonly(mt, false) -- Cho phép chỉnh sửa metatable
-
-local oldNamecall = mt.__namecall -- Lưu hàm gốc
-
--- Hàm kiểm tra xem event có trong danh sách không
-local function isTargetEvent(remote)
-    return table.find(TargetEventNames, remote.Name) ~= nil
-end
-
--- Hook hàm __namecall để ghi nhận mọi dữ liệu gửi lên
-mt.__namecall = function(self, ...)
-    local method = getnamecallmethod() -- Lấy tên phương thức (FireServer, InvokeServer, etc.)
-    local args = {...} -- Lấy tất cả dữ liệu gửi vào
-      
-    -- Nếu là RemoteEvent hoặc RemoteFunction và có trong danh sách
-    if isTargetEvent(self) and (method == "FireServer" or method == "InvokeServer") then
-
-        if Record_Marco_BOOLEAN then
-           local TABLE_EVENT_PLACE = {
-              Event_Type = self.Name,
-              Unit_Type = args[1],
-              CFramePosition = args[2]
-           }
-
-           MARCO_TABLE[STEP] = TABLE_EVENT_PLACE
-
-           print(MARCO_TABLE)
-        end
-    end
-
-    return oldNamecall(self, ...) -- Gọi lại hàm gốc
-end
-
--- Bật lại chế độ chỉ đọc sau khi chỉnh sửa xong
-setreadonly(mt, true)
-
-   
-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Rayfield:LoadConfiguration()
 
