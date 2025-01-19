@@ -173,7 +173,7 @@ local DangerInfo_AutoFarmGems = FarmGems:CreateParagraph({
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------MARCO ZONE
 local Cooldown = 4
---local Choose_TableMarco = nil
+local Choose_TableMarco = nil
 
 local Record_Marco_BOOLEAN = false
 local Replay_Marco_BOOLEAN = false
@@ -328,8 +328,6 @@ setreadonly(mt, true)
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Rayfield:LoadConfiguration()
-
---LoadChoose_RecordFile = Choose_TableMarco[1]
 
 if Auto_Start_L == true and game.PlaceId ~= 8304191830 then
    StartGame()
