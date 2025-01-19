@@ -309,6 +309,9 @@ mt.__namecall = function(self, ...)
             --print("Arguments Sent:")
 
             Arguments = args
+            print(self.Name)
+            print(Arguments[1])
+            print(Arguments[2])
 
             if self.Name == "spawn_unit" then
                TABLE_RECORD.Type_Event = self.Name
