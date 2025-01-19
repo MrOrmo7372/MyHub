@@ -21,9 +21,9 @@ local Unit_Table = {
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
 local Window = Rayfield:CreateWindow({
-   Name = "MrHub AA V0.0036 Beta",
+   Name = "MrHub AA V0.0038 Beta",
    Icon = 0, -- Icon in Topbar. Can use Lucide Icons (string) or Roblox Image (number). 0 to use no icon (default).
-   LoadingTitle = "Waiting AA Script (MrHub V0.0036)",
+   LoadingTitle = "Waiting AA Script (MrHub V0.0038)",
    LoadingSubtitle = "by MrHub",
    Theme = "Default", -- Check https://docs.sirius.menu/rayfield/configuration/themes
 
@@ -171,6 +171,11 @@ local DangerInfo_AutoFarmGems = FarmGems:CreateParagraph({
 })
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------MARCO ZONE
+Cooldown = 4
+
+local function isNumeric(text)
+    return string.match(text, "^%d+$") ~= nil
+end
 
 local MarcoList = MarcoZone:CreateDropdown({
    Name = "Marco List",
@@ -187,12 +192,39 @@ local MarcoList = MarcoZone:CreateDropdown({
 local Cooldown_PlaceUnit = MarcoZone:CreateInput({
    Name = "Cooldown",
    CurrentValue = "",
-   PlaceholderText = "Cooldown place unit",
+   PlaceholderText = "Cooldown",
    RemoveTextAfterFocusLost = false,
    Flag = "Cooldown_Unit",
    Callback = function(Text)
    -- The function that takes place when the input is changed
    -- The variable (Text) is a string for the value in the text box
+         local CheckNumber = isNumeric(Text)
+         if CheckNumber == true then
+            Cooldown = tonumber(Text)
+         else
+            Cooldown = 4
+         end
+   end,
+})
+
+local CreateMarco = MarcoZone:CreateInput({
+   Name = "Create Marco",
+   CurrentValue = "",
+   PlaceholderText = "Name Marco",
+   RemoveTextAfterFocusLost = false,
+   Flag = "Create_Marco",
+   Callback = function(Text)
+   -- The function that takes place when the input is changed
+   -- The variable (Text) is a string for the value in the text box
+      local function saveMacro(fileName, data)
+         local jsonData = HttpService:JSONEncode(data)
+         writefile(Fullpath .. "/" .. fileName, jsonData)
+         print("Macro saved:", fileName)
+      end
+
+      if Text ~= "" then
+         saveMarco(Text, {"Units:[]"})
+      end
    end,
 })
 
