@@ -275,6 +275,29 @@ local CreateMarco = MarcoZone:CreateInput({
    end
 })
 
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------HOOK ZONE
+
+local oldInvokeServer -- Lưu lại hàm gốc của InvokeServer
+local macroSteps = {} -- Bảng để lưu dữ liệu sự kiện
+
+-- Hook hàm InvokeServer
+oldInvokeServer = hookmetamethod(game, "__namecall", function(self, ...)
+    -- Kiểm tra xem có phải gọi hàm `InvokeServer` trên `spawn_unit` không
+    if tostring(self) == "spawn_unit" and getnamecallmethod() == "InvokeServer" then
+        local args = {...} -- Lấy các tham số truyền vào
+        print("Intercepted spawn_unit:", unpack(args))
+
+        -- Ghi lại các tham số vào bảng macroSteps
+        print(self.Name)
+        print(args[1])
+        print(args[2])
+    end
+
+    -- Gọi hàm gốc
+    return oldInvokeServer(self, ...)
+end)
+
+
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Rayfield:LoadConfiguration()
