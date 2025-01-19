@@ -358,6 +358,7 @@ ResultsUI:GetPropertyChangedSignal("Enabled"):Connect(function()
 end)
 
 if Record_Marco_BOOLEAN == true and Choose_MarcoOrigin ~= nil and game.PlaceId ~= 8304191830 then
+      print("Check Call")
       CHECK_EVENT_SERVER()
 end
 
