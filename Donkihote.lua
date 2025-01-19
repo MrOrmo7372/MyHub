@@ -209,8 +209,6 @@ local MarcoList = MarcoZone:CreateDropdown({
    end,
 })
 
-local Choose_MarcoOrigin = Choose_TableMarco[1]
-
 local RecordMarco = MarcoZone:CreateToggle({
    Name = "Record Marco",
    CurrentValue = false,
