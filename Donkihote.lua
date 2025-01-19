@@ -6,7 +6,7 @@ local Spawn_Unit = game:GetService("ReplicatedStorage"):WaitForChild("endpoints"
 
 local MoneyPlayerText = game.Players.LocalPlayer:WaitForChild("PlayerGui"):WaitForChild("spawn_units").Lives.Frame.Resource.Money.text
 local ResultsUI = game.Players.LocalPlayer:WaitForChild("PlayerGui"):WaitForChild("ResultsUI")
-local FileName_User = "File_" .. game.Players.LocalPlayer.Name .. "_User"
+local FileName_User = "MrHubConfig" .. game.Players.LocalPlayer.Name .. "_User"
 
 --------------------------------------------------------------------------------Info AA
 --game.Players.LocalPlayer:WaitForChild("PlayerGui").spawn_units.lives.Frame.Units /unit = [number].Main.View.WorldModel.[name_unit]
@@ -21,9 +21,9 @@ local Unit_Table = {
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
 local Window = Rayfield:CreateWindow({
-   Name = "MrHub AA V0.0034 Alpha",
+   Name = "MrHub AA V0.0036 Beta",
    Icon = 0, -- Icon in Topbar. Can use Lucide Icons (string) or Roblox Image (number). 0 to use no icon (default).
-   LoadingTitle = "Waiting AA Script (MrHub V0.0034)",
+   LoadingTitle = "Waiting AA Script (MrHub V0.0036)",
    LoadingSubtitle = "by MrHub",
    Theme = "Default", -- Check https://docs.sirius.menu/rayfield/configuration/themes
 
@@ -56,16 +56,20 @@ local Window = Rayfield:CreateWindow({
 
 local AutoFarm = Window:CreateTab("Auto Farm", "apple")
 local StillCheck = Window:CreateTab("Still Check", "badge-alert")
-local FarmGems = Window:CreateTab("FarmGems(Beta)", "book-dashed")
+local FarmGems = Window:CreateTab("FarmGems", "book-dashed")
+local MarcoZone = Window:CreateTab("Marco Zone (Alpha)", "clapperboard")
+
+local MarcoFolder = "MrHub_Marco"
+
+local Fullpath = FileName_User .. "/" .. MarcoFolder
+if not isfolder(Fullpath) then
+    makefolder(Fullpath)
+    print("Created folder:", Fullpath)
+end
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ALL VALUE LOADING WORKING
 local Auto_Start_L = false
 local Auto_Retry_L = false
-local Sakura_FarmGems = false
-
-local Allow_Place = true
-
-local Sakura_Unit = 1
 
 function StartGame()
    local auto_start = Vote_Start:InvokeServer()
@@ -74,6 +78,43 @@ end
 function RetryGame()
    local auto_retry = Set_Game_Finish_Vote:InvokeServer("replay")
 end
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------AUTO FARM ZONE
+
+local AutoStart = AutoFarm:CreateToggle({
+   Name = "Auto Start",
+   CurrentValue = false,
+   Flag = "Auto_Start",
+   Callback = function(Value)
+         Auto_Start_L = Value
+   end,
+})
+
+local AutoRetry = AutoFarm:CreateToggle({
+   Name = "Auto Retry",
+   CurrentValue = false,
+   Flag = "Auto_Retry",
+   Callback = function(Value)
+         Auto_Retry_L = Value
+   end,
+})
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------STILL CHECK ZONE
+
+local PrintMoneyPlayer = StillCheck:CreateButton({
+   Name = "Print Money Player",
+   Callback = function()
+   -- The function that takes place when the button is pressed
+         if game.PlaceId ~= 8304191830 then
+            print(MoneyPlayerText.Text)
+         end
+   end,
+})
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------FARM GEMS ZONE
+local Sakura_FarmGems = false
+local Allow_Place = true
+local Sakura_Unit = 1
 
 local Sakura_Table = {
    [1] = {"{27b582bb-e814-4847-a519-ed1d9062c748}", CFrame.new(-2967.56396, 33.7417984, -715.313049, 1, 0, 0, 0, 1, 0, 0, 0, 1)},
@@ -110,67 +151,11 @@ function Sakura_Farm()
    end
 end
 
-----------------------------------------------------------------------------------------------------------------------------------------------------------------------AUTO FARM ZONE
-
-local AutoStart = AutoFarm:CreateToggle({
-   Name = "Auto Start",
-   CurrentValue = false,
-   Flag = "Auto_Start",
-   Callback = function(Value)
-         Auto_Start_L = Value
-   end,
-})
-
-local AutoRetry = AutoFarm:CreateToggle({
-   Name = "Auto Retry",
-   CurrentValue = false,
-   Flag = "Auto_Retry",
-   Callback = function(Value)
-         Auto_Retry_L = Value
-   end,
-})
-
-----------------------------------------------------------------------------------------------------------------------------------------------------------------------STILL CHECK ZONE
-
-local PrintMoneyPlayer = StillCheck:CreateButton({
-   Name = "Print Money Player",
-   Callback = function()
-   -- The function that takes place when the button is pressed
-         if game.PlaceId ~= 8304191830 then
-            print(MoneyPlayerText.Text)
-         end
-   end,
-})
-
-----------------------------------------------------------------------------------------------------------------------------------------------------------------------FARM GEMS ZONE
-
 local ToggleFarmGems = FarmGems:CreateToggle({
    Name = "Auto Farm Gems",
    CurrentValue = false,
-   Flag = "Auto_Farm_Gems", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Flag = "Auto_Farm_Gems",
    Callback = function(Value)
-   -- The function that takes place when the toggle is pressed
-   -- The variable (Value) is a boolean on whether the toggle is true or false
-         --if Value == true and game.PlaceId ~= 8304191830 then
-            --Num_Sakura = 1
-            --local Sakura_Table = {
-               --[1] = {"{27b582bb-e814-4847-a519-ed1d9062c748}", CFrame.new(-2967.56396, 33.7417984, -715.313049, 1, 0, 0, 0, 1, 0, 0, 0, 1)},
-               --[2] = {"{27b582bb-e814-4847-a519-ed1d9062c748}", CFrame.new(-2967.56396, 33.7417984, -714.313049, 1, 0, 0, 0, 1, 0, 0, 0, 1)},
-               --[3] = {"{27b582bb-e814-4847-a519-ed1d9062c748}", CFrame.new(-2967.56396, 33.7417984, -713.313049, 1, 0, 0, 0, 1, 0, 0, 0, 1)}
-            --}
-            --local function onMoneyChanged()
-               --local money = tonumber(MoneyPlayerText.Text)
-               --if money >= 1800 and Num_Sakura <= 3 then
-                  --for i=1, 3 do
-                     --Spawn_Unit:InvokeServer(Sakura_Table[i][1], Sakura_Table[i][2])
-                     --Num_Sakura += 1
-                     --task.wait(1)
-                  --end
-               --end
-            --end
-
-            --MoneyPlayerText:GetPropertyChangedSignal("Text"):Connect(onMoneyChanged)
-         --end
          Sakura_FarmGems = Value
    end,
 })
@@ -183,6 +168,32 @@ local Info_AutoFarmGems = FarmGems:CreateParagraph({
 local DangerInfo_AutoFarmGems = FarmGems:CreateParagraph({
       Title = "ONLY TURN ON AUTOSTART, AUTORETRY AND AUTOFARMGEMS", 
       Content = ""
+})
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------MARCO ZONE
+
+local MarcoList = MarcoZone:CreateDropdown({
+   Name = "Marco List",
+   Options = {"Option 1","Option 2"},
+   CurrentOption = {"Option 1"},
+   MultipleOptions = false,
+   Flag = "Marco_List", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Options)
+   -- The function that takes place when the selected option is changed
+   -- The variable (Options) is a table of strings for the current selected options
+   end,
+})
+
+local Cooldown_PlaceUnit = MarcoZone:CreateInput({
+   Name = "Cooldown",
+   CurrentValue = "",
+   PlaceholderText = "Cooldown place unit",
+   RemoveTextAfterFocusLost = false,
+   Flag = "Cooldown_Unit",
+   Callback = function(Text)
+   -- The function that takes place when the input is changed
+   -- The variable (Text) is a string for the value in the text box
+   end,
 })
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
