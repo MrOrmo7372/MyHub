@@ -22,9 +22,9 @@ local Unit_Table = {
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
 local Window = Rayfield:CreateWindow({
-   Name = "MrHub AA V0.0048 Beta",
+   Name = "MrHub AA V0.0049 Beta",
    Icon = 0, -- Icon in Topbar. Can use Lucide Icons (string) or Roblox Image (number). 0 to use no icon (default).
-   LoadingTitle = "Waiting AA Script (MrHub V0.0048)",
+   LoadingTitle = "Waiting AA Script (MrHub V0.0049)",
    LoadingSubtitle = "by MrHub",
    Theme = "Default", -- Check https://docs.sirius.menu/rayfield/configuration/themes
 
@@ -282,12 +282,6 @@ local TargetEventNames = {
     "spawn_unit",
 }
 
-local TABLE_EVENT_PLACE = {
-   Event_Type = nil,
-   Unit_Type = nil,
-   CFramePosition = nil
-}
-
 local MARCO_TABLE = {}
 
 local STEP = 1
@@ -307,26 +301,21 @@ end
 mt.__namecall = function(self, ...)
     local method = getnamecallmethod() -- Lấy tên phương thức (FireServer, InvokeServer, etc.)
     local args = {...} -- Lấy tất cả dữ liệu gửi vào
-
+      
     -- Nếu là RemoteEvent hoặc RemoteFunction và có trong danh sách
     if isTargetEvent(self) and (method == "FireServer" or method == "InvokeServer") then
 
-        -- Nếu cần gán tất cả dữ liệu vào biến, bạn có thể làm như sau:
-        local arguments = args -- Gán toàn bộ dữ liệu vào bảng
-        -- Sử dụng arguments[i] để truy cập dữ liệu cụ thể
-        if Record_Marco_BOOLEAN == true then
-           TABLE_EVENT_PLACE.Event_Type = self.Name
-           TABLE_EVENT_PLACE.Unit_Type = arguments[1]
-           TABLE_EVENT_PLACE.CFramePosition = arguments[2]
-        then
+        if Record_Marco_BOOLEAN then
+           local TABLE_EVENT_PLACE = {
+              Event_Type = self.Name,
+              Unit_Type = args[1],
+              CFramePosition = args[2]
+           }
 
-        table.insert(MARCO_TABLE, STEP, TABLE_EVENT_PLACE)
-        STEP += 1
-        TABLE_EVENT_PLACE.Event_Type = nil
-        TABLE_EVENT_PLACE.Unit_Type = nil
-        TABLE_EVENT_PLACE.CFramePosition = nil
+           MARCO_TABLE[STEP] = TABLE_EVENT_PLACE
 
-        print(MARCO_TABLE)
+           print(MARCO_TABLE)
+        end
     end
 
     return oldNamecall(self, ...) -- Gọi lại hàm gốc
