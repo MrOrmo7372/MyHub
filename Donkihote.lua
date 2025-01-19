@@ -176,7 +176,12 @@ Cooldown = 4
 
 local function listMacros()
     if isfolder(Fullpath) then
-        return listfiles(Fullpath)
+        local files = listfiles(Fullpath)
+        local fileNames = {}
+        for _, filePath in ipairs(files) do
+           table.insert(fileNames, filePath:match("([^/]+)$")) -- Lấy tên file
+        end
+        return fileNames
     else
         print("Folder not found!")
         return {}
