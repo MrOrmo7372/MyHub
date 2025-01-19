@@ -172,9 +172,12 @@ local DangerInfo_AutoFarmGems = FarmGems:CreateParagraph({
 })
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------MARCO ZONE
-Cooldown = 4
-Choose_TableMarco = nil
-Choose_MarcoOrigin = Choose_TableMarco[1]
+local Cooldown = 4
+local Choose_TableMarco = nil
+local Choose_MarcoOrigin = Choose_TableMarco[1]
+
+local Record_Marco_BOOLEAN = false
+local Replay_Marco_BOOLEAN = false
 
 local function listMacros()
     if isfolder(Fullpath) then
@@ -212,7 +215,7 @@ local RecordMarco = AutoFarm:CreateToggle({
    CurrentValue = false,
    Flag = "Record_Marco",
    Callback = function(Value)
-         print("Still TEST")
+         Record_Marco_BOOLEAN = Value
    end,
 })
 
@@ -221,7 +224,7 @@ local ReplayMarco = AutoFarm:CreateToggle({
    CurrentValue = false,
    Flag = "Replay_Marco",
    Callback = function(Value)
-         print("Still TEST")
+         Replay_Marco_BOOLEAN = Value
    end,
 })
 
@@ -269,7 +272,74 @@ local CreateMarco = MarcoZone:CreateInput({
    end,
 })
 
-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------CHECK EVENT
+Step_Record = 1
+
+local TABLE_RECORD = {
+   Type_Event = nil,
+   Unit_Id = nil,
+   Position = nil
+}
+
+local Online_RecordTable = {}
+
+-- Danh sách tên event cần theo dõi (bạn có thể thêm vào nếu cần)
+function CHECK_EVENT_SERVER()
+   local TargetEventNames = {
+    "spawn_unit", 
+    "upgrade_unit_ingame"
+}
+
+-- Lấy metatable của game
+   local mt = getrawmetatable(game)
+   setreadonly(mt, false) -- Cho phép chỉnh sửa metatable
+
+   local oldNamecall = mt.__namecall -- Lưu hàm gốc
+
+   -- Hàm kiểm tra xem event có trong danh sách không
+   local function isTargetEvent(remote)
+       return table.find(TargetEventNames, remote.Name) ~= nil
+   end
+
+   -- Hook hàm __namecall để ghi nhận mọi dữ liệu gửi lên
+   mt.__namecall = function(self, ...)
+       local method = getnamecallmethod() -- Lấy tên phương thức (FireServer, InvokeServer, etc.)
+       local args = {...} -- Lấy tất cả dữ liệu gửi vào
+
+       -- Nếu là RemoteEvent hoặc RemoteFunction và có trong danh sách
+       if isTargetEvent(self) and (method == "FireServer" or method == "InvokeServer") then
+           --print("Event Triggered: ", self.Name)
+           --print("Number of Arguments Sent: ", #args)
+
+           -- Nếu cần gán tất cả dữ liệu vào biến, bạn có thể làm như sau:
+           local arguments = args -- Gán toàn bộ dữ liệu vào bảng
+           -- Sử dụng arguments[i] để truy cập dữ liệu cụ thể
+
+           if #args > 1 then
+              TABLE_RECORD.Type_Event = self.Name
+              TABLE_RECORD.Unit_Id = arguments[1]
+              TABLE_RECORD.Position = arguments[2]
+           end
+
+           if #args > 1 and TABLE_RECORD.Type_Event ~= nil and TABLE_RECORD.Unit_Id ~= nil and TABLE_RECORD.Position ~= nil then
+              table.insert(Online_RecordTable, Step_Record, TABLE_RECORD)
+              Step_Record += 1
+           end
+
+           -- Duyệt qua từng argument và in ra thông tin
+           --for i, arg in ipairs(args) do
+               --print(string.format("Argument %d: %s", i, tostring(arg)))
+           --end
+       end
+
+       return oldNamecall(self, ...) -- Gọi lại hàm gốc
+   end
+
+   -- Bật lại chế độ chỉ đọc sau khi chỉnh sửa xong
+   setreadonly(mt, true)
+end
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Rayfield:LoadConfiguration()
 
@@ -286,5 +356,9 @@ end)
 MoneyPlayerText:GetPropertyChangedSignal("Text"):Connect(function()
    if Sakura_FarmGems == true and Allow_Place == true and Sakura_Unit < 4 and game.PlaceId ~= 8304191830 then
       Sakura_Farm()
+   end
+
+   if Record_Marco_BOOLEAN == true and Choose_MarcoOrigin ~= nil then
+      CHECK_EVENT_SERVER()
    end
 end)
