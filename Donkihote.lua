@@ -268,7 +268,7 @@ local CreateMarco = MarcoZone:CreateInput({
 
       -- Mã hóa dữ liệu thành JSON và lưu vào file
       local jsonData = HttpService:JSONEncode(data)
-      writefile(fullPath, jsonData)
+      writefile(FullPath, jsonData)
       print("Macro saved:", fileName)
    end
 })
