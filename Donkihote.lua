@@ -22,9 +22,9 @@ local Unit_Table = {
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
 local Window = Rayfield:CreateWindow({
-   Name = "MrHub AA V0.0038 Beta",
+   Name = "MrHub AA V0.0040 Beta",
    Icon = 0, -- Icon in Topbar. Can use Lucide Icons (string) or Roblox Image (number). 0 to use no icon (default).
-   LoadingTitle = "Waiting AA Script (MrHub V0.0038)",
+   LoadingTitle = "Waiting AA Script (MrHub V0.0040)",
    LoadingSubtitle = "by MrHub",
    Theme = "Default", -- Check https://docs.sirius.menu/rayfield/configuration/themes
 
@@ -174,14 +174,23 @@ local DangerInfo_AutoFarmGems = FarmGems:CreateParagraph({
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------MARCO ZONE
 Cooldown = 4
 
+local function listMacros()
+    if isfolder(Fullpath) then
+        return listfiles(Fullpath)
+    else
+        print("Folder not found!")
+        return {}
+    end
+end
+
 local function isNumeric(text)
     return string.match(text, "^%d+$") ~= nil
 end
 
 local MarcoList = MarcoZone:CreateDropdown({
    Name = "Marco List",
-   Options = {"Option 1","Option 2"},
-   CurrentOption = {"Option 1"},
+   Options = listMacros(),
+   CurrentOption = {"nil"},
    MultipleOptions = false,
    Flag = "Marco_List", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
    Callback = function(Options)
