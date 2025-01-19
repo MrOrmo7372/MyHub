@@ -174,7 +174,6 @@ local DangerInfo_AutoFarmGems = FarmGems:CreateParagraph({
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------MARCO ZONE
 local Cooldown = 4
 local Choose_TableMarco = nil
-local Choose_MarcoOrigin = LoadChoose_RecordFile
 
 local Record_Marco_BOOLEAN = false
 local Replay_Marco_BOOLEAN = false
@@ -209,6 +208,8 @@ local MarcoList = MarcoZone:CreateDropdown({
          Choose_TableMarco = Options
    end,
 })
+
+local Choose_MarcoOrigin = Choose_TableMarco[1]
 
 local RecordMarco = MarcoZone:CreateToggle({
    Name = "Record Marco",
@@ -255,91 +256,24 @@ local CreateMarco = MarcoZone:CreateInput({
    Callback = function(Text)
    -- The function that takes place when the input is changed
    -- The variable (Text) is a string for the value in the text box
-      local function saveMarco(fileName, data)
-         if not fileName:match("%.json$") then
-            fileName = fileName .. ".json"
-         end
-            
-         local jsonData = HttpService:JSONEncode(data)
-         writefile(Fullpath .. "/" .. fileName, jsonData)
-         print("Macro saved:", fileName)
+   local function saveMacro(fileName, data)
+      -- Đảm bảo tên file có đuôi .json
+      if not fileName:match("%.json$") then
+         fileName = fileName .. ".json"
       end
 
-      if Text ~= "" then
-         saveMarco(Text, {"Units:[]"})
-         MarcoList:Refresh(listMacros())-- The new list of options available.
-         CreateMarco:Set("")
+      -- Kiểm tra file có tồn tại hay không
+      local fullPath = Fullpath .. "/" .. fileName
+      if isfile(fullPath) then
+         return -- Thoát hàm nếu file đã tồn tại
       end
-   end,
+
+      -- Mã hóa dữ liệu thành JSON và lưu vào file
+      local jsonData = HttpService:JSONEncode(data)
+      writefile(fullPath, jsonData)
+      print("Macro saved:", fileName)
+   end
 })
-
-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------CHECK EVENT
-Step_Record = 1
-
-local TABLE_RECORD = {
-   Type_Event = nil,
-   Unit_Id = nil,
-   Position = nil
-}
-
-local Online_RecordTable = {}
-
--- Biến bật/tắt theo dõi
-local trackingEnabled = Record_Marco_BOOLEAN
-
--- Danh sách các sự kiện muốn theo dõi (bạn thêm tên sự kiện tại đây)
-local trackedEvents = {
-    "spawn_unit", -- Thay bằng tên RemoteEvent
-}
-
--- Lưu hàm __namecall gốc
-local mt = getrawmetatable(game)
-local oldNamecall = mt.__namecall
-setreadonly(mt, false)
-
--- Hook hàm __namecall
-mt.__namecall = function(self, ...)
-    if trackingEnabled == true and game.PlaceId ~= 8304191830 then
-        local method = getnamecallmethod()
-        local args = {...}
-
-        -- Chỉ theo dõi các sự kiện trong danh sách
-        print("frlegjsoprejihgosjtohi")
-        if table.find(trackedEvents, self.Name) and (method == "FireServer" or method == "InvokeServer") then
-            --print("Event Triggered:", self.Name)
-            --print("Arguments Sent:")
-
-            Arguments = args
-            print(self.Name)
-            print(Arguments[1])
-            print(Arguments[2])
-
-            if self.Name == "spawn_unit" then
-               TABLE_RECORD.Type_Event = self.Name
-               TABLE_RECORD.Unit_Id = Arguments[1]
-               TABLE_RECORD.Position = Arguments[2]
-            end
-
-            if TABLE_RECORD.Type_Event ~= nil and TABLE_RECORD.Unit_Id ~= nil and TABLE_RECORD.Position ~= nil then
-               table.insert(Online_RecordTable, Step_Record, TABLE_RECORD)
-               Step_Record += 1
-               TABLE_RECORD.Type_Event = nil
-               TABLE_RECORD.Unit_Id = nil
-               TABLE_RECORD.Position = nil
-            end
-
-            print(Online_RecordTable)
-         
-            --for i, arg in ipairs(args) do
-                --print(string.format("  [%d]: %s", i, tostring(arg)))
-            --end
-        end
-    end
-
-    return oldNamecall(self, ...)
-end
-
-setreadonly(mt, true)
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
