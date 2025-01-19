@@ -243,6 +243,7 @@ local CreateMarco = MarcoZone:CreateInput({
 
       if Text ~= "" then
          saveMarco(Text, {"Units:[]"})
+         MarcoList:Refresh(listMacros()) -- The new list of options available.
       end
    end,
 })
