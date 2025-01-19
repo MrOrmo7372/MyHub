@@ -174,7 +174,7 @@ local DangerInfo_AutoFarmGems = FarmGems:CreateParagraph({
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------MARCO ZONE
 local Cooldown = 4
 local Choose_TableMarco = nil
-local Choose_MarcoOrigin = Choose_TableMarco[1]
+local Choose_MarcoOrigin = LoadChoose_RecordFile
 
 local Record_Marco_BOOLEAN = false
 local Replay_Marco_BOOLEAN = false
@@ -206,7 +206,7 @@ local MarcoList = MarcoZone:CreateDropdown({
    Callback = function(Options)
    -- The function that takes place when the selected option is changed
    -- The variable (Options) is a table of strings for the current selected options
-         Choose_Marco = Options
+         Choose_TableMarco = Options
    end,
 })
 
@@ -342,6 +342,8 @@ end
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Rayfield:LoadConfiguration()
+
+LoadChoose_RecordFile = Choose_TableMarco[1]
 
 if Auto_Start_L == true and game.PlaceId ~= 8304191830 then
    StartGame()
