@@ -22,9 +22,9 @@ local Unit_Table = {
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
 local Window = Rayfield:CreateWindow({
-   Name = "MrHub AA V0.0047 Beta",
+   Name = "MrHub AA V0.0048 Beta",
    Icon = 0, -- Icon in Topbar. Can use Lucide Icons (string) or Roblox Image (number). 0 to use no icon (default).
-   LoadingTitle = "Waiting AA Script (MrHub V0.0047)",
+   LoadingTitle = "Waiting AA Script (MrHub V0.0048)",
    LoadingSubtitle = "by MrHub",
    Theme = "Default", -- Check https://docs.sirius.menu/rayfield/configuration/themes
 
@@ -275,7 +275,68 @@ local CreateMarco = MarcoZone:CreateInput({
    end
 })
 
------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------EVENT ZONE
+
+-- Danh sách tên event cần theo dõi (bạn có thể thêm vào nếu cần)
+local TargetEventNames = {
+    "spawn_unit",
+}
+
+local TABLE_EVENT_PLACE = {
+   Event_Type = nil,
+   Unit_Type = nil,
+   CFramePosition = nil
+}
+
+local MARCO_TABLE = {}
+
+local STEP = 1
+
+-- Lấy metatable của game
+local mt = getrawmetatable(game)
+setreadonly(mt, false) -- Cho phép chỉnh sửa metatable
+
+local oldNamecall = mt.__namecall -- Lưu hàm gốc
+
+-- Hàm kiểm tra xem event có trong danh sách không
+local function isTargetEvent(remote)
+    return table.find(TargetEventNames, remote.Name) ~= nil
+end
+
+-- Hook hàm __namecall để ghi nhận mọi dữ liệu gửi lên
+mt.__namecall = function(self, ...)
+    local method = getnamecallmethod() -- Lấy tên phương thức (FireServer, InvokeServer, etc.)
+    local args = {...} -- Lấy tất cả dữ liệu gửi vào
+
+    -- Nếu là RemoteEvent hoặc RemoteFunction và có trong danh sách
+    if isTargetEvent(self) and (method == "FireServer" or method == "InvokeServer") then
+
+        -- Nếu cần gán tất cả dữ liệu vào biến, bạn có thể làm như sau:
+        local arguments = args -- Gán toàn bộ dữ liệu vào bảng
+        -- Sử dụng arguments[i] để truy cập dữ liệu cụ thể
+        if Record_Marco_BOOLEAN == true then
+           TABLE_EVENT_PLACE.Event_Type = self.Name
+           TABLE_EVENT_PLACE.Unit_Type = arguments[1]
+           TABLE_EVENT_PLACE.CFramePosition = arguments[2]
+        then
+
+        table.insert(MARCO_TABLE, STEP, TABLE_EVENT_PLACE)
+        STEP += 1
+        TABLE_EVENT_PLACE.Event_Type = nil
+        TABLE_EVENT_PLACE.Unit_Type = nil
+        TABLE_EVENT_PLACE.CFramePosition = nil
+
+        print(MARCO_TABLE)
+    end
+
+    return oldNamecall(self, ...) -- Gọi lại hàm gốc
+end
+
+-- Bật lại chế độ chỉ đọc sau khi chỉnh sửa xong
+setreadonly(mt, true)
+
+   
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Rayfield:LoadConfiguration()
 
