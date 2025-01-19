@@ -210,7 +210,7 @@ local MarcoList = MarcoZone:CreateDropdown({
    end,
 })
 
-local RecordMarco = AutoFarm:CreateToggle({
+local RecordMarco = MarcoZone:CreateToggle({
    Name = "Record Marco",
    CurrentValue = false,
    Flag = "Record_Marco",
@@ -357,7 +357,7 @@ ResultsUI:GetPropertyChangedSignal("Enabled"):Connect(function()
    end
 end)
 
-if Record_Marco_BOOLEAN == true and Choose_MarcoOrigin ~= nil and game.PlaceId ~= 8304191830 then
+if Record_Marco_BOOLEAN == true game.PlaceId ~= 8304191830 then
       print("Check Call")
       CHECK_EVENT_SERVER()
 end
