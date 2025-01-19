@@ -22,9 +22,9 @@ local Unit_Table = {
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
 local Window = Rayfield:CreateWindow({
-   Name = "MrHub AA V0.0045 Beta",
+   Name = "MrHub AA V0.0046 Beta",
    Icon = 0, -- Icon in Topbar. Can use Lucide Icons (string) or Roblox Image (number). 0 to use no icon (default).
-   LoadingTitle = "Waiting AA Script (MrHub V0.0045)",
+   LoadingTitle = "Waiting AA Script (MrHub V0.0046)",
    LoadingSubtitle = "by MrHub",
    Theme = "Default", -- Check https://docs.sirius.menu/rayfield/configuration/themes
 
@@ -267,7 +267,8 @@ local CreateMarco = MarcoZone:CreateInput({
 
       if Text ~= "" then
          saveMarco(Text, {"Units:[]"})
-         MarcoList:Refresh(listMacros()) -- The new list of options available.
+         MarcoList:Refresh(listMacros())-- The new list of options available.
+         CreateMarco:Set("")
       end
    end,
 })
@@ -283,63 +284,56 @@ local TABLE_RECORD = {
 
 local Online_RecordTable = {}
 
--- Danh sách tên event cần theo dõi (bạn có thể thêm vào nếu cần)
-function CHECK_EVENT_SERVER()
-   local TargetEventNames = {
-    "spawn_unit", 
-    "upgrade_unit_ingame"
+-- Biến bật/tắt theo dõi
+local trackingEnabled = Record_Marco_BOOLEAN
+
+-- Danh sách các sự kiện muốn theo dõi (bạn thêm tên sự kiện tại đây)
+local trackedEvents = {
+    "spawn_unit", -- Thay bằng tên RemoteEvent
 }
 
--- Lấy metatable của game
-   local mt = getrawmetatable(game)
-   setreadonly(mt, false) -- Cho phép chỉnh sửa metatable
+-- Lưu hàm __namecall gốc
+local mt = getrawmetatable(game)
+local oldNamecall = mt.__namecall
+setreadonly(mt, false)
 
-   local oldNamecall = mt.__namecall -- Lưu hàm gốc
+-- Hook hàm __namecall
+mt.__namecall = function(self, ...)
+    if trackingEnabled then
+        local method = getnamecallmethod()
+        local args = {...}
 
-   -- Hàm kiểm tra xem event có trong danh sách không
-   local function isTargetEvent(remote)
-       return table.find(TargetEventNames, remote.Name) ~= nil
-   end
+        -- Chỉ theo dõi các sự kiện trong danh sách
+        if table.find(trackedEvents, self.Name) and (method == "FireServer" or method == "InvokeServer") then
+            --print("Event Triggered:", self.Name)
+            --print("Arguments Sent:")
 
-   -- Hook hàm __namecall để ghi nhận mọi dữ liệu gửi lên
-   mt.__namecall = function(self, ...)
-       local method = getnamecallmethod() -- Lấy tên phương thức (FireServer, InvokeServer, etc.)
-       local args = {...} -- Lấy tất cả dữ liệu gửi vào
+            Arguments = args
 
-       -- Nếu là RemoteEvent hoặc RemoteFunction và có trong danh sách
-       if isTargetEvent(self) and (method == "FireServer" or method == "InvokeServer") then
-           --print("Event Triggered: ", self.Name)
-           --print("Number of Arguments Sent: ", #args)
+            if self.Name == "spawn_unit" then
+               TABLE_RECORD.Type_Event = self.Name
+               TABLE_RECORD.Unit_Id = Arguments[1]
+               TABLE_RECORD.Position = Arguments[2]
+            end
 
-           -- Nếu cần gán tất cả dữ liệu vào biến, bạn có thể làm như sau:
-           local arguments = args -- Gán toàn bộ dữ liệu vào bảng
-           -- Sử dụng arguments[i] để truy cập dữ liệu cụ thể
+            if TABLE_RECORD.Type_Event ~= nil and TABLE_RECORD.Unit_Id ~= nil and TABLE_RECORD.Position ~= nil then
+               table.insert(Online_RecordTable, Step_Record, TABLE_RECORD)
+               Step_Record += 1
+               TABLE_RECORD.Type_Event = nil
+               TABLE_RECORD.Unit_Id = nil
+               TABLE_RECORD.Position = nil
+            end
+         
+            --for i, arg in ipairs(args) do
+                --print(string.format("  [%d]: %s", i, tostring(arg)))
+            --end
+        end
+    end
 
-           if #args > 1 and self.Name == "spawn_unit" then
-              TABLE_RECORD.Type_Event = self.Name
-              TABLE_RECORD.Unit_Id = arguments[1]
-              TABLE_RECORD.Position = arguments[2]
-           end
-
-           if #args > 1 and TABLE_RECORD.Type_Event ~= nil and TABLE_RECORD.Unit_Id ~= nil and TABLE_RECORD.Position ~= nil then
-              table.insert(Online_RecordTable, Step_Record, TABLE_RECORD)
-              Step_Record += 1
-           end
-
-           print(Online_RecordTable)
-
-           -- Duyệt qua từng argument và in ra thông tin
-           --for i, arg in ipairs(args) do
-               --print(string.format("Argument %d: %s", i, tostring(arg)))
-           --end
-       end
-
-       return oldNamecall(self, ...) -- Gọi lại hàm gốc
-   end
-
-   -- Bật lại chế độ chỉ đọc sau khi chỉnh sửa xong
-   setreadonly(mt, true)
+    return oldNamecall(self, ...)
 end
+
+setreadonly(mt, true)
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -356,11 +350,6 @@ ResultsUI:GetPropertyChangedSignal("Enabled"):Connect(function()
       RetryGame()
    end
 end)
-
-if Record_Marco_BOOLEAN == true game.PlaceId ~= 8304191830 then
-      print("Check Call")
-      CHECK_EVENT_SERVER()
-end
 
 MoneyPlayerText:GetPropertyChangedSignal("Text"):Connect(function()
    if Sakura_FarmGems == true and Allow_Place == true and Sakura_Unit < 4 and game.PlaceId ~= 8304191830 then
