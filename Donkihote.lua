@@ -173,6 +173,8 @@ local DangerInfo_AutoFarmGems = FarmGems:CreateParagraph({
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------MARCO ZONE
 Cooldown = 4
+Choose_TableMarco = nil
+Choose_MarcoOrigin = Choose_TableMarco[1]
 
 local function listMacros()
     if isfolder(Fullpath) then
@@ -201,6 +203,25 @@ local MarcoList = MarcoZone:CreateDropdown({
    Callback = function(Options)
    -- The function that takes place when the selected option is changed
    -- The variable (Options) is a table of strings for the current selected options
+         Choose_Marco = Options
+   end,
+})
+
+local RecordMarco = AutoFarm:CreateToggle({
+   Name = "Record Marco",
+   CurrentValue = false,
+   Flag = "Record_Marco",
+   Callback = function(Value)
+         print("Still TEST")
+   end,
+})
+
+local ReplayMarco = AutoFarm:CreateToggle({
+   Name = "Replay Marco",
+   CurrentValue = false,
+   Flag = "Replay_Marco",
+   Callback = function(Value)
+         print("Still TEST")
    end,
 })
 
