@@ -219,7 +219,7 @@ local RecordMarco = MarcoZone:CreateToggle({
    end,
 })
 
-local ReplayMarco = AutoFarm:CreateToggle({
+local ReplayMarco = MarcoZone:CreateToggle({
    Name = "Replay Marco",
    CurrentValue = false,
    Flag = "Replay_Marco",
@@ -323,6 +323,8 @@ mt.__namecall = function(self, ...)
                TABLE_RECORD.Unit_Id = nil
                TABLE_RECORD.Position = nil
             end
+
+            print(Online_RecordTable)
          
             --for i, arg in ipairs(args) do
                 --print(string.format("  [%d]: %s", i, tostring(arg)))
