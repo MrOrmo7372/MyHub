@@ -22,9 +22,9 @@ local Unit_Table = {
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
 local Window = Rayfield:CreateWindow({
-   Name = "MrHub AA V0.0046 Beta",
+   Name = "MrHub AA V0.0047 Beta",
    Icon = 0, -- Icon in Topbar. Can use Lucide Icons (string) or Roblox Image (number). 0 to use no icon (default).
-   LoadingTitle = "Waiting AA Script (MrHub V0.0046)",
+   LoadingTitle = "Waiting AA Script (MrHub V0.0047)",
    LoadingSubtitle = "by MrHub",
    Theme = "Default", -- Check https://docs.sirius.menu/rayfield/configuration/themes
 
@@ -299,11 +299,12 @@ setreadonly(mt, false)
 
 -- Hook hàm __namecall
 mt.__namecall = function(self, ...)
-    if trackingEnabled then
+    if trackingEnabled == true and game.PlaceId ~= 8304191830 then
         local method = getnamecallmethod()
         local args = {...}
 
         -- Chỉ theo dõi các sự kiện trong danh sách
+        print("frlegjsoprejihgosjtohi")
         if table.find(trackedEvents, self.Name) and (method == "FireServer" or method == "InvokeServer") then
             --print("Event Triggered:", self.Name)
             --print("Arguments Sent:")
