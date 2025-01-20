@@ -1,5 +1,6 @@
 print("THIS IS THE START OF THE SCRIPT")
 local HttpService = game:GetService("HttpService")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local Vote_Start = game:GetService("ReplicatedStorage"):WaitForChild("endpoints"):WaitForChild("client_to_server"):WaitForChild("vote_start")
 local Set_Game_Finish_Vote = game:GetService("ReplicatedStorage"):WaitForChild("endpoints"):WaitForChild("client_to_server"):WaitForChild("set_game_finished_vote")
@@ -89,8 +90,6 @@ end
    --print("Still Test")
 --end
 
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
-
 -- Danh sách các sự kiện cần theo dõi
 local TrackedEvents = {
     "spawn_unit", -- Thêm các sự kiện khác
@@ -105,7 +104,7 @@ local IsMonitoring = true -- Mặc định tắt theo dõi
 
 -- Hàm theo dõi sự kiện
 local function monitorEvent(eventName)
-    local remoteEvent = ReplicatedStorage:FindFirstChild(eventName)
+    local remoteEvent = ReplicatedStorage:WaitForChild("endpoints"):WaitForChild("client_to_server"):WaitForChild(eventName)
     if not remoteEvent then
         warn("Event not found: " .. eventName)
         return
@@ -125,6 +124,8 @@ local function monitorEvent(eventName)
                     Data = args,
                     Timestamp = os.time()
                 })
+
+               print(EventDataLog)
             end
 
             -- Gọi hàm gốc
@@ -144,6 +145,8 @@ local function monitorEvent(eventName)
                     Data = args,
                     Timestamp = os.time()
                 })
+
+               print(EventDataLog)
             end
 
             -- Gọi hàm gốc
@@ -163,27 +166,6 @@ local function saveLog()
     writefile("EventLog.json", jsonData)
     print("Event log saved to file.")
 end
-
--- Bật hoặc tắt giám sát
-local function toggleMonitoring(state)
-    IsMonitoring = state
-    if IsMonitoring then
-        print("Event monitoring is now ON.")
-    else
-        print("Event monitoring is now OFF.")
-    end
-end
-
--- Bật/tắt giám sát qua lệnh
-game:GetService("UserInputService").InputBegan:Connect(function(input, gameProcessed)
-    if gameProcessed then return end
-    if input.KeyCode == Enum.KeyCode.F5 then
-        toggleMonitoring(not IsMonitoring)
-    end
-end)
-
--- Lưu log khi thoát game
-game:BindToClose(saveLog)
 
 print("Press F5 to toggle event monitoring.")
 
