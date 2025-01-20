@@ -90,82 +90,60 @@ end
    --print("Still Test")
 --end
 
--- Danh sách các sự kiện cần theo dõi
-local TrackedEvents = {
-    "spawn_unit", -- Thêm các sự kiện khác
-    "vote_start"
+-- Danh sách tên event cần theo dõi (bạn có thể thêm vào nếu cần)
+local TargetEventNames = {
+    "spawn_unit",
 }
 
--- Bảng lưu dữ liệu sự kiện
-local EventDataLog = {}
+local TABLE_EVENT_PLACE = {
+   Event_Type = nil,
+   Unit_Type = nil,
+   CFramePosition = nil
+}
 
--- Biến trạng thái để bật/tắt giám sát
-local IsMonitoring = true -- Mặc định tắt theo dõi
+local MARCO_TABLE = {}
 
--- Hàm theo dõi sự kiện
-local function monitorEvent(eventName)
-    local remoteEvent = ReplicatedStorage:FindFirstChild(eventName)
-    if not remoteEvent then
-        warn("Event not found: " .. eventName)
-        return
-    end
+local STEP = 1
+local Record_Marco_BOOLEAN = true -- Đặt giá trị mặc định cho chế độ ghi macro
 
-    if remoteEvent:IsA("RemoteEvent") then
-        -- Theo dõi RemoteEvent
-        hookfunc(remoteEvent.FireServer, function(self, ...)
-            if IsMonitoring then -- Chỉ chạy nếu đang bật theo dõi
-                local args = {...}
-                print("Tracked Event Fired: " .. eventName)
-                print("Data Sent: " .. HttpService:JSONEncode(args))
+-- Hàm kiểm tra xem event có trong danh sách không
+local function isTargetEvent(remote)
+    return table.find(TargetEventNames, remote.Name) ~= nil
+end
 
-                -- Lưu vào log
-                table.insert(EventDataLog, {
-                    EventName = eventName,
-                    Data = args,
-                    Timestamp = os.time()
-                })
+-- Hook từng RemoteEvent hoặc RemoteFunction trong danh sách
+for _, remoteName in ipairs(TargetEventNames) do
+    local remote = game:GetService("ReplicatedStorage"):WaitForChild("endpoints"):WaitForChild("client_to_server"):WaitForChild(remoteName)
 
-                print(EventDataLog)
+    if remote and (remote:IsA("RemoteEvent") or remote:IsA("RemoteFunction")) then
+        hookfunc(remote.FireServer, function(self, ...)
+            local args = {...} -- Lấy tất cả dữ liệu truyền vào
+
+            -- Kiểm tra nếu đang ghi macro
+            if Record_Marco_BOOLEAN then
+                TABLE_EVENT_PLACE.Event_Type = self.Name
+                TABLE_EVENT_PLACE.Unit_Type = args[1]
+                TABLE_EVENT_PLACE.CFramePosition = args[2]
+
+                table.insert(MARCO_TABLE, STEP, TABLE_EVENT_PLACE)
+                STEP += 1
+
+                -- Reset dữ liệu
+                TABLE_EVENT_PLACE = {
+                    Event_Type = nil,
+                    Unit_Type = nil,
+                    CFramePosition = nil
+                }
+
+                print("Macro ghi nhận:", MARCO_TABLE)
             end
 
             -- Gọi hàm gốc
             return self.FireServer(self, ...)
         end)
-    elseif remoteEvent:IsA("RemoteFunction") then
-        -- Theo dõi RemoteFunction
-        hookfunc(remoteEvent.InvokeServer, function(self, ...)
-            if IsMonitoring then -- Chỉ chạy nếu đang bật theo dõi
-                local args = {...}
-                print("Tracked Function Invoked: " .. eventName)
-                print("Data Sent: " .. HttpService:JSONEncode(args))
-
-                -- Lưu vào log
-                table.insert(EventDataLog, {
-                    EventName = eventName,
-                    Data = args,
-                    Timestamp = os.time()
-                })
-
-                print(EventDataLog)
-            end
-
-            -- Gọi hàm gốc
-            return self.InvokeServer(self, ...)
-        end)
     end
 end
 
--- Thêm giám sát cho các sự kiện chỉ định
-for _, eventName in ipairs(TrackedEvents) do
-    monitorEvent(eventName)
-end
-
--- Lưu log vào file JSON (nếu executor hỗ trợ)
-local function saveLog()
-    local jsonData = HttpService:JSONEncode(EventDataLog)
-    writefile("EventLog.json", jsonData)
-    print("Event log saved to file.")
-end
 
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------AUTO FARM ZONE
