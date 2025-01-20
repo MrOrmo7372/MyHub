@@ -89,6 +89,104 @@ end
    --print("Still Test")
 --end
 
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+-- Danh sách các sự kiện cần theo dõi
+local TrackedEvents = {
+    "spawn_unit", -- Thêm các sự kiện khác
+    "vote_start"
+}
+
+-- Bảng lưu dữ liệu sự kiện
+local EventDataLog = {}
+
+-- Biến trạng thái để bật/tắt giám sát
+local IsMonitoring = true -- Mặc định tắt theo dõi
+
+-- Hàm theo dõi sự kiện
+local function monitorEvent(eventName)
+    local remoteEvent = ReplicatedStorage:FindFirstChild(eventName)
+    if not remoteEvent then
+        warn("Event not found: " .. eventName)
+        return
+    end
+
+    if remoteEvent:IsA("RemoteEvent") then
+        -- Theo dõi RemoteEvent
+        hookfunction(remoteEvent.FireServer, function(self, ...)
+            if IsMonitoring then -- Chỉ chạy nếu đang bật theo dõi
+                local args = {...}
+                print("Tracked Event Fired: " .. eventName)
+                print("Data Sent: " .. HttpService:JSONEncode(args))
+
+                -- Lưu vào log
+                table.insert(EventDataLog, {
+                    EventName = eventName,
+                    Data = args,
+                    Timestamp = os.time()
+                })
+            end
+
+            -- Gọi hàm gốc
+            return self.FireServer(self, ...)
+        end)
+    elseif remoteEvent:IsA("RemoteFunction") then
+        -- Theo dõi RemoteFunction
+        hookfunction(remoteEvent.InvokeServer, function(self, ...)
+            if IsMonitoring then -- Chỉ chạy nếu đang bật theo dõi
+                local args = {...}
+                print("Tracked Function Invoked: " .. eventName)
+                print("Data Sent: " .. HttpService:JSONEncode(args))
+
+                -- Lưu vào log
+                table.insert(EventDataLog, {
+                    EventName = eventName,
+                    Data = args,
+                    Timestamp = os.time()
+                })
+            end
+
+            -- Gọi hàm gốc
+            return self.InvokeServer(self, ...)
+        end)
+    end
+end
+
+-- Thêm giám sát cho các sự kiện chỉ định
+for _, eventName in ipairs(TrackedEvents) do
+    monitorEvent(eventName)
+end
+
+-- Lưu log vào file JSON (nếu executor hỗ trợ)
+local function saveLog()
+    local jsonData = HttpService:JSONEncode(EventDataLog)
+    writefile("EventLog.json", jsonData)
+    print("Event log saved to file.")
+end
+
+-- Bật hoặc tắt giám sát
+local function toggleMonitoring(state)
+    IsMonitoring = state
+    if IsMonitoring then
+        print("Event monitoring is now ON.")
+    else
+        print("Event monitoring is now OFF.")
+    end
+end
+
+-- Bật/tắt giám sát qua lệnh
+game:GetService("UserInputService").InputBegan:Connect(function(input, gameProcessed)
+    if gameProcessed then return end
+    if input.KeyCode == Enum.KeyCode.F5 then
+        toggleMonitoring(not IsMonitoring)
+    end
+end)
+
+-- Lưu log khi thoát game
+game:BindToClose(saveLog)
+
+print("Press F5 to toggle event monitoring.")
+
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------AUTO FARM ZONE
 
 local AutoStart = AutoFarm:CreateToggle({
