@@ -125,10 +125,12 @@ for _, remoteName in ipairs(TargetEventNames) do
 
     if remote and (remote:IsA("RemoteEvent") or remote:IsA("RemoteFunction")) then
         hookfunc(remote.InvokeServer, function(self, ...)
+            print("MOTHERFUCKER")
             local args = {...} -- Lấy tất cả dữ liệu truyền vào
 
             -- Kiểm tra nếu đang ghi macro
-            if Record_Marco_BOOLEAN then
+            if Record_Marco_BOOLEAN == true then
+                print("ENDDDDDD")
                 TABLE_EVENT_PLACE.Event_Type = self.Name
                 TABLE_EVENT_PLACE.Unit_Type = args[1]
                 TABLE_EVENT_PLACE.CFramePosition = args[2]
