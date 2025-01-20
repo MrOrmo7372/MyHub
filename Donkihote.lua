@@ -97,7 +97,7 @@ local TABLE_EVENT_PLACE = {
 local MARCO_TABLE = {}
 
 local STEP = 1
-local Record_Marco_BOOLEAN = true -- Đặt giá trị mặc định cho chế độ ghi macro
+local Record_Marco_BOOLEAN = false -- Đặt giá trị mặc định cho chế độ ghi macro
 
 
 
@@ -112,51 +112,43 @@ local RecordMarco_Button = MarcoZone:CreateToggle({
 })
 
 
+local mt = getrawmetatable(game)
+local oldNamecall = mt.__namecall
+setreadonly(mt, false)
 
+mt.__namecall = function(self, ...)
+    local method = getnamecallmethod()
 
--- Hàm kiểm tra xem event có trong danh sách không
-local function isTargetEvent(remote)
-    return table.find(TargetEventNames, remote.Name) ~= nil
-end
+    if (method == "InvokeServer" or method == "FireServer") and Record_Marco_BOOLEAN == true then
+        -- Kiểm tra nếu sự kiện nằm trong danh sách theo dõi
+        if table.find(TargetEventNames, self.Name) then
+            print("Intercepted event:", self.Name)
+            local args = {...}
 
--- Hook từng RemoteEvent hoặc RemoteFunction trong danh sách
-for _, remoteName in ipairs(TargetEventNames) do
-    local remote = game:GetService("ReplicatedStorage"):WaitForChild("endpoints"):WaitForChild("client_to_server"):WaitForChild(remoteName)
-    print(remote)
-   
-    if remote and (remote:IsA("RemoteEvent") or remote:IsA("RemoteFunction")) then
-        print("Check Remote Done")
-        hookfunc(remote.InvokeServer, function(self, ...)
-            print("MOTHERFUCKER")
-            local args = {...} -- Lấy tất cả dữ liệu truyền vào
+            -- Ghi nhận dữ liệu macro
+            TABLE_EVENT_PLACE.Event_Type = self.Name
+            TABLE_EVENT_PLACE.Unit_Type = args[1]
+            TABLE_EVENT_PLACE.CFramePosition = args[2]
 
-            -- Kiểm tra nếu đang ghi macro
-            if Record_Marco_BOOLEAN == true then
-                print("ENDDDDDD")
-                TABLE_EVENT_PLACE.Event_Type = self.Name
-                TABLE_EVENT_PLACE.Unit_Type = args[1]
-                TABLE_EVENT_PLACE.CFramePosition = args[2]
+            table.insert(MARCO_TABLE, STEP, TABLE_EVENT_PLACE)
+            STEP += 1
 
-                table.insert(MARCO_TABLE, STEP, TABLE_EVENT_PLACE)
-                STEP += 1
+            print("Macro ghi nhận:", MARCO_TABLE)
 
-                print(MARCO_TABLE)
-
-                -- Reset dữ liệu
-                TABLE_EVENT_PLACE = {
-                    Event_Type = nil,
-                    Unit_Type = nil,
-                    CFramePosition = nil
-                }
-
-                print("Macro ghi nhận:", MARCO_TABLE)
-            end
-
-            -- Gọi hàm gốc
-            return self.FireServer(self, ...)
-        end)
+            -- Reset dữ liệu
+            TABLE_EVENT_PLACE = {
+                Event_Type = nil,
+                Unit_Type = nil,
+                CFramePosition = nil
+            }
+        end
     end
+
+    -- Gọi phương thức gốc
+    return oldNamecall(self, ...)
 end
+
+setreadonly(mt, true)
 
 
 
