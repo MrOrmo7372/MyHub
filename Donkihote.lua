@@ -122,10 +122,10 @@ end
 -- Hook từng RemoteEvent hoặc RemoteFunction trong danh sách
 for _, remoteName in ipairs(TargetEventNames) do
     local remote = game:GetService("ReplicatedStorage"):WaitForChild("endpoints"):WaitForChild("client_to_server"):WaitForChild(remoteName)
-
-    print("HJGRHJGOJREOIHGJOIR")
+    print(remote)
+   
     if remote and (remote:IsA("RemoteEvent") or remote:IsA("RemoteFunction")) then
-        print("HGSHIGRHSIOG")
+        print("Check Remote Done")
         hookfunc(remote.InvokeServer, function(self, ...)
             print("MOTHERFUCKER")
             local args = {...} -- Lấy tất cả dữ liệu truyền vào
