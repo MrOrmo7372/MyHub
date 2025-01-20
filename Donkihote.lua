@@ -121,11 +121,9 @@ end
 
 -- Hook từng RemoteEvent hoặc RemoteFunction trong danh sách
 for _, remoteName in ipairs(TargetEventNames) do
-    print("HELOOOOOOOOOOOOOOOOOOOOOOOOOOOOO")
     local remote = game:GetService("ReplicatedStorage"):WaitForChild("endpoints"):WaitForChild("client_to_server"):WaitForChild(remoteName)
 
     if remote and (remote:IsA("RemoteEvent") or remote:IsA("RemoteFunction")) then
-        print("HELLLLLLLLLLLLOV2")
         hookfunc(remote.InvokeServer, function(self, ...)
             local args = {...} -- Lấy tất cả dữ liệu truyền vào
 
@@ -137,6 +135,8 @@ for _, remoteName in ipairs(TargetEventNames) do
 
                 table.insert(MARCO_TABLE, STEP, TABLE_EVENT_PLACE)
                 STEP += 1
+
+                print(MARCO_TABLE)
 
                 -- Reset dữ liệu
                 TABLE_EVENT_PLACE = {
