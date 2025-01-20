@@ -131,11 +131,8 @@ mt.__namecall = function(self, ...)
             TABLE_EVENT_PLACE.CFramePosition = args[2]
 
             table.insert(MARCO_TABLE, STEP, TABLE_EVENT_PLACE)
+            print(MARCO_TABLE[STEP])
             STEP += 1
-
-            for index, value in pairs(MARCO_TABLE) do
-               print(value)
-            end
 
             -- Reset dữ liệu
             TABLE_EVENT_PLACE = {
