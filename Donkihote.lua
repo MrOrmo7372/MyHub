@@ -104,16 +104,21 @@ local IsMonitoring = true -- Mặc định tắt theo dõi
 
 -- Hàm theo dõi sự kiện
 local function monitorEvent(eventName)
+    print{"Script Call Me")
     local remoteEvent = ReplicatedStorage:WaitForChild("endpoints"):WaitForChild("client_to_server"):WaitForChild(eventName)
     if not remoteEvent then
         warn("Event not found: " .. eventName)
         return
     end
 
+    print("start Script")
     if remoteEvent:IsA("RemoteEvent") then
         -- Theo dõi RemoteEvent
+        print("TF REMOTEV2")
         hookfunction(remoteEvent.FireServer, function(self, ...)
+            print("Call")
             if IsMonitoring then -- Chỉ chạy nếu đang bật theo dõi
+                print("Start Monitor")
                 local args = {...}
                 print("Tracked Event Fired: " .. eventName)
                 print("Data Sent: " .. HttpService:JSONEncode(args))
@@ -134,7 +139,9 @@ local function monitorEvent(eventName)
     elseif remoteEvent:IsA("RemoteFunction") then
         -- Theo dõi RemoteFunction
         hookfunction(remoteEvent.InvokeServer, function(self, ...)
+            print("Call")
             if IsMonitoring then -- Chỉ chạy nếu đang bật theo dõi
+                print("Start Monitor")
                 local args = {...}
                 print("Tracked Function Invoked: " .. eventName)
                 print("Data Sent: " .. HttpService:JSONEncode(args))
