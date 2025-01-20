@@ -82,13 +82,6 @@ function RetryGame()
 end
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------MARCO ZONE
---local EnemyModelFolder = game:GetService("ReplicatedStorage"):WaitForChild("packages"):WaitForChild("assets"):WaitForChild("pre-testing")
-   --local namek_enemy = EnemyModelFolder:WaitForChild("namek_pve")
-
---for index, enemyModel in namek_enemy:GetChildren() do
-   --if enemyModel:IsA("Model") and enemyModel.Name ~= 
-   --print("Still Test")
---end
 
 -- Danh sách tên event cần theo dõi (bạn có thể thêm vào nếu cần)
 local TargetEventNames = {
@@ -106,6 +99,21 @@ local MARCO_TABLE = {}
 local STEP = 1
 local Record_Marco_BOOLEAN = true -- Đặt giá trị mặc định cho chế độ ghi macro
 
+
+
+
+local RecordMarco_Button = MarcoZone:CreateToggle({
+   Name = "Record Marco",
+   CurrentValue = false,
+   Flag = "Record_Marco",
+   Callback = function(Value)
+         Record_Marco_BOOLEAN = Value
+   end,
+})
+
+
+
+
 -- Hàm kiểm tra xem event có trong danh sách không
 local function isTargetEvent(remote)
     return table.find(TargetEventNames, remote.Name) ~= nil
@@ -113,9 +121,11 @@ end
 
 -- Hook từng RemoteEvent hoặc RemoteFunction trong danh sách
 for _, remoteName in ipairs(TargetEventNames) do
+    print("HELOOOOOOOOOOOOOOOOOOOOOOOOOOOOO")
     local remote = game:GetService("ReplicatedStorage"):WaitForChild("endpoints"):WaitForChild("client_to_server"):WaitForChild(remoteName)
 
     if remote and (remote:IsA("RemoteEvent") or remote:IsA("RemoteFunction")) then
+        print("HELLLLLLLLLLLLOV2")
         hookfunc(remote.InvokeServer, function(self, ...)
             local args = {...} -- Lấy tất cả dữ liệu truyền vào
 
