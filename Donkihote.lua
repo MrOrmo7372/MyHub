@@ -23,9 +23,9 @@ local Unit_Table = {
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
 local Window = Rayfield:CreateWindow({
-   Name = "MrHub AA V0.0051 Beta",
+   Name = "MrHub AA V0.0052 Beta",
    Icon = 0, -- Icon in Topbar. Can use Lucide Icons (string) or Roblox Image (number). 0 to use no icon (default).
-   LoadingTitle = "Waiting AA Script (MrHub V0.0051)",
+   LoadingTitle = "Waiting AA Script (MrHub V0.0052)",
    LoadingSubtitle = "by MrHub",
    Theme = "Default", -- Check https://docs.sirius.menu/rayfield/configuration/themes
 
@@ -89,6 +89,84 @@ end
    --if enemyModel:IsA("Model") and enemyModel.Name ~= 
    --print("Still Test")
 --end
+
+-- Danh sách các sự kiện cần theo dõi
+local TrackedEvents = {
+    "spawn_unit", -- Thêm các sự kiện khác
+    "vote_start"
+}
+
+-- Bảng lưu dữ liệu sự kiện
+local EventDataLog = {}
+
+-- Biến trạng thái để bật/tắt giám sát
+local IsMonitoring = true -- Mặc định tắt theo dõi
+
+-- Hàm theo dõi sự kiện
+local function monitorEvent(eventName)
+    local remoteEvent = ReplicatedStorage:FindFirstChild(eventName)
+    if not remoteEvent then
+        warn("Event not found: " .. eventName)
+        return
+    end
+
+    if remoteEvent:IsA("RemoteEvent") then
+        -- Theo dõi RemoteEvent
+        hookfunc(remoteEvent.FireServer, function(self, ...)
+            if IsMonitoring then -- Chỉ chạy nếu đang bật theo dõi
+                local args = {...}
+                print("Tracked Event Fired: " .. eventName)
+                print("Data Sent: " .. HttpService:JSONEncode(args))
+
+                -- Lưu vào log
+                table.insert(EventDataLog, {
+                    EventName = eventName,
+                    Data = args,
+                    Timestamp = os.time()
+                })
+
+                print(EventDataLog)
+            end
+
+            -- Gọi hàm gốc
+            return self.FireServer(self, ...)
+        end)
+    elseif remoteEvent:IsA("RemoteFunction") then
+        -- Theo dõi RemoteFunction
+        hookfunc(remoteEvent.InvokeServer, function(self, ...)
+            if IsMonitoring then -- Chỉ chạy nếu đang bật theo dõi
+                local args = {...}
+                print("Tracked Function Invoked: " .. eventName)
+                print("Data Sent: " .. HttpService:JSONEncode(args))
+
+                -- Lưu vào log
+                table.insert(EventDataLog, {
+                    EventName = eventName,
+                    Data = args,
+                    Timestamp = os.time()
+                })
+
+                print(EventDataLog)
+            end
+
+            -- Gọi hàm gốc
+            return self.InvokeServer(self, ...)
+        end)
+    end
+end
+
+-- Thêm giám sát cho các sự kiện chỉ định
+for _, eventName in ipairs(TrackedEvents) do
+    monitorEvent(eventName)
+end
+
+-- Lưu log vào file JSON (nếu executor hỗ trợ)
+local function saveLog()
+    local jsonData = HttpService:JSONEncode(EventDataLog)
+    writefile("EventLog.json", jsonData)
+    print("Event log saved to file.")
+end
+
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------AUTO FARM ZONE
 
