@@ -22,9 +22,9 @@ local Unit_Table = {
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
 local Window = Rayfield:CreateWindow({
-   Name = "MrHub AA V0.0030 Beta",
+   Name = "MrHub AA V0.0051 Beta",
    Icon = 0, -- Icon in Topbar. Can use Lucide Icons (string) or Roblox Image (number). 0 to use no icon (default).
-   LoadingTitle = "Waiting AA Script (MrHub V0.0030)",
+   LoadingTitle = "Waiting AA Script (MrHub V0.0051)",
    LoadingSubtitle = "by MrHub",
    Theme = "Default", -- Check https://docs.sirius.menu/rayfield/configuration/themes
 
@@ -58,6 +58,7 @@ local Window = Rayfield:CreateWindow({
 local AutoFarm = Window:CreateTab("Auto Farm", "apple")
 local StillCheck = Window:CreateTab("Still Check", "badge-alert")
 local FarmGems = Window:CreateTab("FarmGems", "book-dashed")
+local MarcoZone = Window:CreateTab("Marco Zone", "gamepad-2")
 
 local MarcoFolder = "MrHub_Marco"
 
@@ -78,6 +79,15 @@ end
 function RetryGame()
    local auto_retry = Set_Game_Finish_Vote:InvokeServer("replay")
 end
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------MARCO ZONE
+--local EnemyModelFolder = game:GetService("ReplicatedStorage"):WaitForChild("packages"):WaitForChild("assets"):WaitForChild("pre-testing")
+   --local namek_enemy = EnemyModelFolder:WaitForChild("namek_pve")
+
+--for index, enemyModel in namek_enemy:GetChildren() do
+   --if enemyModel:IsA("Model") and enemyModel.Name ~= 
+   --print("Still Test")
+--end
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------AUTO FARM ZONE
 
