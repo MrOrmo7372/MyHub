@@ -131,7 +131,7 @@ mt.__namecall = function(self, ...)
             TABLE_EVENT_PLACE.CFramePosition = args[2]
 
             table.insert(MARCO_TABLE, STEP, TABLE_EVENT_PLACE)
-            print(MARCO_TABLE[STEP])
+            print(MARCO_TABLE[STEP].Unit_Type)
             STEP += 1
 
             -- Reset dữ liệu
