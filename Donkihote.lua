@@ -133,7 +133,9 @@ mt.__namecall = function(self, ...)
             table.insert(MARCO_TABLE, STEP, TABLE_EVENT_PLACE)
             STEP += 1
 
-            print("Macro ghi nhận:", MARCO_TABLE)
+            for index, value in pairs(MARCO_TABLE) do
+               print(value)
+            end
 
             -- Reset dữ liệu
             TABLE_EVENT_PLACE = {
