@@ -231,7 +231,7 @@ CheckPOPUP_Upgrade.Changed:Connect(function()
       print(MARCO_TABLE[STEP - 1].Event_Type)
       print(MARCO_TABLE[STEP - 1].Cost_Money)
       print(MARCO_TABLE[STEP - 1].Unit_Upgrade_CFrame)
-      CheckPOPUP_Upgrade.Value == false
+      CheckPOPUP_Upgrade.Value = false
    end
 end)
 
