@@ -119,10 +119,10 @@ function CheckMoney_POPUP_GUI()
          print(Gui.Name)
          print(Gui:WaitForChild("text").Name)
          table.insert(DontCareMoney_POPUP, Gui)
-         local TextMoney = Gui:WaitForChild("text")
-         --if tonumber(TextMoney) < 0 then
-            --return tonumber(TextMoney)
-         --end
+         local GuiMoney = Gui:WaitForChild("text").Text
+         if tonumber(GuiMoney) < 0 then
+            return tonumber(GuiMoney)
+         end
       end
    end
 end
