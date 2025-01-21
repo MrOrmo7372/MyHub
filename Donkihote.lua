@@ -6,7 +6,9 @@ local Vote_Start = game:GetService("ReplicatedStorage"):WaitForChild("endpoints"
 local Set_Game_Finish_Vote = game:GetService("ReplicatedStorage"):WaitForChild("endpoints"):WaitForChild("client_to_server"):WaitForChild("set_game_finished_vote")
 local Spawn_Unit = game:GetService("ReplicatedStorage"):WaitForChild("endpoints"):WaitForChild("client_to_server"):WaitForChild("spawn_unit")
 
-local MoneyPlayerText = game.Players.LocalPlayer:WaitForChild("PlayerGui"):WaitForChild("spawn_units").Lives.Frame.Resource.Money.text
+local MoneyChange_POPUP_UI = game.Players.LocalPlayer:WaitForChild("PlayerGui"):WaitForChild("spawn_units").Lives.Frame.Resource.Money --/Money Change Frame (MoneyChange)
+
+local MoneyPlayerText = game.Players.LocalPlayer:WaitForChild("PlayerGui"):WaitForChild("spawn_units").Lives.Frame.Resource
 local ResultsUI = game.Players.LocalPlayer:WaitForChild("PlayerGui"):WaitForChild("ResultsUI")
 local FileName_User = "MrHubConfig_" .. game.Players.LocalPlayer.Name .. "_User"
 
@@ -23,9 +25,9 @@ local Unit_Table = {
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
 local Window = Rayfield:CreateWindow({
-   Name = "MrHub AA V0.0052 Beta",
+   Name = "MrHub AA V0.0053 Beta",
    Icon = 0, -- Icon in Topbar. Can use Lucide Icons (string) or Roblox Image (number). 0 to use no icon (default).
-   LoadingTitle = "Waiting AA Script (MrHub V0.0052)",
+   LoadingTitle = "Waiting AA Script (MrHub V0.0053)",
    LoadingSubtitle = "by MrHub",
    Theme = "Default", -- Check https://docs.sirius.menu/rayfield/configuration/themes
 
@@ -90,6 +92,7 @@ local TargetEventNames = {
 
 local TABLE_EVENT_PLACE = {
    Event_Type = nil,
+   Cost_Money = nil,
    Unit_Type = nil,
    CFramePosition = nil
 }
@@ -99,6 +102,28 @@ local MARCO_TABLE = {}
 local STEP = 1
 local Record_Marco_BOOLEAN = false -- Đặt giá trị mặc định cho chế độ ghi macro
 
+local DontCareMoney_POPUP = {}
+
+function CheckTableMoney_POPUP(TableGuiMoney, Target)
+   for index, GuiTable in pairs(TableGuiMoney) do
+      if GuiTable == Target then
+         return true
+      end
+   end
+   return false
+end
+
+function CheckMoney_POPUP_GUI()
+   for index, Gui in pairs(MoneyChange_POPUP_UI:GetChildren()) do
+      if Gui:IsA("Frame") and Gui.Name == "MoneyChange" and Gui.Visible == true and Gui:FindFirstChild("text").Text ~= "" and not CheckTableMoney_POPUP(DontCareMoney_POPUP, Gui) then
+         table.insert(DontCareMoney_POPUP, Gui)
+         local TextMoney = Gui:FindFirstChild("text").Text
+         if tonumber(TextMoney) < 0 then
+            return tonumber(TextMoney)
+         end
+      end
+   end
+end
 
 
 
@@ -124,14 +149,17 @@ mt.__namecall = function(self, ...)
         if table.find(TargetEventNames, self.Name) then
             print("Intercepted event:", self.Name)
             local args = {...}
-
+            local Money_Use = CheckMoney_POPUP_GUI()
+         
             -- Ghi nhận dữ liệu macro
             TABLE_EVENT_PLACE.Event_Type = self.Name
+            TABLE_EVENT_PLACE.Cost_Money = Money_Use
             TABLE_EVENT_PLACE.Unit_Type = args[1]
             TABLE_EVENT_PLACE.CFramePosition = args[2]
 
             table.insert(MARCO_TABLE, STEP, TABLE_EVENT_PLACE)
             print(MARCO_TABLE[STEP].Event_Type)
+            print(MARCO_TABLE[STEP].Cost_Money)
             print(MARCO_TABLE[STEP].Unit_Type)
             print(MARCO_TABLE[STEP].CFramePosition)
             STEP += 1
