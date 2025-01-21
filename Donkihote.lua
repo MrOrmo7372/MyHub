@@ -198,10 +198,10 @@ CheckPOPUP.Changed:Connect(function()
       task.wait(0.5)
       local Money = CheckMoney_POPUP_GUI()
       MARCO_TABLE[STEP - 1].Cost_Money = Money
-      print(MARCO_TABLE[STEP].Event_Type)
-      print(MARCO_TABLE[STEP].Cost_Money)
-      print(MARCO_TABLE[STEP].Unit_Type)
-      print(MARCO_TABLE[STEP].CFramePosition)
+      print(MARCO_TABLE[STEP - 1].Event_Type)
+      print(MARCO_TABLE[STEP - 1].Cost_Money)
+      print(MARCO_TABLE[STEP - 1].Unit_Type)
+      print(MARCO_TABLE[STEP - 1].CFramePosition)
       CheckPOPUP.Value = false
    end
 end)
