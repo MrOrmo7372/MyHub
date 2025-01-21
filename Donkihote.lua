@@ -8,7 +8,7 @@ local Spawn_Unit = game:GetService("ReplicatedStorage"):WaitForChild("endpoints"
 
 local MoneyChange_POPUP_UI = game.Players.LocalPlayer:WaitForChild("PlayerGui"):WaitForChild("spawn_units").Lives.Frame.Resource.Money --/Money Change Frame (MoneyChange)
 
-local MoneyPlayerText = game.Players.LocalPlayer:WaitForChild("PlayerGui"):WaitForChild("spawn_units").Lives.Frame.Resource
+local MoneyPlayerText = game.Players.LocalPlayer:WaitForChild("PlayerGui"):WaitForChild("spawn_units").Lives.Frame.Resource.Money
 local ResultsUI = game.Players.LocalPlayer:WaitForChild("PlayerGui"):WaitForChild("ResultsUI")
 local FileName_User = "MrHubConfig_" .. game.Players.LocalPlayer.Name .. "_User"
 
@@ -114,19 +114,19 @@ function CheckTableMoney_POPUP(TableGuiMoney, Target)
 end
 
 function CheckMoney_POPUP_GUI()
-   --for index, Gui in pairs(MoneyChange_POPUP_UI:GetChildren()) do
-      --if Gui:IsA("Frame") and Gui.Name == "MoneyChange" and Gui.Visible == true and not CheckTableMoney_POPUP(DontCareMoney_POPUP, Gui) then
+   for index, Gui in pairs(MoneyChange_POPUP_UI:GetChildren()) do
+      if Gui:IsA("Frame") and Gui.Name == "MoneyChange" and Gui.Visible == true and not CheckTableMoney_POPUP(DontCareMoney_POPUP, Gui) then
 
-         --local textObject = Gui:FindFirstChild("text")
-         --if textObject and textObject:IsA("TextLabel") then
-            --table.insert(DontCareMoney_POPUP, Gui)
-            --local GuiMoney = textObject.Text
-            --if tonumber(GuiMoney) < 0 then
-               --return tonumber(GuiMoney)
-            --end
-         --end
-      --end
-   --end
+         local textObject = Gui:FindFirstChild("text")
+         if textObject and textObject:IsA("TextLabel") then
+            table.insert(DontCareMoney_POPUP, Gui)
+            local GuiMoney = textObject.Text
+            if tonumber(GuiMoney) < 0 then
+               return tonumber(GuiMoney)
+            end
+         end
+      end
+   end
 end
 
 
