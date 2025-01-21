@@ -32,9 +32,9 @@ local Unit_Table = {
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
 local Window = Rayfield:CreateWindow({
-   Name = "MrHub AA V0.0056 Beta",
+   Name = "MrHub AA V0.0057 Beta",
    Icon = 0, -- Icon in Topbar. Can use Lucide Icons (string) or Roblox Image (number). 0 to use no icon (default).
-   LoadingTitle = "Waiting AA Script (MrHub V0.0056)",
+   LoadingTitle = "Waiting AA Script (MrHub V0.0057)",
    LoadingSubtitle = "by MrHub",
    Theme = "Default", -- Check https://docs.sirius.menu/rayfield/configuration/themes
 
@@ -123,6 +123,7 @@ end
 function CheckMoney_POPUP_GUI()
    for index, Gui in pairs(MoneyChange_POPUP_UI:GetChildren()) do
       if Gui:IsA("Frame") and Gui.Name == "MoneyChange" and Gui.Visible == true and not CheckTableMoney_POPUP(DontCareMoney_POPUP, Gui) then
+         print("Call Object")
 
          local textObject = Gui:FindFirstChild("text")
          print(textObject.Text)
@@ -172,7 +173,7 @@ mt.__namecall = function(self, ...)
 
             table.insert(MARCO_TABLE, STEP, TABLE_EVENT_PLACE)
             print(MARCO_TABLE[STEP].Event_Type)
-            print(MARCO_TABLE[STEP].Cost_Money)
+            --print(MARCO_TABLE[STEP].Cost_Money)
             print(MARCO_TABLE[STEP].Unit_Type)
             print(MARCO_TABLE[STEP].CFramePosition)
             STEP += 1
@@ -194,10 +195,9 @@ setreadonly(mt, true)
 
 CheckPOPUP.Changed:Connect(function()
    if CheckPOPUP.Value == true then
-      task.wait(0.1)
+      task.wait(0.5)
       local Money = CheckMoney_POPUP_GUI()
       MARCO_TABLE[STEP - 1].Cost_Money = Money
-      print(MARCO_TABLE[STEP - 1].Cost_Money)
       CheckPOPUP.Value = false
    end
 end)
