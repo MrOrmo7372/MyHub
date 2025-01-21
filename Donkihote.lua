@@ -116,8 +116,10 @@ end
 function CheckMoney_POPUP_GUI()
    for index, Gui in pairs(MoneyChange_POPUP_UI:GetChildren()) do
       if Gui:IsA("Frame") and Gui.Name == "MoneyChange" and Gui.Visible == true and not CheckTableMoney_POPUP(DontCareMoney_POPUP, Gui) then
+         print(Gui.Name)
+         print(Gui:WaitForChild("text").Name)
          table.insert(DontCareMoney_POPUP, Gui)
-         local TextMoney = Gui:FindFirstChild("text").Text
+         local TextMoney = Gui:WaitForChild("text").Text
          if tonumber(TextMoney) < 0 then
             return tonumber(TextMoney)
          end
