@@ -12,6 +12,13 @@ local MoneyPlayerText = game.Players.LocalPlayer:WaitForChild("PlayerGui"):WaitF
 local ResultsUI = game.Players.LocalPlayer:WaitForChild("PlayerGui"):WaitForChild("ResultsUI")
 local FileName_User = "MrHubConfig_" .. game.Players.LocalPlayer.Name .. "_User"
 
+local CheckPOPUP = Instance.new("BooleanValue")
+CheckPOPUP.Name = "CheckPopUp"
+CheckPOPUP.Value = false
+CheckPOPUP.Parent = game.Players.LocalPlayer
+
+print(CheckPOPUP.Parent.Name)
+
 --------------------------------------------------------------------------------Info AA
 --game.Players.LocalPlayer:WaitForChild("PlayerGui").spawn_units.lives.Frame.Units /unit = [number].Main.View.WorldModel.[name_unit]
 ---------------------------------------------------------------------------------------
