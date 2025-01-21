@@ -130,7 +130,7 @@ function CheckMoney_POPUP_GUI()
             table.insert(DontCareMoney_POPUP, Gui)
             local GuiMoney = textObject.Text
             if tonumber(GuiMoney) < 0 then
-               return tonumber(GuiMoney)
+               return math.abs(tonumber(GuiMoney))
             end
          end
       end
@@ -161,17 +161,18 @@ mt.__namecall = function(self, ...)
         if table.find(TargetEventNames, self.Name) then
             print("Intercepted event:", self.Name)
             local args = {...}
-            local Money_Use = CheckMoney_POPUP_GUI()
+            --local Money_Use = CheckMoney_POPUP_GUI()
+            CheckPOPUP.Value = true
          
             -- Ghi nhận dữ liệu macro
             TABLE_EVENT_PLACE.Event_Type = self.Name
-            TABLE_EVENT_PLACE.Cost_Money = Money_Use
+            --TABLE_EVENT_PLACE.Cost_Money = Money_Use
             TABLE_EVENT_PLACE.Unit_Type = args[1]
             TABLE_EVENT_PLACE.CFramePosition = args[2]
 
             table.insert(MARCO_TABLE, STEP, TABLE_EVENT_PLACE)
             print(MARCO_TABLE[STEP].Event_Type)
-            print(MARCO_TABLE[STEP].Cost_Money)
+            --print(MARCO_TABLE[STEP].Cost_Money)
             print(MARCO_TABLE[STEP].Unit_Type)
             print(MARCO_TABLE[STEP].CFramePosition)
             STEP += 1
@@ -190,6 +191,15 @@ mt.__namecall = function(self, ...)
 end
 
 setreadonly(mt, true)
+
+CheckPOPUP.Changed:Connect(function()
+   if CheckPOPUP.Value == true then
+      task.wait(0.1)
+      local Money = CheckMoney_POPUP_GUI()
+      MARCO_TABLE[STEP - 1].Cost_Money = Money
+      CheckPOPUP.Value = false
+   end
+end)
 
 
 
