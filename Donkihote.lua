@@ -25,9 +25,9 @@ local Unit_Table = {
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
 local Window = Rayfield:CreateWindow({
-   Name = "MrHub AA V0.0053 Beta",
+   Name = "MrHub AA V0.0054 Beta",
    Icon = 0, -- Icon in Topbar. Can use Lucide Icons (string) or Roblox Image (number). 0 to use no icon (default).
-   LoadingTitle = "Waiting AA Script (MrHub V0.0053)",
+   LoadingTitle = "Waiting AA Script (MrHub V0.0054)",
    LoadingSubtitle = "by MrHub",
    Theme = "Default", -- Check https://docs.sirius.menu/rayfield/configuration/themes
 
@@ -119,10 +119,10 @@ function CheckMoney_POPUP_GUI()
          print(Gui.Name)
          print(Gui:WaitForChild("text").Name)
          table.insert(DontCareMoney_POPUP, Gui)
-         local TextMoney = Gui:WaitForChild("text").Text
-         if tonumber(TextMoney) < 0 then
-            return tonumber(TextMoney)
-         end
+         local TextMoney = Gui:WaitForChild("text")
+         --if tonumber(TextMoney) < 0 then
+            --return tonumber(TextMoney)
+         --end
       end
    end
 end
