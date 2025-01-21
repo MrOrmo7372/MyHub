@@ -8,7 +8,7 @@ local Spawn_Unit = game:GetService("ReplicatedStorage"):WaitForChild("endpoints"
 
 local MoneyChange_POPUP_UI = game.Players.LocalPlayer:WaitForChild("PlayerGui"):WaitForChild("spawn_units").Lives.Frame.Resource.Money --/Money Change Frame (MoneyChange)
 
-local MoneyPlayerText = game.Players.LocalPlayer:WaitForChild("PlayerGui"):WaitForChild("spawn_units").Lives.Frame.Resource.Money
+local MoneyPlayerText = game.Players.LocalPlayer:WaitForChild("PlayerGui"):WaitForChild("spawn_units").Lives.Frame.Resource.Money.text
 local ResultsUI = game.Players.LocalPlayer:WaitForChild("PlayerGui"):WaitForChild("ResultsUI")
 local FileName_User = "MrHubConfig_" .. game.Players.LocalPlayer.Name .. "_User"
 
