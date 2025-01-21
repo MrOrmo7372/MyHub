@@ -172,7 +172,7 @@ mt.__namecall = function(self, ...)
 
             table.insert(MARCO_TABLE, STEP, TABLE_EVENT_PLACE)
             print(MARCO_TABLE[STEP].Event_Type)
-            --print(MARCO_TABLE[STEP].Cost_Money)
+            print(MARCO_TABLE[STEP].Cost_Money)
             print(MARCO_TABLE[STEP].Unit_Type)
             print(MARCO_TABLE[STEP].CFramePosition)
             STEP += 1
@@ -197,6 +197,7 @@ CheckPOPUP.Changed:Connect(function()
       task.wait(0.1)
       local Money = CheckMoney_POPUP_GUI()
       MARCO_TABLE[STEP - 1].Cost_Money = Money
+      print(MARCO_TABLE[STEP - 1].Cost_Money)
       CheckPOPUP.Value = false
    end
 end)
