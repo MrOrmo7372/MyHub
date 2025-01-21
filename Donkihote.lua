@@ -118,6 +118,7 @@ function CheckMoney_POPUP_GUI()
       if Gui:IsA("Frame") and Gui.Name == "MoneyChange" and Gui.Visible == true and not CheckTableMoney_POPUP(DontCareMoney_POPUP, Gui) then
 
          local textObject = Gui:FindFirstChild("text")
+         print(textObject.Text)
          if textObject and textObject:IsA("TextLabel") then
             table.insert(DontCareMoney_POPUP, Gui)
             local GuiMoney = textObject.Text
