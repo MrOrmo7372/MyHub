@@ -121,7 +121,7 @@ local Record_Marco_BOOLEAN = false -- Đặt giá trị mặc định cho chế 
 
 local DontCareMoney_POPUP = {}
 for index, Gui in pairs(MoneyChange_POPUP_UI:GetChildren()) do
-   if Gui.Name = "MoneyChange" and Gui:IsA("Frame" then
+   if Gui.Name == "MoneyChange" and Gui:IsA("Frame") then
       table.insert(DontCareMoney_POPUP, Gui)
       print("DESTROY TARGET")
    end
