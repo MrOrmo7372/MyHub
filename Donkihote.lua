@@ -180,7 +180,7 @@ local RecordMarco_Button = MarcoZone:CreateToggle({
          Record_Marco_BOOLEAN = Value
          if Value == false and Choose_Marco_File ~= nil and next(MARCO_TABLE) ~= nil then
             local jsonData = HttpService:JSONEncode(MARCO_TABLE)
-            writefile(Fullpath .. "/" .. Choose_Marco_File, jsonData)
+            writefile(Fullpath .. "/" .. Choose_Marco_File[1], jsonData)
          end
    end,
 })
@@ -440,7 +440,7 @@ end
 ResultsUI:GetPropertyChangedSignal("Enabled"):Connect(function()
    if Choose_Marco_File ~= nil and next(MARCO_TABLE) ~= nil then
       local jsonData = HttpService:JSONEncode(MARCO_TABLE)
-      writefile(Fullpath .. "/" .. Choose_Marco_File, jsonData)
+      writefile(Fullpath .. "/" .. Choose_Marco_File[1], jsonData)
    end
       
    if Auto_Retry_L == true then
