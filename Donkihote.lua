@@ -148,7 +148,7 @@ function CheckMoney_POPUP_GUI()
                   return math.abs(tonumber(GuiMoney))
                end
             end
-         end
+         end)
       end
    end
 end
