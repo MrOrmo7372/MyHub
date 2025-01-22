@@ -35,9 +35,9 @@ local Unit_Table = {
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
 local Window = Rayfield:CreateWindow({
-   Name = "MrHub AA V0.0064 Beta",
+   Name = "MrHub AA V0.0065 Beta",
    Icon = 0, -- Icon in Topbar. Can use Lucide Icons (string) or Roblox Image (number). 0 to use no icon (default).
-   LoadingTitle = "Waiting AA Script (MrHub V0.0064)",
+   LoadingTitle = "Waiting AA Script (MrHub V0.0065)",
    LoadingSubtitle = "by MrHub",
    Theme = "Default", -- Check https://docs.sirius.menu/rayfield/configuration/themes
 
@@ -270,8 +270,8 @@ mt.__namecall = function(self, ...)
                TABLE_EVENT_PLACE.Step = STEP
                TABLE_EVENT_PLACE.Event_Type = self.Name
                TABLE_EVENT_PLACE.Unit_Type = args[1]
-               print(typeof(args[2]))
-               TABLE_EVENT_PLACE.CFramePosition = CFrameToTable(args[2])
+               local ChangeType_TARGET = args[2]
+               TABLE_EVENT_PLACE.CFramePosition = CFrameToTable(ChangeType_TARGET)
 
                --table.insert(MARCO_TABLE, STEP, TABLE_EVENT_PLACE)
                MARCO_TABLE[STEP] = TABLE_EVENT_PLACE
