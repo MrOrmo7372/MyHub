@@ -35,9 +35,9 @@ local Unit_Table = {
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
 local Window = Rayfield:CreateWindow({
-   Name = "MrHub AA V0.0061 Beta",
+   Name = "MrHub AA V0.0062 Beta",
    Icon = 0, -- Icon in Topbar. Can use Lucide Icons (string) or Roblox Image (number). 0 to use no icon (default).
-   LoadingTitle = "Waiting AA Script (MrHub V0.0061)",
+   LoadingTitle = "Waiting AA Script (MrHub V0.0062)",
    LoadingSubtitle = "by MrHub",
    Theme = "Default", -- Check https://docs.sirius.menu/rayfield/configuration/themes
 
@@ -118,6 +118,7 @@ local MARCO_TABLE = {}
 
 local STEP = 1
 local Record_Marco_BOOLEAN = false -- Đặt giá trị mặc định cho chế độ ghi macro
+local Replay_Marco_BOOLEAN = false
 
 local DontCareMoney_POPUP = {}
 
@@ -149,6 +150,28 @@ end
 
 
 
+
+
+
+
+local function listMacros()
+    if isfolder(Fullpath) then
+        local files = listfiles(Fullpath)
+        local fileNames = {}
+        for _, filePath in ipairs(files) do
+            table.insert(fileNames, filePath:match("([^/]+)$")) -- Lấy tên file
+        end
+        return fileNames
+    else
+        print("Folder Marco not found!")
+        return {}
+    end
+end
+
+
+local Choose_Marco_File = nil
+local Cooldown_Place = 4
+
 local RecordMarco_Button = MarcoZone:CreateToggle({
    Name = "Record Marco",
    CurrentValue = false,
@@ -157,6 +180,64 @@ local RecordMarco_Button = MarcoZone:CreateToggle({
          Record_Marco_BOOLEAN = Value
    end,
 })
+
+
+local ChooseMarco = MarcoZone:CreateDropdown({
+   Name = "Choose Marco",
+   Options = listMacros(),
+   CurrentOption = {"nil"},
+   MultipleOptions = false,
+   Flag = "Choose_Marco", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Options)
+   -- The function that takes place when the selected option is changed
+   -- The variable (Options) is a table of strings for the current selected options
+         Choose_Marco_File = Options
+   end,
+})
+
+local CreateMarco = MarcoZone:CreateInput({
+   Name = "Create Marco",
+   CurrentValue = "",
+   PlaceholderText = "Enter Name Here",
+   RemoveTextAfterFocusLost = true,
+   Flag = "Create_Marco",
+   Callback = function(fileName)
+   -- The function that takes place when the input is changed
+   -- The variable (Text) is a string for the value in the text box
+         -- Lưu dữ liệu macro vào JSON
+         local function saveMacro(fileName, data)
+         local jsonData = HttpService:JSONEncode("{}")
+         writefile(Fullpath .. "/" .. fileName, jsonData)
+         print("Macro saved:", fileName)
+   end,
+})
+
+local Choose_CooldownMarco = MarcoZone:CreateSlider({
+   Name = "Cooldown Marco Place",
+   Range = {0, 4},
+   Increment = 1,
+   Suffix = "Cooldown",
+   CurrentValue = 4,
+   Flag = "Cooldown_Place", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+   -- The function that takes place when the slider changes
+   -- The variable (Value) is a number which correlates to the value the slider is currently at
+         Cooldown_Place = Value
+   end,
+})
+
+local ReplayMarco_Button = MarcoZone:CreateToggle({
+   Name = "Replay Marco",
+   CurrentValue = false,
+   Flag = "Replay_Marco",
+   Callback = function(Value)
+         Replay_Marco_BOOLEAN = Value
+   end,
+})
+
+
+
+
 
 
 local mt = getrawmetatable(game)
