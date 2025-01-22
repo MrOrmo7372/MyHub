@@ -434,7 +434,7 @@ if Auto_Start_L == true and game.PlaceId ~= 8304191830 then
 end
 
 ResultsUI:GetPropertyChangedSignal("Enabled"):Connect(function()
-   if Choose_Marco_File ~= nil and MARCO_TABLE ~= nil then
+   if Choose_Marco_File ~= nil and next(MARCO_TABLE) ~= nil then
       local jsonData = HttpService:JSONEncode(MARCO_TABLE)
       writefile(Fullpath .. "/" .. Choose_Marco_File, jsonData)
    end
