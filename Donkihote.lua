@@ -138,19 +138,18 @@ end
 
 function CheckMoney_POPUP_GUI()
    for index, Gui in pairs(MoneyChange_POPUP_UI:GetChildren()) do
+      task.wait(0.3)
       if Gui:IsA("Frame") and Gui.Name == "MoneyChange" and not CheckTableMoney_POPUP(DontCareMoney_POPUP, Gui) then
-         print("ALL")
-         Gui:FindFirstChild("text").Changed:Connect(function()
-            print("Call")
-            local textObject = Gui:FindFirstChild("text")
-            if textObject and textObject:IsA("TextLabel") then
-               table.insert(DontCareMoney_POPUP, Gui)
-               local GuiMoney = textObject.Text
-               if tonumber(GuiMoney) < 0 then
-                  return math.abs(tonumber(GuiMoney))
-               end
+         
+         local textObject = Gui:FindFirstChild("text")
+         if textObject and textObject:IsA("TextLabel") then
+            table.insert(DontCareMoney_POPUP, Gui)
+            local GuiMoney = textObject.Text
+            if tonumber(GuiMoney) < 0 then
+               return math.abs(tonumber(GuiMoney))
             end
-         end)
+         end
+         
       end
    end
 end
