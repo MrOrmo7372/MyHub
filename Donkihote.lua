@@ -139,7 +139,7 @@ end
 function CheckMoney_POPUP_GUI()
    for index, Gui in pairs(MoneyChange_POPUP_UI:GetChildren()) do
       if Gui:IsA("Frame") and Gui.Name == "MoneyChange" and not CheckTableMoney_POPUP(DontCareMoney_POPUP, Gui) then
-         Gui:FindFirstChild("text").Text:GetPropertyChangedSignal("Visible"):Connect(function()
+         Gui:FindFirstChild("text"):GetPropertyChangedSignal("Text"):Connect(function()
             local textObject = Gui:FindFirstChild("text")
             if textObject and textObject:IsA("TextLabel") then
                table.insert(DontCareMoney_POPUP, Gui)
