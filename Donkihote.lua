@@ -132,8 +132,10 @@ end
 
 function CheckMoney_POPUP_GUI()
    for index, Gui in pairs(MoneyChange_POPUP_UI:GetChildren()) do
-      print(Gui)
-      print(Gui:FindFirstChild("text").Text)
+      if Gui:IsA("Frame") then
+         print(Gui)
+         print(Gui:FindFirstChild("text").Text)
+      end
       if Gui:IsA("Frame") and Gui.Name == "MoneyChange" and Gui:FindFirstChild("text").Text ~= "+9999" and tonumber(Gui:FindFirstChild("text").Text) < 0 and not CheckTableMoney_POPUP(DontCareMoney_POPUP, Gui) then
          print("FUCK")
 
