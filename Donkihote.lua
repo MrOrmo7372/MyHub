@@ -266,7 +266,7 @@ mt.__namecall = function(self, ...)
                TABLE_EVENT_PLACE.Event_Type = self.Name
                --TABLE_EVENT_PLACE.Cost_Money = Money_Use
                TABLE_EVENT_PLACE.Unit_Type = args[1]
-               TABLE_EVENT_PLACE.CFramePosition = args[2]
+               TABLE_EVENT_PLACE.CFramePosition = {args[2]}
 
                table.insert(MARCO_TABLE, STEP, TABLE_EVENT_PLACE)
                STEP += 1
