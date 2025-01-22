@@ -102,6 +102,7 @@ local TargetEventNames = {
 }
 
 local TABLE_EVENT_PLACE = {
+   Step = nil,
    Event_Type = nil,
    Cost_Money = nil,
    Unit_Type = nil,
@@ -109,6 +110,7 @@ local TABLE_EVENT_PLACE = {
 }
 
 local TABLE_EVENT_UPGRADE = {
+   Step = nil,
    Event_Type = nil,
    Cost_Money = nil,
    Unit_Upgrade_CFrame = nil
@@ -261,29 +263,24 @@ mt.__namecall = function(self, ...)
                print("Intercepted event:", self.Name)
                local args = {...}
                CheckPOPUP.Value = true
-         
+
+               TABLE_EVENT_PLACE.Step = STEP
                TABLE_EVENT_PLACE.Event_Type = self.Name
                TABLE_EVENT_PLACE.Unit_Type = args[1]
-               TABLE_EVENT_PLACE.CFramePosition = {args[2]}
+               TABLE_EVENT_PLACE.CFramePosition = {args[2] + Vector3.new(0, 0, 0)}
 
                --table.insert(MARCO_TABLE, STEP, TABLE_EVENT_PLACE)
                MARCO_TABLE[STEP] = TABLE_EVENT_PLACE
                STEP += 1
 
-               -- Reset dữ liệu
-               TABLE_EVENT_PLACE = {
-                   Event_Type = nil,
-                   Unit_Type = nil,
-                   CFramePosition = nil
-               }
             elseif self.Name == "upgrade_unit_ingame" then
                print("Upgrade unit:", self.Name)
                local args = {...}
                CheckPOPUP_Upgrade.Value = true
 
                local HumanoidRootPart_targetCFRAME = args[1].HumanoidRootPart.CFrame
+               TABLE_EVENT_PLACE.Step = STEP
                TABLE_EVENT_UPGRADE.Event_Type = self.Name
-               --TABLE_EVENT_UPGRADE.Cost_Money = Money_Use
                TABLE_EVENT_UPGRADE.Unit_Upgrade_CFrame = HumanoidRootPart_targetCFRAME
 
                table.insert(MARCO_TABLE, STEP, TABLE_EVENT_UPGRADE)
