@@ -35,9 +35,9 @@ local Unit_Table = {
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
 local Window = Rayfield:CreateWindow({
-   Name = "MrHub AA V0.0060 Beta",
+   Name = "MrHub AA V0.0061 Beta",
    Icon = 0, -- Icon in Topbar. Can use Lucide Icons (string) or Roblox Image (number). 0 to use no icon (default).
-   LoadingTitle = "Waiting AA Script (MrHub V0.0060)",
+   LoadingTitle = "Waiting AA Script (MrHub V0.0061)",
    LoadingSubtitle = "by MrHub",
    Theme = "Default", -- Check https://docs.sirius.menu/rayfield/configuration/themes
 
@@ -120,12 +120,6 @@ local STEP = 1
 local Record_Marco_BOOLEAN = false -- Đặt giá trị mặc định cho chế độ ghi macro
 
 local DontCareMoney_POPUP = {}
-for index, Gui in pairs(MoneyChange_POPUP_UI:GetChildren()) do
-   if Gui.Name == "MoneyChange" and Gui:IsA("Frame") then
-      table.insert(DontCareMoney_POPUP, Gui)
-      print("DESTROY TARGET")
-   end
-end
 
 function CheckTableMoney_POPUP(TableGuiMoney, Target)
    for index, GuiTable in pairs(TableGuiMoney) do
@@ -138,7 +132,6 @@ end
 
 function CheckMoney_POPUP_GUI()
    for index, Gui in pairs(MoneyChange_POPUP_UI:GetChildren()) do
-      task.wait(0.5)
       if Gui:IsA("Frame") and Gui.Name == "MoneyChange" and Gui.Visible == true and not CheckTableMoney_POPUP(DontCareMoney_POPUP, Gui) then
          
          local textObject = Gui:FindFirstChild("text")
@@ -220,7 +213,7 @@ setreadonly(mt, true)
 
 CheckPOPUP.Changed:Connect(function()
    if CheckPOPUP.Value == true then
-      MoneyChange_POPUP_UI.ChildAdded:Wait()
+      task.wait(0.5)
       local Money = CheckMoney_POPUP_GUI()
       MARCO_TABLE[STEP - 1].Cost_Money = Money
       print(MARCO_TABLE[STEP - 1].Event_Type)
@@ -228,18 +221,30 @@ CheckPOPUP.Changed:Connect(function()
       print(MARCO_TABLE[STEP - 1].Unit_Type)
       print(MARCO_TABLE[STEP - 1].CFramePosition)
       CheckPOPUP.Value = false
+
+      if MARCO_TABLE[STEP - 1].Cost_Money == nil then
+         print("CANT PLACE")
+         table.remove(MARCO_TABLE, [STEP - 1])
+         STEP -= 1
+      end
    end
 end)
 
 CheckPOPUP_Upgrade.Changed:Connect(function()
    if CheckPOPUP_Upgrade.Value == true then
-      MoneyChange_POPUP_UI.ChildAdded:Wait()
+      task.wait(0.5)
       local Money = CheckMoney_POPUP_GUI()
       MARCO_TABLE[STEP - 1].Cost_Money = Money
       print(MARCO_TABLE[STEP - 1].Event_Type)
       print(MARCO_TABLE[STEP - 1].Cost_Money)
       print(MARCO_TABLE[STEP - 1].Unit_Upgrade_CFrame)
       CheckPOPUP_Upgrade.Value = false
+
+      if MARCO_TABLE[STEP - 1].Cost_Money == nil then
+         print("CANT UPGRADE")
+         table.remove(MARCO_TABLE, [STEP - 1])
+         STEP -= 1
+      end
    end
 end)
 
