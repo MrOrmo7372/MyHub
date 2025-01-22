@@ -201,8 +201,6 @@ local ChooseMarco = MarcoZone:CreateDropdown({
    end,
 })
 
-local OffOn = 1
-
 local CreateMarco = MarcoZone:CreateInput({
    Name = "Create Marco",
    CurrentValue = "",
@@ -213,17 +211,12 @@ local CreateMarco = MarcoZone:CreateInput({
    -- The function that takes place when the input is changed
    -- The variable (Text) is a string for the value in the text box
          -- Lưu dữ liệu macro vào JSON
-         if Text ~= "" and OffOn ~= 1 then
+         if Text ~= "" then
             local FileName = Text .. ".json"
             local jsonData = HttpService:JSONEncode("{}")
             writefile(Fullpath .. "/" .. FileName, jsonData)
             print("Macro saved:", FileName)
             ChooseMarco:Refresh(listMacros()) -- The new list of options available.
-         elseif Text ~= "" and OffOn == 1 then
-            CreateMarco:Set("")
-            OffOn += 1
-         elseif Text == "" and OffOn == 1 then
-            OffOn += 1
          end
    end,
 })
@@ -274,7 +267,7 @@ mt.__namecall = function(self, ...)
                TABLE_EVENT_PLACE.Step = STEP
                TABLE_EVENT_PLACE.Event_Type = self.Name
                TABLE_EVENT_PLACE.Unit_Type = args[1]
-               TABLE_EVENT_PLACE.CFramePosition = {args[2] + Vector3.new(0, 0, 0)}
+               TABLE_EVENT_PLACE.CFramePosition = {args[2]}
 
                --table.insert(MARCO_TABLE, STEP, TABLE_EVENT_PLACE)
                MARCO_TABLE[STEP] = TABLE_EVENT_PLACE
