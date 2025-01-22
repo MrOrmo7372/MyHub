@@ -178,6 +178,9 @@ local RecordMarco_Button = MarcoZone:CreateToggle({
    Flag = "Record_Marco",
    Callback = function(Value)
          Record_Marco_BOOLEAN = Value
+         if Value == false and next(then
+            print("TEST")
+         end
    end,
 })
 
