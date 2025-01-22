@@ -248,6 +248,7 @@ local ReplayMarco_Button = MarcoZone:CreateToggle({
 
 
 function CFrameToTable(cf)
+    print(typeof(cf))
     return {cf:GetComponents()}
 end
 
