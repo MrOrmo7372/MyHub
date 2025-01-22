@@ -247,7 +247,9 @@ local ReplayMarco_Button = MarcoZone:CreateToggle({
 
 
 
-
+function CFrameToTable(cf)
+    return {cf:GetComponents()}
+end
 
 local mt = getrawmetatable(game)
 local oldNamecall = mt.__namecall
@@ -267,7 +269,7 @@ mt.__namecall = function(self, ...)
                TABLE_EVENT_PLACE.Step = STEP
                TABLE_EVENT_PLACE.Event_Type = self.Name
                TABLE_EVENT_PLACE.Unit_Type = args[1]
-               TABLE_EVENT_PLACE.CFramePosition = {args[2]}
+               TABLE_EVENT_PLACE.CFramePosition = CFrameToTable(args[2])
 
                --table.insert(MARCO_TABLE, STEP, TABLE_EVENT_PLACE)
                MARCO_TABLE[STEP] = TABLE_EVENT_PLACE
