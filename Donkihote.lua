@@ -139,7 +139,7 @@ end
 function CheckMoney_POPUP_GUI()
    for index, Gui in pairs(MoneyChange_POPUP_UI:GetChildren()) do
       task.wait(0.3)
-      if Gui:IsA("Frame") and Gui.Name == "MoneyChange" and not CheckTableMoney_POPUP(DontCareMoney_POPUP, Gui) then
+      if Gui:IsA("Frame") and Gui.Name == "MoneyChange" and Gui.Visible == true and Gui:FindFirstChild("text").Text ~= "+9999" and not CheckTableMoney_POPUP(DontCareMoney_POPUP, Gui) then
          
          local textObject = Gui:FindFirstChild("text")
          if textObject and textObject:IsA("TextLabel") then
