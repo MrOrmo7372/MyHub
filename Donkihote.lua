@@ -35,9 +35,9 @@ local Unit_Table = {
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
 local Window = Rayfield:CreateWindow({
-   Name = "MrHub AA V0.0058 Beta",
+   Name = "MrHub AA V0.0059 Beta",
    Icon = 0, -- Icon in Topbar. Can use Lucide Icons (string) or Roblox Image (number). 0 to use no icon (default).
-   LoadingTitle = "Waiting AA Script (MrHub V0.0058)",
+   LoadingTitle = "Waiting AA Script (MrHub V0.0059)",
    LoadingSubtitle = "by MrHub",
    Theme = "Default", -- Check https://docs.sirius.menu/rayfield/configuration/themes
 
@@ -133,6 +133,7 @@ end
 function CheckMoney_POPUP_GUI()
    for index, Gui in pairs(MoneyChange_POPUP_UI:GetChildren()) do
       if Gui:IsA("Frame") and Gui.Name == "MoneyChange" and Gui:FindFirstChild("text").Text ~= "+9999" and tonumber(Gui:FindFirstChild("text").Text) < 0 and not CheckTableMoney_POPUP(DontCareMoney_POPUP, Gui) then
+         print("FUCK")
 
          local textObject = Gui:FindFirstChild("text")
          if textObject and textObject:IsA("TextLabel") then
