@@ -201,6 +201,8 @@ local ChooseMarco = MarcoZone:CreateDropdown({
    end,
 })
 
+local OffOn = 1
+
 local CreateMarco = MarcoZone:CreateInput({
    Name = "Create Marco",
    CurrentValue = "",
@@ -211,12 +213,17 @@ local CreateMarco = MarcoZone:CreateInput({
    -- The function that takes place when the input is changed
    -- The variable (Text) is a string for the value in the text box
          -- Lưu dữ liệu macro vào JSON
-         if Text ~= "" then
+         if Text ~= "" and OffOn ~= 1 then
             local FileName = Text .. ".json"
             local jsonData = HttpService:JSONEncode("{}")
             writefile(Fullpath .. "/" .. FileName, jsonData)
             print("Macro saved:", FileName)
             ChooseMarco:Refresh(listMacros()) -- The new list of options available.
+         elseif Text ~= "" and OffOn == 1 then
+            CreateMarco:Set("")
+            OffOn += 1
+         elseif Text == "" and OffOn == 1 then
+            OffOn += 1
          end
    end,
 })
