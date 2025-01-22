@@ -35,9 +35,9 @@ local Unit_Table = {
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
 local Window = Rayfield:CreateWindow({
-   Name = "MrHub AA V0.0062 Beta",
+   Name = "MrHub AA V0.0063 Beta",
    Icon = 0, -- Icon in Topbar. Can use Lucide Icons (string) or Roblox Image (number). 0 to use no icon (default).
-   LoadingTitle = "Waiting AA Script (MrHub V0.0062)",
+   LoadingTitle = "Waiting AA Script (MrHub V0.0063)",
    LoadingSubtitle = "by MrHub",
    Theme = "Default", -- Check https://docs.sirius.menu/rayfield/configuration/themes
 
@@ -178,8 +178,9 @@ local RecordMarco_Button = MarcoZone:CreateToggle({
    Flag = "Record_Marco",
    Callback = function(Value)
          Record_Marco_BOOLEAN = Value
-         if Value == false and next(then
-            print("TEST")
+         if Value == false and Choose_Marco_File ~= nil and next(MARCO_TABLE) ~= nil then
+            local jsonData = HttpService:JSONEncode(MARCO_TABLE)
+            writefile(Fullpath .. "/" .. Choose_Marco_File, jsonData)
          end
    end,
 })
