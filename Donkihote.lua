@@ -212,7 +212,7 @@ setreadonly(mt, true)
 
 CheckPOPUP.Changed:Connect(function()
    if CheckPOPUP.Value == true then
-      MoneyChange_POPUP_UI.ChildAdded:Wait(0.1)
+      MoneyChange_POPUP_UI.ChildAdded:Wait(0.3)
       local Money = CheckMoney_POPUP_GUI()
       MARCO_TABLE[STEP - 1].Cost_Money = Money
       print(MARCO_TABLE[STEP - 1].Event_Type)
@@ -225,7 +225,7 @@ end)
 
 CheckPOPUP_Upgrade.Changed:Connect(function()
    if CheckPOPUP_Upgrade.Value == true then
-      MoneyChange_POPUP_UI.ChildAdded:Wait(0.1)
+      MoneyChange_POPUP_UI.ChildAdded:Wait(0.3)
       local Money = CheckMoney_POPUP_GUI()
       MARCO_TABLE[STEP - 1].Cost_Money = Money
       print(MARCO_TABLE[STEP - 1].Event_Type)
