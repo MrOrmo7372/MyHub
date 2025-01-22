@@ -224,7 +224,7 @@ CheckPOPUP.Changed:Connect(function()
 
       if MARCO_TABLE[STEP - 1].Cost_Money == nil then
          print("CANT PLACE")
-         table.remove(MARCO_TABLE, [STEP - 1])
+         table.remove(MARCO_TABLE, STEP - 1)
          STEP -= 1
       end
    end
