@@ -205,7 +205,6 @@ local CreateMarco = MarcoZone:CreateInput({
    -- The function that takes place when the input is changed
    -- The variable (Text) is a string for the value in the text box
          -- Lưu dữ liệu macro vào JSON
-         local function saveMacro(fileName, data)
          local jsonData = HttpService:JSONEncode("{}")
          writefile(Fullpath .. "/" .. fileName, jsonData)
          print("Macro saved:", fileName)
