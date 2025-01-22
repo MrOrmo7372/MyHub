@@ -201,13 +201,13 @@ local CreateMarco = MarcoZone:CreateInput({
    PlaceholderText = "Enter Name Here",
    RemoveTextAfterFocusLost = true,
    Flag = "Create_Marco",
-   Callback = function(fileName)
+   Callback = function(Text)
    -- The function that takes place when the input is changed
    -- The variable (Text) is a string for the value in the text box
          -- Lưu dữ liệu macro vào JSON
          local jsonData = HttpService:JSONEncode("{}")
-         writefile(Fullpath .. "/" .. fileName, jsonData)
-         print("Macro saved:", fileName)
+         writefile(Fullpath .. "/" .. Text, jsonData)
+         print("Macro saved:", Text)
    end,
 })
 
