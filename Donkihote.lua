@@ -208,6 +208,7 @@ local CreateMarco = MarcoZone:CreateInput({
          local jsonData = HttpService:JSONEncode("{}")
          writefile(Fullpath .. "/" .. Text, jsonData)
          print("Macro saved:", Text)
+         ChooseMarco:Refresh(listMacros()) -- The new list of options available.
    end,
 })
 
