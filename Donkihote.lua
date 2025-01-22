@@ -35,9 +35,9 @@ local Unit_Table = {
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
 local Window = Rayfield:CreateWindow({
-   Name = "MrHub AA V0.0063 Beta",
+   Name = "MrHub AA V0.0064 Beta",
    Icon = 0, -- Icon in Topbar. Can use Lucide Icons (string) or Roblox Image (number). 0 to use no icon (default).
-   LoadingTitle = "Waiting AA Script (MrHub V0.0063)",
+   LoadingTitle = "Waiting AA Script (MrHub V0.0064)",
    LoadingSubtitle = "by MrHub",
    Theme = "Default", -- Check https://docs.sirius.menu/rayfield/configuration/themes
 
@@ -262,13 +262,12 @@ mt.__namecall = function(self, ...)
                local args = {...}
                CheckPOPUP.Value = true
          
-               -- Ghi nhận dữ liệu macro
                TABLE_EVENT_PLACE.Event_Type = self.Name
-               --TABLE_EVENT_PLACE.Cost_Money = Money_Use
                TABLE_EVENT_PLACE.Unit_Type = args[1]
                TABLE_EVENT_PLACE.CFramePosition = {args[2]}
 
-               table.insert(MARCO_TABLE, STEP, TABLE_EVENT_PLACE)
+               --table.insert(MARCO_TABLE, STEP, TABLE_EVENT_PLACE)
+               MARCO_TABLE[STEP] = TABLE_EVENT_PLACE
                STEP += 1
 
                -- Reset dữ liệu
