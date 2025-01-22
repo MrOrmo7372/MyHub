@@ -132,7 +132,7 @@ end
 
 function CheckMoney_POPUP_GUI()
    for index, Gui in pairs(MoneyChange_POPUP_UI:GetChildren()) do
-      if Gui:IsA("Frame") and Gui.Name == "MoneyChange" and Gui.Visible == true and not CheckTableMoney_POPUP(DontCareMoney_POPUP, Gui) then
+      if Gui:IsA("Frame") and Gui.Name == "MoneyChange" and Gui:FindFirstChild("text").Text ~= "+9999" and tonumber(Gui:FindFirstChild("text").Text) < 0 and not CheckTableMoney_POPUP(DontCareMoney_POPUP, Gui) then
 
          local textObject = Gui:FindFirstChild("text")
          if textObject and textObject:IsA("TextLabel") then
@@ -212,7 +212,7 @@ setreadonly(mt, true)
 
 CheckPOPUP.Changed:Connect(function()
    if CheckPOPUP.Value == true then
-      task.wait(0.3)
+      MoneyChange_POPUP_UI.ChildAdded:Wait()
       local Money = CheckMoney_POPUP_GUI()
       MARCO_TABLE[STEP - 1].Cost_Money = Money
       print(MARCO_TABLE[STEP - 1].Event_Type)
@@ -225,7 +225,7 @@ end)
 
 CheckPOPUP_Upgrade.Changed:Connect(function()
    if CheckPOPUP_Upgrade.Value == true then
-      task.wait(0.3)
+      MoneyChange_POPUP_UI.ChildAdded:Wait()
       local Money = CheckMoney_POPUP_GUI()
       MARCO_TABLE[STEP - 1].Cost_Money = Money
       print(MARCO_TABLE[STEP - 1].Event_Type)
