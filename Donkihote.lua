@@ -120,6 +120,12 @@ local STEP = 1
 local Record_Marco_BOOLEAN = false -- Đặt giá trị mặc định cho chế độ ghi macro
 
 local DontCareMoney_POPUP = {}
+for index, Gui in pairs(MoneyChange_POPUP_UI:GetChildren()) do
+   if Gui.Name = "MoneyChange" and Gui:IsA("Frame" then
+      table.insert(DontCareMoney_POPUP, Gui)
+      print("DESTROY TARGET")
+   end
+end
 
 function CheckTableMoney_POPUP(TableGuiMoney, Target)
    for index, GuiTable in pairs(TableGuiMoney) do
@@ -132,19 +138,15 @@ end
 
 function CheckMoney_POPUP_GUI()
    for index, Gui in pairs(MoneyChange_POPUP_UI:GetChildren()) do
-      if Gui:IsA("Frame") then
-         print(Gui)
-         print(Gui:FindFirstChild("text").Text)
-      end
-      if Gui:IsA("Frame") and Gui.Name == "MoneyChange" and Gui:FindFirstChild("text").Text ~= "+9999" and tonumber(Gui:FindFirstChild("text").Text) < 0 and not CheckTableMoney_POPUP(DontCareMoney_POPUP, Gui) then
-         print("FUCK")
-
-         local textObject = Gui:FindFirstChild("text")
-         if textObject and textObject:IsA("TextLabel") then
-            table.insert(DontCareMoney_POPUP, Gui)
-            local GuiMoney = textObject.Text
-            if tonumber(GuiMoney) < 0 then
-               return math.abs(tonumber(GuiMoney))
+      if Gui:IsA("Frame") and Gui.Name == "MoneyChange" and not CheckTableMoney_POPUP(DontCareMoney_POPUP, Gui) then
+         Gui:FindFirstChild("text").Text:GetPropertyChangedSignal("Text"):Connect(function()
+            local textObject = Gui:FindFirstChild("text")
+            if textObject and textObject:IsA("TextLabel") then
+               table.insert(DontCareMoney_POPUP, Gui)
+               local GuiMoney = textObject.Text
+               if tonumber(GuiMoney) < 0 then
+                  return math.abs(tonumber(GuiMoney))
+               end
             end
          end
       end
