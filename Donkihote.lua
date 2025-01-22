@@ -138,7 +138,7 @@ end
 
 function CheckMoney_POPUP_GUI()
    for index, Gui in pairs(MoneyChange_POPUP_UI:GetChildren()) do
-      task.wait(0.3)
+      task.wait(0.5)
       if Gui:IsA("Frame") and Gui.Name == "MoneyChange" and Gui.Visible == true and not CheckTableMoney_POPUP(DontCareMoney_POPUP, Gui) then
          
          local textObject = Gui:FindFirstChild("text")
