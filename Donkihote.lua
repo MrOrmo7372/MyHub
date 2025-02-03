@@ -103,13 +103,16 @@ function RemoveLag()
 end
 
 function Black_Screen()
+   game.Workspace.CurrentCamera.CameraType = Enum.CameraType.Scriptable
+   game:GetService("RunService"):Set3dRenderingEnabled(false)
+   
    local player = game.Players.LocalPlayer
    local gui = Instance.new("ScreenGui")
    gui.Parent = player:FindFirstChild("PlayerGui") or Instance.new("PlayerGui", player)
    
    -- Tạo Background đen
    local blackBackground = Instance.new("Frame")
-   blackBackground.Size = UDim2.new(1, 0, 1, 0) -- Full màn hình
+   blackBackground.Size = UDim2.new(10, 0, 10, 0) -- Full màn hình
    blackBackground.BackgroundColor3 = Color3.fromRGB(0, 0, 0) -- Màu đen
    blackBackground.BorderSizePixel = 0
    blackBackground.Parent = gui
