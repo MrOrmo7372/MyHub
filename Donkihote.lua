@@ -1,4 +1,3 @@
-print("THIS IS THE START OF THE SCRIPT")
 local HttpService = game:GetService("HttpService")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
