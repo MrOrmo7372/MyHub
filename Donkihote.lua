@@ -250,6 +250,10 @@ end
 ResultsUI:GetPropertyChangedSignal("Enabled"):Connect(function()
    if Auto_Retry_L == true then
       RetryGame()
+      task.wait()
+      RetryGame()
+      task.wait()
+      RetryGame()
    end
 end)
 
