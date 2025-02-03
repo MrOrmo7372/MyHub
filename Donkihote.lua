@@ -61,7 +61,7 @@ local FarmGems = Window:CreateTab("FarmGems", "book-dashed")
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ALL VALUE LOADING WORKING
 local Auto_Start_L = false
 local Auto_Retry_L = false
-local RemoveLag = false
+local Remove_Lag = false
 
 function StartGame()
    local auto_start = Vote_Start:InvokeServer()
@@ -127,7 +127,7 @@ local Remove_LAG = AutoFarm:CreateToggle({
    CurrentValue = false,
    Flag = "Remove_Lag",
    Callback = function(Value)
-         RemoveLag = Value
+         Remove_Lag = Value
    end,
 })
 
@@ -216,7 +216,7 @@ ResultsUI:GetPropertyChangedSignal("Enabled"):Connect(function()
    end
 end)
 
-if RemoveLag == true and game.PlaceId ~= 8304191830 then
+if Remove_Lag == true and game.PlaceId ~= 8304191830 then
    RemoveLag()
 end
 
