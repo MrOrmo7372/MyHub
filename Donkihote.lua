@@ -62,6 +62,7 @@ local FarmGems = Window:CreateTab("FarmGems", "book-dashed")
 local Auto_Start_L = false
 local Auto_Retry_L = false
 local Remove_Lag = false
+local BlackScreen = false
 
 function StartGame()
    local auto_start = Vote_Start:InvokeServer()
@@ -102,6 +103,27 @@ function RemoveLag()
    end
 end
 
+function Black_Screen()
+   -- Tạo Background đen
+   local blackBackground = Instance.new("Frame")
+   blackBackground.Size = UDim2.new(1, 0, 1, 0) -- Full màn hình
+   blackBackground.BackgroundColor3 = Color3.fromRGB(0, 0, 0) -- Màu đen
+   blackBackground.BorderSizePixel = 0
+   blackBackground.Parent = gui
+
+   -- Tạo Text hiển thị số Gems
+   local gemsText = Instance.new("TextLabel")
+   gemsText.Size = UDim2.new(0.3, 0, 0.1, 0) -- Kích thước
+   gemsText.Position = UDim2.new(0.35, 0, 0.45, 0) -- Canh giữa màn hình
+   gemsText.BackgroundTransparency = 1 -- Trong suốt
+   gemsText.TextColor3 = Color3.fromRGB(255, 255, 255) -- Màu chữ trắng
+   gemsText.TextScaled = true
+   gemsText.Font = Enum.Font.SourceSansBold
+   gemsText.Parent = gui
+
+   gemsText.Text = game.Players.LocalPlayer:WaitForChild("_stats"):WaitForChild("gem_amount").Value
+end
+
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------AUTO FARM ZONE
 
 local AutoStart = AutoFarm:CreateToggle({
@@ -128,6 +150,15 @@ local Remove_LAG = AutoFarm:CreateToggle({
    Flag = "Remove_Lag",
    Callback = function(Value)
          Remove_Lag = Value
+   end,
+})
+
+local Black_SCREEN = AutoFarm:CreateToggle({
+   Name = "Black Screen",
+   CurrentValue = false,
+   Flag = "Black_Screen",
+   Callback = function(Value)
+         BlackScreen = Value
    end,
 })
 
@@ -218,6 +249,10 @@ end)
 
 if Remove_Lag == true and game.PlaceId ~= 8304191830 then
    RemoveLag()
+end
+
+if BlackScreen == true and game.PlaceId ~= 8304191830 then
+   Black_Screen()
 end
 
 MoneyPlayerText:GetPropertyChangedSignal("Text"):Connect(function()
