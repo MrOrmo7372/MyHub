@@ -12,23 +12,9 @@ local MoneyPlayerText = game.Players.LocalPlayer:WaitForChild("PlayerGui"):WaitF
 local ResultsUI = game.Players.LocalPlayer:WaitForChild("PlayerGui"):WaitForChild("ResultsUI")
 local FileName_User = "MrHubConfig_" .. game.Players.LocalPlayer.Name .. "_User"
 
-local CheckPOPUP = Instance.new("BoolValue")
-CheckPOPUP.Name = "CheckPopUp"
-CheckPOPUP.Value = false
-CheckPOPUP.Parent = game.Players.LocalPlayer
-
-local CheckPOPUP_Upgrade = Instance.new("BoolValue")
-CheckPOPUP_Upgrade.Name = "CheckPopUp_Upgrade"
-CheckPOPUP_Upgrade.Value = false
-CheckPOPUP_Upgrade.Parent = game.Players.LocalPlayer
-
 --------------------------------------------------------------------------------Info AA
 --game.Players.LocalPlayer:WaitForChild("PlayerGui").spawn_units.lives.Frame.Units /unit = [number].Main.View.WorldModel.[name_unit]
 ---------------------------------------------------------------------------------------
-
-local Unit_Table = {
-   luffy_christmas
-}
 
 --local UnitsEquip_Player = game.Players.LocalPlayer:WaitForChild("PlayerGui").spawn_units.lives.Frame.Units
 
@@ -37,7 +23,7 @@ local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 local Window = Rayfield:CreateWindow({
    Name = "MrHub AA V0.0065 Beta",
    Icon = 0, -- Icon in Topbar. Can use Lucide Icons (string) or Roblox Image (number). 0 to use no icon (default).
-   LoadingTitle = "Waiting AA Script (MrHub V0.0065)",
+   LoadingTitle = "Waiting AA Script (MrHub V0.0066)",
    LoadingSubtitle = "by MrHub",
    Theme = "Default", -- Check https://docs.sirius.menu/rayfield/configuration/themes
 
@@ -46,7 +32,7 @@ local Window = Rayfield:CreateWindow({
 
    ConfigurationSaving = {
       Enabled = true,
-      FolderName = FileName_User, -- Create a custom folder for your hub/game
+      FolderName = nil, -- Create a custom folder for your hub/game
       FileName = "MrHub"
    },
 
@@ -71,19 +57,11 @@ local Window = Rayfield:CreateWindow({
 local AutoFarm = Window:CreateTab("Auto Farm", "apple")
 local StillCheck = Window:CreateTab("Still Check", "badge-alert")
 local FarmGems = Window:CreateTab("FarmGems", "book-dashed")
-local MarcoZone = Window:CreateTab("Marco Zone", "gamepad-2")
-
-local MarcoFolder = "MrHub_Marco"
-
-local Fullpath = FileName_User .. "/" .. MarcoFolder
-if not isfolder(Fullpath) then
-    makefolder(Fullpath)
-    print("Created folder:", Fullpath)
-end
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ALL VALUE LOADING WORKING
 local Auto_Start_L = false
 local Auto_Retry_L = false
+local RemoveLag = false
 
 function StartGame()
    local auto_start = Vote_Start:InvokeServer()
@@ -93,250 +71,36 @@ function RetryGame()
    local auto_retry = Set_Game_Finish_Vote:InvokeServer("replay")
 end
 
-----------------------------------------------------------------------------------------------------------------------------------------------------------------------MARCO ZONE
-
--- Danh sách tên event cần theo dõi (bạn có thể thêm vào nếu cần)
-local TargetEventNames = {
-    "spawn_unit",
-    "upgrade_unit_ingame"
-}
-
-local TABLE_EVENT_PLACE = {
-   Step = nil,
-   Event_Type = nil,
-   Cost_Money = nil,
-   Unit_Type = nil,
-   CFramePosition = nil
-}
-
-local TABLE_EVENT_UPGRADE = {
-   Step = nil,
-   Event_Type = nil,
-   Cost_Money = nil,
-   Unit_Upgrade_CFrame = nil
-}
-
-local MARCO_TABLE = {}
-
-local STEP = 1
-local Record_Marco_BOOLEAN = false -- Đặt giá trị mặc định cho chế độ ghi macro
-local Replay_Marco_BOOLEAN = false
-
-local DontCareMoney_POPUP = {}
-
-function CheckTableMoney_POPUP(TableGuiMoney, Target)
-   for index, GuiTable in pairs(TableGuiMoney) do
-      if GuiTable == Target then
-         return true
-      end
+function RemoveLag()
+   local Map = game.Workspace:WaitForChild("_map")
+   if Map then
+      Map:Destroy()
    end
-   return false
-end
 
-function CheckMoney_POPUP_GUI()
-   for index, Gui in pairs(MoneyChange_POPUP_UI:GetChildren()) do
-      if Gui:IsA("Frame") and Gui.Name == "MoneyChange" and Gui.Visible == true and not CheckTableMoney_POPUP(DontCareMoney_POPUP, Gui) then
-         
-         local textObject = Gui:FindFirstChild("text")
-         if textObject and textObject:IsA("TextLabel") then
-            table.insert(DontCareMoney_POPUP, Gui)
-            local GuiMoney = textObject.Text
-            if tonumber(GuiMoney) < 0 then
-               return math.abs(tonumber(GuiMoney))
-            end
-         end
-         
+   for _, obj in pairs(game.Lighting:GetChildren()) do
+      obj:Destroy()
+   end
+   
+   game.Lighting.Ambient = Color3.fromRGB(255, 255, 255) -- Giữ ánh sáng đơn giản
+   game.Lighting.Brightness = 1
+   game.Lighting.GlobalShadows = false
+   game.Lighting.FogEnd = 1000000 -- Xóa sương mù nếu có
+
+   -- Kiểm tra xem thư mục _Terrain có tồn tại không
+   local terrainFolder = game.Workspace:WaitForChild("_terrain")
+   if not terrainFolder then
+      return
+   end
+
+   -- Duyệt tất cả Part và Model trong _Terrain
+   for _, obj in pairs(terrainFolder:GetDescendants()) do
+      if obj:IsA("Decal") or obj:IsA("Texture") then
+         obj:Destroy() -- Xóa tất cả Texture & Decal
+      elseif obj:IsA("Part") or obj:IsA("MeshPart") then
+         obj.Material = Enum.Material.SmoothPlastic -- Đổi Material về vật liệu nhẹ nhất
       end
    end
 end
-
-
-
-
-
-
-
-local function listMacros()
-    if isfolder(Fullpath) then
-        local files = listfiles(Fullpath)
-        local fileNames = {}
-        for _, filePath in ipairs(files) do
-            table.insert(fileNames, filePath:match("([^/]+)$")) -- Lấy tên file
-        end
-        return fileNames
-    else
-        print("Folder Marco not found!")
-        return {}
-    end
-end
-
-
-local Choose_Marco_File = nil
-local Cooldown_Place = 4
-
-local RecordMarco_Button = MarcoZone:CreateToggle({
-   Name = "Record Marco",
-   CurrentValue = false,
-   Flag = "Record_Marco",
-   Callback = function(Value)
-         Record_Marco_BOOLEAN = Value
-         if Value == false and Choose_Marco_File ~= nil and next(MARCO_TABLE) ~= nil then
-            local jsonData = HttpService:JSONEncode(MARCO_TABLE)
-            writefile(Fullpath .. "/" .. Choose_Marco_File[1], jsonData)
-         end
-   end,
-})
-
-
-local ChooseMarco = MarcoZone:CreateDropdown({
-   Name = "Choose Marco",
-   Options = listMacros(),
-   CurrentOption = {"nil"},
-   MultipleOptions = false,
-   Flag = "Choose_Marco", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
-   Callback = function(Options)
-   -- The function that takes place when the selected option is changed
-   -- The variable (Options) is a table of strings for the current selected options
-         Choose_Marco_File = Options
-   end,
-})
-
-local CreateMarco = MarcoZone:CreateInput({
-   Name = "Create Marco",
-   CurrentValue = "",
-   PlaceholderText = "Enter Name Here",
-   RemoveTextAfterFocusLost = true,
-   Flag = "Create_Marco",
-   Callback = function(Text)
-   -- The function that takes place when the input is changed
-   -- The variable (Text) is a string for the value in the text box
-         -- Lưu dữ liệu macro vào JSON
-         if Text ~= "" then
-            local FileName = Text .. ".json"
-            local jsonData = HttpService:JSONEncode("{}")
-            writefile(Fullpath .. "/" .. FileName, jsonData)
-            print("Macro saved:", FileName)
-            ChooseMarco:Refresh(listMacros()) -- The new list of options available.
-         end
-   end,
-})
-
-local Choose_CooldownMarco = MarcoZone:CreateSlider({
-   Name = "Cooldown Marco Place",
-   Range = {0, 4},
-   Increment = 1,
-   Suffix = "Cooldown",
-   CurrentValue = 4,
-   Flag = "Cooldown_Place", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
-   Callback = function(Value)
-   -- The function that takes place when the slider changes
-   -- The variable (Value) is a number which correlates to the value the slider is currently at
-         Cooldown_Place = Value
-   end,
-})
-
-local ReplayMarco_Button = MarcoZone:CreateToggle({
-   Name = "Replay Marco",
-   CurrentValue = false,
-   Flag = "Replay_Marco",
-   Callback = function(Value)
-         Replay_Marco_BOOLEAN = Value
-   end,
-})
-
-
-
-
-function CFrameToTable(cf)
-    print(typeof(cf))
-    return {cf:GetComponents()}
-end
-
-local mt = getrawmetatable(game)
-local oldNamecall = mt.__namecall
-setreadonly(mt, false)
-
-mt.__namecall = function(self, ...)
-    local method = getnamecallmethod()
-
-    if (method == "InvokeServer" or method == "FireServer") and Record_Marco_BOOLEAN == true then
-        -- Kiểm tra nếu sự kiện nằm trong danh sách theo dõi
-        if table.find(TargetEventNames, self.Name) then
-            if self.Name == "spawn_unit" then
-               print("Intercepted event:", self.Name)
-               local args = {...}
-               CheckPOPUP.Value = true
-
-               TABLE_EVENT_PLACE.Step = STEP
-               TABLE_EVENT_PLACE.Event_Type = self.Name
-               TABLE_EVENT_PLACE.Unit_Type = args[1]
-               local ChangeType_TARGET = args[2]
-               TABLE_EVENT_PLACE.CFramePosition = CFrameToTable(ChangeType_TARGET)
-
-               --table.insert(MARCO_TABLE, STEP, TABLE_EVENT_PLACE)
-               MARCO_TABLE[STEP] = TABLE_EVENT_PLACE
-               STEP += 1
-
-            elseif self.Name == "upgrade_unit_ingame" then
-               print("Upgrade unit:", self.Name)
-               local args = {...}
-               CheckPOPUP_Upgrade.Value = true
-
-               local HumanoidRootPart_targetCFRAME = args[1].HumanoidRootPart.CFrame
-               TABLE_EVENT_PLACE.Step = STEP
-               TABLE_EVENT_UPGRADE.Event_Type = self.Name
-               TABLE_EVENT_UPGRADE.Unit_Upgrade_CFrame = HumanoidRootPart_targetCFRAME
-
-               table.insert(MARCO_TABLE, STEP, TABLE_EVENT_UPGRADE)
-               STEP += 1
-            end
-        end
-    end
-
-    -- Gọi phương thức gốc
-    return oldNamecall(self, ...)
-end
-
-setreadonly(mt, true)
-
-CheckPOPUP.Changed:Connect(function()
-   if CheckPOPUP.Value == true then
-      task.wait(0.5)
-      local Money = CheckMoney_POPUP_GUI()
-      MARCO_TABLE[STEP - 1].Cost_Money = Money
-      print(MARCO_TABLE[STEP - 1].Event_Type)
-      print(MARCO_TABLE[STEP - 1].Cost_Money)
-      print(MARCO_TABLE[STEP - 1].Unit_Type)
-      print(MARCO_TABLE[STEP - 1].CFramePosition)
-      CheckPOPUP.Value = false
-
-      if MARCO_TABLE[STEP - 1].Cost_Money == nil then
-         print("CANT PLACE")
-         table.remove(MARCO_TABLE, STEP - 1)
-         STEP -= 1
-      end
-   end
-end)
-
-CheckPOPUP_Upgrade.Changed:Connect(function()
-   if CheckPOPUP_Upgrade.Value == true then
-      task.wait(0.5)
-      local Money = CheckMoney_POPUP_GUI()
-      MARCO_TABLE[STEP - 1].Cost_Money = Money
-      print(MARCO_TABLE[STEP - 1].Event_Type)
-      print(MARCO_TABLE[STEP - 1].Cost_Money)
-      print(MARCO_TABLE[STEP - 1].Unit_Upgrade_CFrame)
-      CheckPOPUP_Upgrade.Value = false
-
-      if MARCO_TABLE[STEP - 1].Cost_Money == nil then
-         print("CANT UPGRADE")
-         table.remove(MARCO_TABLE, STEP - 1)
-         STEP -= 1
-      end
-   end
-end)
-
-
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------AUTO FARM ZONE
 
@@ -358,17 +122,26 @@ local AutoRetry = AutoFarm:CreateToggle({
    end,
 })
 
-----------------------------------------------------------------------------------------------------------------------------------------------------------------------STILL CHECK ZONE
-
-local PrintMoneyPlayer = StillCheck:CreateButton({
-   Name = "Print Money Player",
-   Callback = function()
-   -- The function that takes place when the button is pressed
-         if game.PlaceId ~= 8304191830 then
-            print(MoneyPlayerText.Text)
-         end
+local Remove_LAG = AutoFarm:CreateToggle({
+   Name = "Remove Lag",
+   CurrentValue = false,
+   Flag = "Remove_Lag",
+   Callback = function(Value)
+         RemoveLag = Value
    end,
 })
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------STILL CHECK ZONE
+
+--local PrintMoneyPlayer = StillCheck:CreateButton({
+   --Name = "Print Money Player",
+   --Callback = function()
+   -- The function that takes place when the button is pressed
+         --if game.PlaceId ~= 8304191830 then
+            --print(MoneyPlayerText.Text)
+         --end
+   --end,
+--})
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------FARM GEMS ZONE
 local Sakura_FarmGems = false
@@ -438,15 +211,14 @@ if Auto_Start_L == true and game.PlaceId ~= 8304191830 then
 end
 
 ResultsUI:GetPropertyChangedSignal("Enabled"):Connect(function()
-   if Choose_Marco_File ~= nil and next(MARCO_TABLE) ~= nil then
-      local jsonData = HttpService:JSONEncode(MARCO_TABLE)
-      writefile(Fullpath .. "/" .. Choose_Marco_File[1], jsonData)
-   end
-      
    if Auto_Retry_L == true then
       RetryGame()
    end
 end)
+
+if RemoveLag == true and game.PlaceId ~= 8304191830 then
+
+end
 
 MoneyPlayerText:GetPropertyChangedSignal("Text"):Connect(function()
    if Sakura_FarmGems == true and Allow_Place == true and Sakura_Unit < 4 and game.PlaceId ~= 8304191830 then
