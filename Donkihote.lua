@@ -21,7 +21,7 @@ local FileName_User = "MrHubConfig_" .. game.Players.LocalPlayer.Name .. "_User"
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
 local Window = Rayfield:CreateWindow({
-   Name = "MrHub AA V0.0065 Beta",
+   Name = "MrHub AA V0.0066 Beta",
    Icon = 0, -- Icon in Topbar. Can use Lucide Icons (string) or Roblox Image (number). 0 to use no icon (default).
    LoadingTitle = "Waiting AA Script (MrHub V0.0066)",
    LoadingSubtitle = "by MrHub",
