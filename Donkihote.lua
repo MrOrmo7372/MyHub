@@ -217,7 +217,7 @@ ResultsUI:GetPropertyChangedSignal("Enabled"):Connect(function()
 end)
 
 if RemoveLag == true and game.PlaceId ~= 8304191830 then
-
+   RemoveLag()
 end
 
 MoneyPlayerText:GetPropertyChangedSignal("Text"):Connect(function()
