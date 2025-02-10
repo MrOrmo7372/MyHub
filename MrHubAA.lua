@@ -142,13 +142,9 @@ end
 -- Hàm lưu dữ liệu với kiểm tra trùng lặp
 local function saveMacroData()
     if #MARCO_TABLE == 0 then return end
-
-    local dataToSave = {
-        local STEP_TABLE = MARCO_TABLE
-    }
    
     -- Kiểm tra bản ghi trùng lặp
-    local jsonData = HttpService:JSONEncode(dataToSave)
+    local jsonData = HttpService:JSONEncode(MARCO_TABLE)
     local TARGET = MarcoFile .. "/" .. "unit_macro.json"
     writefile(TARGET, jsonData)
     print("Đã lưu macro vào unit_macro.json với", #MARCO_TABLE, "bước")
