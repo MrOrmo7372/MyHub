@@ -182,11 +182,11 @@ mt.__namecall = function(self, ...)
                             CFrame = serializeCFrame(args[2]),
                         }
                     }
-                    Steps += 1
                     table.insert(MARCO_TABLE, unitData)
                     print("Đã ghi lại đợt đặt Unit:", unitData[Steps].Unit_Type)
                     print(unitData[Steps].CFrame.Position[1])
                     saveMacroData()
+                    Steps += 1
                 end
             else -- FireServer
                 local unitData = {
