@@ -125,6 +125,7 @@ local Auto_Retry_Toggle = AutoFarm:CreateToggle({
 local TargetEventNames = {"spawn_unit"}
 local MARCO_TABLE = {}
 local Record_Marco_BOOLEAN = true -- Giả sử biến này được điều khiển bởi GUI
+local Steps = 1
 
 -- Hàm chuyển đổi CFrame sang định dạng có thể serialize
 local function serializeCFrame(cf)
@@ -175,10 +176,13 @@ mt.__namecall = function(self, ...)
             if method == "InvokeServer" then
                 if result == true then -- Giả định server trả về true khi thành công
                     local unitData = {
-                        Event_Type = remoteName,
-                        Unit_Type = args[1],
-                        CFrame = serializeCFrame(args[2]),
+                        [Steps] = {
+                            Event_Type = remoteName,
+                            Unit_Type = args[1],
+                            CFrame = serializeCFrame(args[2]),
+                        }
                     }
+                    Steps += 1
                     table.insert(MARCO_TABLE, unitData)
                     print("Đã ghi lại đợt đặt Unit:", unitData.Unit_Type)
                     print(unitData.CFrame.Position[1])
