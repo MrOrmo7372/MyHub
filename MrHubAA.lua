@@ -138,6 +138,26 @@ local function serializeCFrame(cf)
     }
 end
 
+-- Hàm lưu dữ liệu với kiểm tra trùng lặp
+local function saveMacroData()
+    if #MARCO_TABLE == 0 then return end
+    
+    -- Kiểm tra bản ghi trùng lặp
+    local uniqueEntries = {}
+    for _, entry in ipairs(MARCO_TABLE) do
+        local key = entry.Unit_Type..tostring(entry.CFrame.Position)
+        if not uniqueEntries[key] then
+            uniqueEntries[key] = true
+            table.insert(uniqueEntries, entry)
+        end
+    end
+
+    local jsonData = HttpService:JSONEncode(uniqueEntries)
+    local TARGET = MarcoFile .. "/" .. "unit_macro.json"
+    writefile(TARGET, jsonData)
+    print("Đã lưu macro vào unit_macro.json (", #uniqueEntries, "bản ghi)")
+end
+
 local mt = getrawmetatable(game)
 setreadonly(mt, false)
 local oldNamecall = mt.__namecall
@@ -181,26 +201,6 @@ mt.__namecall = function(self, ...)
 end
 
 setreadonly(mt, true)
-
--- Hàm lưu dữ liệu với kiểm tra trùng lặp
-local function saveMacroData()
-    if #MARCO_TABLE == 0 then return end
-    
-    -- Kiểm tra bản ghi trùng lặp
-    local uniqueEntries = {}
-    for _, entry in ipairs(MARCO_TABLE) do
-        local key = entry.Unit_Type..tostring(entry.CFrame.Position)
-        if not uniqueEntries[key] then
-            uniqueEntries[key] = true
-            table.insert(uniqueEntries, entry)
-        end
-    end
-
-    local jsonData = HttpService:JSONEncode(uniqueEntries)
-    local TARGET = MarcoFile .. "/" .. "unit_macro.json"
-    writefile("TARGET", jsonData)
-    print("Đã lưu macro vào unit_macro.json (", #uniqueEntries, "bản ghi)")
-end
 
 -- Ví dụ sử dụng:
 -- saveMacroData() -- Gọi khi cần lưu dữ liệu
