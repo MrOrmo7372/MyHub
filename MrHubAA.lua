@@ -172,7 +172,7 @@ mt.__namecall = function(self, ...)
                        CFrame = serializeCFrame(args[2]),
                     }
                     table.insert(MARCO_TABLE, Steps, Curret_Marco)
-                    saveMacroData()
+                    
                     Steps += 1
                 end
             else -- FireServer
