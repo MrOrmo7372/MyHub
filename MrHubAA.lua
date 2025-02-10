@@ -144,7 +144,7 @@ local function saveMacroData()
     if #MARCO_TABLE == 0 then return end
     print(MARCO_TABLE[Steps].Event_Type)
    
-    local jsonData = HttpService:JSONEncode(MARCO_TABLE)
+    local jsonData = HttpService:JSONEncode(MARCO_TABLE[Steps])
     local TARGET = MarcoFile .. "/" .. "unit_macro.json"
     writefile(TARGET, jsonData)
     print("Đã lưu macro vào unit_macro.json với", #MARCO_TABLE, "bước")
