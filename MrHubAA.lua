@@ -1,15 +1,30 @@
+--###############################################################################################################################################################################################################################################################-Load Local Info
 local HttpService = game:GetService("HttpService")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
-local Client_to_Server_File_Location = ReplicatedStorage:WaitForChild("endpoints"):WaitForChild("client_to_server")
+local Player = game.Players.LocalPlayer
 
-local Vote_Start = Client_to_Server_File_Location:WaitForChild("vote_start")
-local Spawn_Unit = Client_to_Server_File_Location:WaitForChild("spawn_unit")
-local Set_Game_Finish_Vote = Client_to_Server_File_Location:WaitForChild("set_game_finished_vote")
+local AA_ID = 8304191830
+
+local Client_to_Server_File_Location = ReplicatedStorage:WaitForChild("endpoints"):WaitForChild("client_to_server")
+   local Vote_Start = Client_to_Server_File_Location:WaitForChild("vote_start")
+   local Spawn_Unit = Client_to_Server_File_Location:WaitForChild("spawn_unit")
+   local Set_Game_Finish_Vote = Client_to_Server_File_Location:WaitForChild("set_game_finished_vote")
+
+local PlayerGui = Player:WaitForChild("PlayerGui")
+   local ResultsUI = PlayerGui:WaitForChild("ResultsUI")
 
 local FileName_User = "MrHub_" .. game.Players.LocalPlayer.Name .. "_User"
+--###############################################################################################################################################################################################################################################################-End Local Info
+--###############################################################################################################################################################################################################################################################-Load Install Setting Game Player
+local Auto_Start_Player = Instance.new("BoolValue")
+Auto_Start_Player.Name = "Auto_Start_Player"
+Auto_Start_Player.Value = false
+Auto_Start_Player.Parent = Player
 
---###############################################################################################################################################################################################################################################################
+local Auto_Start_Local = Player:WaitForChild("Auto_Start_Player")
+--###############################################################################################################################################################################################################################################################-End Install Setting Game Player
+--###############################################################################################################################################################################################################################################################-Load RayScript
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 local Window = Rayfield:CreateWindow({
    Name = "Anime Adventure Script (v0.1)",
@@ -44,4 +59,58 @@ local Window = Rayfield:CreateWindow({
       Key = {"Hello"} -- List of keys that will be accepted by the system, can be RAW file links (pastebin, github etc) or simple strings ("hello","key22")
    }
 })
---###############################################################################################################################################################################################################################################################
+--###############################################################################################################################################################################################################################################################-End RayScript
+--###############################################################################################################################################################################################################################################################-Load Menu
+local AutoFarm = Window:CreateTab("Auto Farm", "apple")
+local StillCheck = Window:CreateTab("Still Check", "badge-alert")
+local FarmGems = Window:CreateTab("FarmGems", "book-dashed")
+--###############################################################################################################################################################################################################################################################-End Menu
+--###############################################################################################################################################################################################################################################################-Load All Local Setting
+local Auto_Start_Boolean = false
+local Auto_Retry_Boolean = false
+--###############################################################################################################################################################################################################################################################-End All Local Setting
+--###############################################################################################################################################################################################################################################################-Load All Function
+function Auto_Start_Fucntion()
+   if Auto_Start_Local.Value == false then
+      local Auto_Start_Call = Vote_Start:InvokeServer()
+      Auto_Start_Local.Value = true
+   end
+end
+--###############################################################################################################################################################################################################################################################-End All Function
+--###############################################################################################################################################################################################################################################################-Load All Menu
+local Auto_Start_Toggle = AutoFarm:CreateToggle({
+   Name = "Auto Start",
+   CurrentValue = false,
+   Flag = "Auto_Start", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Auto_Start_Value)
+   -- The function that takes place when the toggle is pressed
+   -- The variable (Value) is a boolean on whether the toggle is true or false
+         Auto_Start_Boolean = Auto_Start_Value
+         if Auto_Start_Boolean == true then
+            Auto_Start_Fucntion()
+         end
+   end,
+})
+
+local Auto_Retry_Toggle = AutoFarm:CreateToggle({
+   Name = "Auto Retry",
+   CurrentValue = false,
+   Flag = "Auto_Retry", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Auto_Retry_Value)
+   -- The function that takes place when the toggle is pressed
+   -- The variable (Value) is a boolean on whether the toggle is true or false
+         Auto_Retry_Boolean = Auto_Retry_Value
+   end,
+})
+--###############################################################################################################################################################################################################################################################-End All Menu
+
+
+Rayfield:LoadConfiguration()
+
+
+--###############################################################################################################################################################################################################################################################-Load All Condition
+if Auto_Start_Boolean == true then
+   Auto_Start_Fucntion()
+end
+--###############################################################################################################################################################################################################################################################-End All Condition
+
