@@ -175,16 +175,19 @@ mt.__namecall = function(self, ...)
         if success then
             if method == "InvokeServer" then
                 if result == true then -- Giả định server trả về true khi thành công
-                    local unitData = {
-                        [Steps] = {
-                            Event_Type = remoteName,
-                            Unit_Type = args[1],
-                            CFrame = serializeCFrame(args[2]),
-                        }
+                    --local unitData = {
+                        --[Steps] = {
+                            --Event_Type = remoteName,
+                            --Unit_Type = args[1],
+                            --CFrame = serializeCFrame(args[2]),
+                        --}
+                    --}
+                    --table.insert(MARCO_TABLE, unitData)
+                    MARCO_TABLE[Steps] = {
+                       Event_Type = remoteName,
+                       Unit_Type = args[1],
+                       CFrame = serializeCFrame(args[2]),
                     }
-                    table.insert(MARCO_TABLE, unitData)
-                    print("Đã ghi lại đợt đặt Unit:", unitData[Steps].Unit_Type)
-                    print(unitData[Steps].CFrame.Position[1])
                     saveMacroData()
                     Steps += 1
                 end
