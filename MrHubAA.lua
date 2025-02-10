@@ -37,9 +37,9 @@ local Auto_Retry_Local = Player:WaitForChild("Auto_Retry_Player")
 --###############################################################################################################################################################################################################################################################-Load RayScript
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 local Window = Rayfield:CreateWindow({
-   Name = "Anime Adventure Script (v0.1)",
+   Name = "Anime Adventure Script (v0.2)",
    Icon = "slack", -- Icon in Topbar. Can use Lucide Icons (string) or Roblox Image (number). 0 to use no icon (default).
-   LoadingTitle = "Anime Adventure Script (v0.1)",
+   LoadingTitle = "Anime Adventure Script (v0.2)",
    LoadingSubtitle = "by MrHub",
    Theme = "Default", -- Check https://docs.sirius.menu/rayfield/configuration/themes
 
@@ -142,8 +142,8 @@ end
 -- Hàm lưu dữ liệu với kiểm tra trùng lặp
 local function saveMacroData()
     if #MARCO_TABLE == 0 then return end
+    print(MARCO_TABLE[Steps].Event_Type)
    
-    -- Kiểm tra bản ghi trùng lặp
     local jsonData = HttpService:JSONEncode(MARCO_TABLE)
     local TARGET = MarcoFile .. "/" .. "unit_macro.json"
     writefile(TARGET, jsonData)
@@ -166,20 +166,11 @@ mt.__namecall = function(self, ...)
         if success then
             if method == "InvokeServer" then
                 if result == true then -- Giả định server trả về true khi thành công
-                    --local unitData = {
-                        --[Steps] = {
-                            --Event_Type = remoteName,
-                            --Unit_Type = args[1],
-                            --CFrame = serializeCFrame(args[2]),
-                        --}
-                    --}
-                    --table.insert(MARCO_TABLE, unitData)
                     MARCO_TABLE[Steps] = {
                        Event_Type = remoteName,
                        Unit_Type = args[1],
                        CFrame = serializeCFrame(args[2]),
                     }
-                    print(MARCO_TABLE[Steps].Event_Type)
                     saveMacroData()
                     Steps += 1
                 end
