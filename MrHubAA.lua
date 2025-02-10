@@ -184,7 +184,7 @@ mt.__namecall = function(self, ...)
                     }
                     table.insert(MARCO_TABLE, unitData)
                     print("Đã ghi lại đợt đặt Unit:", unitData[Steps].Unit_Type)
-                    print(unitData[Steps].CFrame.Position)
+                    print(unitData[Steps].CFrame)
                     saveMacroData()
                     Steps += 1
                 end
