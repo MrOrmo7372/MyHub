@@ -174,11 +174,16 @@ mt.__namecall = function(self, ...)
                         --}
                     --}
                     --table.insert(MARCO_TABLE, unitData)
-                    MARCO_TABLE[Steps] = {
+                    --MARCO_TABLE[Steps] = {
+                       --Event_Type = remoteName,
+                       --Unit_Type = args[1],
+                       --CFrame = serializeCFrame(args[2]),
+                    --}
+                    table.insert(MARCO_TABLE, [Steps] = {
                        Event_Type = remoteName,
                        Unit_Type = args[1],
-                       CFrame = serializeCFrame(args[2]),
-                    }
+                       CFrame = serializeCFrame(args[2])
+                    })
                     saveMacroData()
                     Steps += 1
                 end
