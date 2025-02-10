@@ -37,9 +37,9 @@ local Auto_Retry_Local = Player:WaitForChild("Auto_Retry_Player")
 --###############################################################################################################################################################################################################################################################-Load RayScript
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 local Window = Rayfield:CreateWindow({
-   Name = "Anime Adventure Script (v0.2)",
+   Name = "Anime Adventure Script (v0.1)",
    Icon = "slack", -- Icon in Topbar. Can use Lucide Icons (string) or Roblox Image (number). 0 to use no icon (default).
-   LoadingTitle = "Anime Adventure Script (v0.2)",
+   LoadingTitle = "Anime Adventure Script (v0.1)",
    LoadingSubtitle = "by MrHub",
    Theme = "Default", -- Check https://docs.sirius.menu/rayfield/configuration/themes
 
@@ -144,7 +144,7 @@ local function saveMacroData()
     if #MARCO_TABLE == 0 then return end
     print(MARCO_TABLE[Steps].Event_Type)
    
-    local jsonData = HttpService:JSONEncode(MARCO_TABLE[Steps])
+    local jsonData = HttpService:JSONEncode(MARCO_TABLE)
     local TARGET = MarcoFile .. "/" .. "unit_macro.json"
     writefile(TARGET, jsonData)
     print("Đã lưu macro vào unit_macro.json với", #MARCO_TABLE, "bước")
