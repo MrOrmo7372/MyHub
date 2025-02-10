@@ -22,7 +22,13 @@ Auto_Start_Player.Name = "Auto_Start_Player"
 Auto_Start_Player.Value = false
 Auto_Start_Player.Parent = Player
 
+local Auto_Retry_Player = Instance.new("BoolValue")
+Auto_Start_Player.Name = "Auto_Retry_Player"
+Auto_Start_Player.Value = false
+Auto_Start_Player.Parent = Player
+
 local Auto_Start_Local = Player:WaitForChild("Auto_Start_Player")
+local Auto_Retry_Local = Player:WaitForChild("Auto_Retry_Player")
 --###############################################################################################################################################################################################################################################################-End Install Setting Game Player
 --###############################################################################################################################################################################################################################################################-Load RayScript
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
@@ -76,6 +82,11 @@ function Auto_Start_Fucntion()
       Auto_Start_Local.Value = true
    end
 end
+
+function Auto_Retry_Function()
+   local Auto_Retry_Call = Set_Game_Finish_Vote:InvokeServer("replay")
+   Auto_Retry_Local = true
+end
 --###############################################################################################################################################################################################################################################################-End All Function
 --###############################################################################################################################################################################################################################################################-Load All Menu
 local Auto_Start_Toggle = AutoFarm:CreateToggle({
@@ -86,7 +97,7 @@ local Auto_Start_Toggle = AutoFarm:CreateToggle({
    -- The function that takes place when the toggle is pressed
    -- The variable (Value) is a boolean on whether the toggle is true or false
          Auto_Start_Boolean = Auto_Start_Value
-         if Auto_Start_Boolean == true then
+         if Auto_Start_Boolean == true and game.PlaceId ~= AA_ID then
             Auto_Start_Fucntion()
          end
    end,
@@ -100,6 +111,9 @@ local Auto_Retry_Toggle = AutoFarm:CreateToggle({
    -- The function that takes place when the toggle is pressed
    -- The variable (Value) is a boolean on whether the toggle is true or false
          Auto_Retry_Boolean = Auto_Retry_Value
+         if Auto_Retry_Local == false and ResultsUI.Visible == true then
+            Auto_Retry_Function()
+         end
    end,
 })
 --###############################################################################################################################################################################################################################################################-End All Menu
@@ -109,8 +123,14 @@ Rayfield:LoadConfiguration()
 
 
 --###############################################################################################################################################################################################################################################################-Load All Condition
-if Auto_Start_Boolean == true then
+if Auto_Start_Boolean == true and game.PlaceId ~= AA_ID then
    Auto_Start_Fucntion()
 end
+
+ResultsUI:GetPropertyChangedSignal("Enabled"):Connect(function()
+   if Auto_Retry_Boolean == true and Auto_Retry_Local == false and game.PlaceId ~= AA_ID then
+      Auto_Retry_Function()
+   end
+end)
 --###############################################################################################################################################################################################################################################################-End All Condition
 
