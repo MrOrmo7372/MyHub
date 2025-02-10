@@ -196,7 +196,8 @@ local function saveMacroData()
     end
 
     local jsonData = HttpService:JSONEncode(uniqueEntries)
-    writefile("unit_macro.json", jsonData)
+    local TARGET = MarcoFile .. "/" .. "unit_macro.json"
+    writefile("TARGET", jsonData)
     print("Đã lưu macro vào unit_macro.json (", #uniqueEntries, "bản ghi)")
 end
 
