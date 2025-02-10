@@ -144,19 +144,10 @@ local function saveMacroData()
     if #MARCO_TABLE == 0 then return end
     
     -- Kiểm tra bản ghi trùng lặp
-    local uniqueEntries = {}
-    for _, entry in ipairs(MARCO_TABLE) do
-        local key = entry.Unit_Type..tostring(entry.CFrame.Position)
-        if not uniqueEntries[key] then
-            uniqueEntries[key] = true
-            table.insert(uniqueEntries, entry)
-        end
-    end
-
-    local jsonData = HttpService:JSONEncode(uniqueEntries)
+    local jsonData = HttpService:JSONEncode(MARCO_TABLE)
     local TARGET = MarcoFile .. "/" .. "unit_macro.json"
     writefile(TARGET, jsonData)
-    print("Đã lưu macro vào unit_macro.json (", #uniqueEntries, "bản ghi)")
+    print("Đã lưu macro vào unit_macro.json với", #MARCO_TABLE, "bước")
 end
 
 local mt = getrawmetatable(game)
