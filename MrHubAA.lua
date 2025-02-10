@@ -146,7 +146,7 @@ local function saveMacroData()
     -- Kiểm tra bản ghi trùng lặp
     local uniqueEntries = {}
     for _, entry in ipairs(MARCO_TABLE) do
-        local key = entry.Unit_Type..tostring(entry.CFrame.Position)
+        local key = entry[Steps].Unit_Type..tostring(entry.CFrame.Position)
         if not uniqueEntries[key] then
             uniqueEntries[key] = true
             table.insert(uniqueEntries, entry)
