@@ -161,6 +161,7 @@ mt.__namecall = function(self, ...)
                     }
                     table.insert(MARCO_TABLE, unitData)
                     print("Đã ghi lại đợt đặt Unit:", unitData.Unit_Type)
+                    print(unitData.CFrame)
                 end
             else -- FireServer
                 local unitData = {
