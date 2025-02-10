@@ -121,6 +121,88 @@ local Auto_Retry_Toggle = AutoFarm:CreateToggle({
    end,
 })
 --###############################################################################################################################################################################################################################################################-End All Menu
+--###############################################################################################################################################################################################################################################################-Load MARCO ZONE
+local TargetEventNames = {"spawn_unit"}
+local MARCO_TABLE = {}
+local Record_Marco_BOOLEAN = true -- Giả sử biến này được điều khiển bởi GUI
+
+-- Hàm chuyển đổi CFrame sang định dạng có thể serialize
+local function serializeCFrame(cf)
+    return {
+        Position = {cf.X, cf.Y, cf.Z},
+        Rotation = {
+            cf.RightVector.X, cf.RightVector.Y, cf.RightVector.Z,
+            cf.UpVector.X, cf.UpVector.Y, cf.UpVector.Z,
+            cf.LookVector.X, cf.LookVector.Y, cf.LookVector.Z
+        }
+    }
+end
+
+local mt = getrawmetatable(game)
+setreadonly(mt, false)
+local oldNamecall = mt.__namecall
+
+mt.__namecall = function(self, ...)
+    local method = getnamecallmethod()
+    local args = {...}
+    local remoteName = self.Name
+
+    if table.find(TargetEventNames, remoteName) and (method == "FireServer" or method == "InvokeServer") then
+        local success, result = pcall(oldNamecall, self, ...)
+        
+        -- Chỉ ghi lại khi request thành công và có đủ tiền
+        if success then
+            if method == "InvokeServer" then
+                if result == true then -- Giả định server trả về true khi thành công
+                    local unitData = {
+                        Event_Type = remoteName,
+                        Unit_Type = args[1],
+                        CFrame = serializeCFrame(args[2]),
+                    }
+                    table.insert(MARCO_TABLE, unitData)
+                    print("Đã ghi lại đợt đặt Unit:", unitData)
+                end
+            else -- FireServer
+                local unitData = {
+                    Event_Type = remoteName,
+                    Unit_Type = args[1],
+                    CFrame = serializeCFrame(args[2]),
+                }
+                table.insert(MARCO_TABLE, unitData)
+                print("Đã ghi lại đợt đặt Unit:", unitData)
+            end
+        end
+
+        return result
+    end
+
+    return oldNamecall(self, ...)
+end
+
+setreadonly(mt, true)
+
+-- Hàm lưu dữ liệu với kiểm tra trùng lặp
+local function saveMacroData()
+    if #MARCO_TABLE == 0 then return end
+    
+    -- Kiểm tra bản ghi trùng lặp
+    local uniqueEntries = {}
+    for _, entry in ipairs(MARCO_TABLE) do
+        local key = entry.Unit_Type..tostring(entry.CFrame.Position)
+        if not uniqueEntries[key] then
+            uniqueEntries[key] = true
+            table.insert(uniqueEntries, entry)
+        end
+    end
+
+    local jsonData = HttpService:JSONEncode(uniqueEntries)
+    writefile("unit_macro.json", jsonData)
+    print("Đã lưu macro vào unit_macro.json (", #uniqueEntries, "bản ghi)")
+end
+
+-- Ví dụ sử dụng:
+-- saveMacroData() -- Gọi khi cần lưu dữ liệu
+--###############################################################################################################################################################################################################################################################-End MARCO ZONE
 
 
 Rayfield:LoadConfiguration()
