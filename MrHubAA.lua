@@ -27,9 +27,9 @@ Auto_Start_Player.Value = false
 Auto_Start_Player.Parent = Player
 
 local Auto_Retry_Player = Instance.new("BoolValue")
-Auto_Start_Player.Name = "Auto_Retry_Player"
-Auto_Start_Player.Value = false
-Auto_Start_Player.Parent = Player
+Auto_Retry_Player.Name = "Auto_Retry_Player"
+Auto_Retry_Player.Value = false
+Auto_Retry_Player.Parent = Player
 
 local Auto_Start_Local = Player:WaitForChild("Auto_Start_Player")
 local Auto_Retry_Local = Player:WaitForChild("Auto_Retry_Player")
