@@ -169,7 +169,7 @@ mt.__namecall = function(self, ...)
                     CFrame = serializeCFrame(args[2]),
                 }
                 table.insert(MARCO_TABLE, unitData)
-                print("Đã ghi lại đợt đặt Unit:", unitData)
+                print("Đã ghi lại đợt đặt Unit:", unitData.Unit_Type)
             end
         end
 
