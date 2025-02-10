@@ -146,10 +146,10 @@ local function saveMacroData()
     -- Kiểm tra bản ghi trùng lặp
     local uniqueEntries = {}
     for _, entry in ipairs(MARCO_TABLE) do
-        local key = entry[Steps].Unit_Type..tostring(entry.CFrame.Position)
+        local key = entry[Steps].Unit_Type..tostring(entry[Steps].CFrame.Position)
         if not uniqueEntries[key] then
             uniqueEntries[key] = true
-            table.insert(uniqueEntries, entry)
+            table.insert(uniqueEntries, entry[Steps])
         end
     end
 
@@ -184,7 +184,7 @@ mt.__namecall = function(self, ...)
                     }
                     table.insert(MARCO_TABLE, unitData)
                     print("Đã ghi lại đợt đặt Unit:", unitData[Steps].Unit_Type)
-                    print(unitData[Steps].CFrame)
+                    print(unitData[Steps].CFrame.Position[1])
                     saveMacroData()
                     Steps += 1
                 end
