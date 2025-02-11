@@ -6,6 +6,8 @@ local Player = game.Players.LocalPlayer
 
 local AA_ID = 8304191830
 
+local Not_Target = {}
+
 local Client_to_Server_File_Location = ReplicatedStorage:WaitForChild("endpoints"):WaitForChild("client_to_server")
    local Vote_Start = Client_to_Server_File_Location:WaitForChild("vote_start")
    local Spawn_Unit = Client_to_Server_File_Location:WaitForChild("spawn_unit")
@@ -13,6 +15,11 @@ local Client_to_Server_File_Location = ReplicatedStorage:WaitForChild("endpoints
 
 local PlayerGui = Player:WaitForChild("PlayerGui")
    local ResultsUI = PlayerGui:WaitForChild("ResultsUI")
+   local MoneyChange_POPUP_UI = PlayerGui:WaitForChild("spawn_units").Lives.Frame.Resource.Money
+
+for _, RemoveTarget in ipair(MoneyChange_POPUP_UI:GetChildren()) do
+   table.insert(Not_Target, RemoveTarget)
+end
 
 local FileName_User = "MrHub_" .. game.Players.LocalPlayer.Name .. "_User"
 local MarcoFile = FileName_User .. "/" .. "Marco"
@@ -80,6 +87,10 @@ local Auto_Start_Boolean = false
 local Auto_Retry_Boolean = false
 --###############################################################################################################################################################################################################################################################-End All Local Setting
 --###############################################################################################################################################################################################################################################################-Load All Function
+function Check_POPUP()
+
+end
+
 function Auto_Start_Fucntion()
    if Auto_Start_Local.Value == false then
       local Auto_Start_Call = Vote_Start:InvokeServer()
@@ -125,8 +136,13 @@ local Auto_Retry_Toggle = AutoFarm:CreateToggle({
 local TargetEventNames = {"spawn_unit"}
 local MARCO_TABLE = {}
 local Curret_Marco = {}
+local Negative_Money_List = {}
 local Record_Marco_BOOLEAN = true -- Giả sử biến này được điều khiển bởi GUI
 local Steps = 1
+
+function Get_Value()
+   return Negative_Money_List[Steps]
+end
 
 -- Hàm chuyển đổi CFrame sang định dạng có thể serialize
 local function serializeCFrame(cf)
@@ -169,6 +185,7 @@ mt.__namecall = function(self, ...)
                     Curret_Marco = {
                        STEP = Steps,
                        Event_Type = remoteName,
+                       Money_Cost = Get_Value()
                        Unit_Type = args[1],
                        CFrame = serializeCFrame(args[2]),
                     }
@@ -205,6 +222,30 @@ Rayfield:LoadConfiguration()
 --###############################################################################################################################################################################################################################################################-Load All Condition
 if Auto_Start_Boolean == true and game.PlaceId ~= AA_ID then
    Auto_Start_Fucntion()
+end
+
+function Check_Target(Target_Check)
+   for _, Target in ipair(Not_Target) do
+      if Target == Target_Check then
+         return true
+         break
+      end
+   end
+end
+
+function Check_Negative_Money(Target_Check)
+   for _, Target in ipair(Negative_Money_List) do
+      if Target == Target_Check then
+         return true
+         break
+      end
+   end
+end
+
+MoneyChange_POPUP_UI.ChildAdded:Connect(function(Target)
+   if Target:IsA("Frame") and Target:FindFirstChild("text") and tonumber(Target.text.Text) < 0 not Check_Target(Target) and Not Check_Negative_Money(Target) then
+      table.insert(Negative_Money_List, Steps, Target)
+   end
 end
 
 ResultsUI:GetPropertyChangedSignal("Enabled"):Connect(function()
