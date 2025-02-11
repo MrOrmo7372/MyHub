@@ -137,6 +137,7 @@ local Record_Marco_BOOLEAN = true -- Giả sử biến này được điều khi
 local Steps = 1
 
 function Get_Value()
+   task.wait()
    if #Negative_Money_List > 0 then
       return Negative_Money_List[Steps]
    end
