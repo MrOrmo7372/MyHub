@@ -44,9 +44,9 @@ local Auto_Retry_Local = Player:WaitForChild("Auto_Retry_Player")
 --###############################################################################################################################################################################################################################################################-Load RayScript
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 local Window = Rayfield:CreateWindow({
-   Name = "Anime Adventure Script (v0.3)",
+   Name = "Anime Adventure Script (v0.4)",
    Icon = "slack", -- Icon in Topbar. Can use Lucide Icons (string) or Roblox Image (number). 0 to use no icon (default).
-   LoadingTitle = "Anime Adventure Script (v0.3)",
+   LoadingTitle = "Anime Adventure Script (v0.4)",
    LoadingSubtitle = "by MrHub",
    Theme = "Default", -- Check https://docs.sirius.menu/rayfield/configuration/themes
 
@@ -137,7 +137,9 @@ local Record_Marco_BOOLEAN = true -- Giả sử biến này được điều khi
 local Steps = 1
 
 function Get_Value()
-   return Negative_Money_List[Steps]
+   if #Negative_Money_List > 0 then
+      return Negative_Money_List[Steps]
+   end
 end
 
 -- Hàm chuyển đổi CFrame sang định dạng có thể serialize
