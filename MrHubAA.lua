@@ -221,7 +221,7 @@ if Auto_Start_Boolean == true and game.PlaceId ~= AA_ID then
 end
 
 function Check_Target(Target_Check)
-   for _, Target in ipair(Not_Target) do
+   for _, Target in ipairs(Not_Target) do
       if Target == Target_Check then
          return true
          break
@@ -230,7 +230,7 @@ function Check_Target(Target_Check)
 end
 
 function Check_Negative_Money(Target_Check)
-   for _, Target in ipair(Negative_Money_List) do
+   for _, Target in ipairs(Negative_Money_List) do
       if Target == Target_Check then
          return true
          break
