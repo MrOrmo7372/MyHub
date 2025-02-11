@@ -167,7 +167,7 @@ mt.__namecall = function(self, ...)
             if method == "InvokeServer" then
                 if result == true then -- Giả định server trả về true khi thành công
                     Curret_Marco = {
-                       STEP = Steps
+                       STEP = Steps,
                        Event_Type = remoteName,
                        Unit_Type = args[1],
                        CFrame = serializeCFrame(args[2]),
