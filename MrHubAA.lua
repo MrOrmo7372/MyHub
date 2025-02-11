@@ -179,6 +179,7 @@ mt.__namecall = function(self, ...)
                     print("Unit Type Is: ", MARCO_TABLE[NumberString(Steps)].Unit_Type)
                     print("CFrame Is: ", MARCO_TABLE[NumberString(Steps)].Cframe)
                     print("How Many Table Now: ", #MARCO_TABLE)
+                    Steps += 1
                 end
             else -- FireServer
                 local unitData = {
