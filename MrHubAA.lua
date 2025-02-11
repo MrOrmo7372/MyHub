@@ -137,14 +137,17 @@ local Record_Marco_BOOLEAN = true -- Giả sử biến này được điều khi
 local Steps = 1
 
 function Get_Value()
-   task.wait()
-   if #Negative_Money_List > 0 then
-      return Negative_Money_List[Steps]
+   for index, Money in ipairs(Negative_Money_List) do
+      local Key = tostring(index)
+      
+      MARCO_TABLE[Key].Money_Cost = Negative_Money_List[index]
    end
 end
 
 -- Hàm lưu dữ liệu với kiểm tra trùng lặp
 local function saveMacroData()
+    Get_Value()
+    
     local jsonData = HttpService:JSONEncode(MARCO_TABLE)
     local TARGET = MarcoFile .. "/" .. "unit_macro.json"
     writefile(TARGET, jsonData)
@@ -172,7 +175,7 @@ mt.__namecall = function(self, ...)
                 if result == true then -- Giả định server trả về true khi thành công
                     MARCO_TABLE[NumberString(Steps)] = {
                         Event_Type = remoteName,
-                        Money_Cost = nil,
+                        Money_Cost = 0,
                         Unit_Type = args[1],
                         Cframe = tostring(args[2]),
                     }
