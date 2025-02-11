@@ -17,7 +17,7 @@ local PlayerGui = Player:WaitForChild("PlayerGui")
    local ResultsUI = PlayerGui:WaitForChild("ResultsUI")
    local MoneyChange_POPUP_UI = PlayerGui:WaitForChild("spawn_units").Lives.Frame.Resource.Money
 
-for _, RemoveTarget in ipair(MoneyChange_POPUP_UI:GetChildren()) do
+for _, RemoveTarget in ipairs(MoneyChange_POPUP_UI:GetChildren()) do
    table.insert(Not_Target, RemoveTarget)
 end
 
