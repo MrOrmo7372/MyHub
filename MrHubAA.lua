@@ -44,9 +44,9 @@ local Auto_Retry_Local = Player:WaitForChild("Auto_Retry_Player")
 --###############################################################################################################################################################################################################################################################-Load RayScript
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 local Window = Rayfield:CreateWindow({
-   Name = "Anime Adventure Script (v0.3)",
+   Name = "Anime Adventure Script (v0.0.3)",
    Icon = "slack", -- Icon in Topbar. Can use Lucide Icons (string) or Roblox Image (number). 0 to use no icon (default).
-   LoadingTitle = "Anime Adventure Script (v0.3)",
+   LoadingTitle = "Anime Adventure Script (v0.0.3)",
    LoadingSubtitle = "by MrHub",
    Theme = "Default", -- Check https://docs.sirius.menu/rayfield/configuration/themes
 
@@ -178,11 +178,12 @@ mt.__namecall = function(self, ...)
                         Unit_Type = args[1],
                         Cframe = tostring(args[2]),
                     }
-                    print("Remote Name Is: ", remoteName)
-                    print("Unit Type Is: ", Unit_Type)
-                    print("CFrame Is: ", Cframe)
+                    print("Remote Name Is: ", MARCO_TABLE[NumberString(Steps)].remoteName)
+                    print("Unit Type Is: ", MARCO_TABLE[NumberString(Steps)].Unit_Type)
+                    print("CFrame Is: ", MARCO_TABLE[NumberString(Steps)].Cframe)
                     if #MARCO_TABLE >= 3 then
                        saveMacroData()
+                       print("call save")
                     end
                 end
             else -- FireServer
