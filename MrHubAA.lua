@@ -44,9 +44,9 @@ local Auto_Retry_Local = Player:WaitForChild("Auto_Retry_Player")
 --###############################################################################################################################################################################################################################################################-Load RayScript
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 local Window = Rayfield:CreateWindow({
-   Name = "Anime Adventure Script (v0.4)",
+   Name = "Anime Adventure Script (v0.3)",
    Icon = "slack", -- Icon in Topbar. Can use Lucide Icons (string) or Roblox Image (number). 0 to use no icon (default).
-   LoadingTitle = "Anime Adventure Script (v0.4)",
+   LoadingTitle = "Anime Adventure Script (v0.3)",
    LoadingSubtitle = "by MrHub",
    Theme = "Default", -- Check https://docs.sirius.menu/rayfield/configuration/themes
 
@@ -153,6 +153,10 @@ local function saveMacroData()
     print("Đã lưu macro vào unit_macro.json với", #MARCO_TABLE, "bước")
 end
 
+function NumberString(Step)
+    return tostring(Step)
+end
+
 local mt = getrawmetatable(game)
 setreadonly(mt, false)
 local oldNamecall = mt.__namecall
@@ -169,14 +173,17 @@ mt.__namecall = function(self, ...)
         if success then
             if method == "InvokeServer" then
                 if result == true then -- Giả định server trả về true khi thành công
-                    Curret_Marco = {
-                       Event_Type = remoteName,
-                       Money_Cost = nil,
-                       Unit_Type = args[1],
-                       CFrame = tostring(args[2]),
+                    MARCO_TABLE[NumberString(Steps)] = {
+                        Event_Type = remoteName,
+                        Unit_Type = args[1],
+                        Cframe = tostring(args[2]),
                     }
-                    MARCO_TABLE[tostring(Steps)] = Curret_Marco
-                    Steps += 1
+                    print("Remote Name Is: ", remoteName)
+                    print("Unit Type Is: ", Unit_Type)
+                    print("CFrame Is: ", Cframe)
+                    if #MARCO_TABLE >= 3 then
+                       saveMacroData()
+                    end
                 end
             else -- FireServer
                 local unitData = {
