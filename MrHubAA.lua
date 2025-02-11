@@ -187,7 +187,7 @@ mt.__namecall = function(self, ...)
                        Unit_Type = args[1],
                        CFrame = serializeCFrame(args[2]),
                     }
-                    MARCO_TABLE[Steps] = Curret_Marco
+                    MARCO_TABLE[tostring(Steps)] = Curret_Marco
                     Steps += 1
                 end
             else -- FireServer
