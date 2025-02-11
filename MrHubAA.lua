@@ -224,18 +224,18 @@ function Check_Target(Target_Check)
    for _, Target in ipairs(Not_Target) do
       if Target == Target_Check then
          return true
-         break
       end
    end
+   return false
 end
 
 function Check_Negative_Money(Target_Check)
    for _, Target in ipairs(Negative_Money_List) do
       if Target == Target_Check then
          return true
-         break
       end
    end
+   return false
 end
 
 MoneyChange_POPUP_UI.ChildAdded:Connect(function(Target)
