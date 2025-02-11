@@ -242,7 +242,7 @@ end
 
 MoneyChange_POPUP_UI.ChildAdded:Connect(function(Target)
    if Target:IsA("Frame") and Target:FindFirstChild("text") and tonumber(Target.text.Text) < 0 and not Check_Target(Target) and not Check_Negative_Money(Target) then
-      table.insert(Negative_Money_List, Steps, Target)
+      table.insert(Negative_Money_List, Target)
    end
 end
 
