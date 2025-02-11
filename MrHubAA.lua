@@ -171,7 +171,7 @@ mt.__namecall = function(self, ...)
                        Unit_Type = args[1],
                        CFrame = serializeCFrame(args[2]),
                     }
-                    table.insert(MARCO_TABLE[Steps],Curret_Marco)
+                    MARCO_TABLE[Steps] = Curret_Marco
                     if #MARCO_TABLE >= 3 then
                         saveMacroData()
                     end
