@@ -16,6 +16,7 @@ local Client_to_Server_File_Location = ReplicatedStorage:WaitForChild("endpoints
 local PlayerGui = Player:WaitForChild("PlayerGui")
    local ResultsUI = PlayerGui:WaitForChild("ResultsUI")
    local MoneyChange_POPUP_UI = PlayerGui:WaitForChild("spawn_units").Lives.Frame.Resource.Money
+   local MoneyPlayerText = PlayerGui:WaitForChild("spawn_units").Lives.Frame.Resource.Money.text
 
 for _, RemoveTarget in ipairs(MoneyChange_POPUP_UI:GetChildren()) do
    table.insert(Not_Target, RemoveTarget)
@@ -267,6 +268,15 @@ MoneyChange_POPUP_UI.ChildAdded:Connect(function(Target)
    if Target:IsA("Frame") and Target:FindFirstChild("text") and Target.Visible == true and tonumber(Target.text.Text) < 0 and not Check_Target(Target) and not Check_Negative_Money(Target) then
       table.insert(Negative_Money_List, tonumber(Target.text.Text))
       print("Money Save: ", tonumber(Target.text.Text))
+   end
+end)
+
+local Replay_Steps = 1
+
+MoneyPlayerText:GetPropertyChangedSignal("Text"):Connect(function()
+   if Replay_Marco_BOOLEAN == true then
+      local Replay_Table = Read_Json_Marco("unit_macro.json")
+      print("Still Test")
    end
 end)
 
