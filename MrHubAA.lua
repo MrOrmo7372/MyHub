@@ -133,8 +133,34 @@ local TargetEventNames = {"spawn_unit"}
 local MARCO_TABLE = {}
 local Curret_Marco = {}
 local Negative_Money_List = {}
-local Record_Marco_BOOLEAN = true -- Giả sử biến này được điều khiển bởi GUI
+local Record_Marco_BOOLEAN = false -- Giả sử biến này được điều khiển bởi GUI
+local Replay_Marco_BOOLEAN = true
 local Steps = 1
+
+--###############################################################################################################################################################################################################################################################-Load PLAY RECORD ZONE
+function Read_Json_Marco(File_Json)
+   if isfile(MarcoFile .. "/" .. File_Json) then
+        local jsonData = readfile(MarcoFile .. "/" .. File_Json)
+        return HttpService:JSONDecode(jsonData)
+    else
+        print("File not found:", fileName)
+        return nil
+    end
+end
+
+function Replay_Marco()
+   local data = "-3007.05859, 33.7417984, -719.764465, 1, 0, -0, -0, 1, -0, 0, 0, 1"
+   local values = {}
+
+   for num in data:gmatch("[^, ]+") do
+      table.insert(values, tonumber(num))
+   end
+
+   local cf = CFrame.new(values[1], values[2], values[3])  -- Chỉ dùng X, Y, Z
+   print(cf)  -- Kết quả: CFrame.new(-3007.05859, 33.7417984, -719.764465)
+end
+--###############################################################################################################################################################################################################################################################-End PLAY RECORD ZONE
+
 
 function Get_Value()
    for index, Money in ipairs(Negative_Money_List) do
@@ -166,7 +192,7 @@ mt.__namecall = function(self, ...)
     local args = {...}
     local remoteName = self.Name
 
-    if table.find(TargetEventNames, remoteName) and (method == "FireServer" or method == "InvokeServer") then
+    if table.find(TargetEventNames, remoteName) and (method == "FireServer" or method == "InvokeServer") and Record_Marco_BOOLEAN == true then
         local success, result = pcall(oldNamecall, self, ...)
         
         -- Chỉ ghi lại khi request thành công và có đủ tiền
