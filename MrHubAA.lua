@@ -145,8 +145,6 @@ end
 
 -- Hàm lưu dữ liệu với kiểm tra trùng lặp
 local function saveMacroData()
-    if #MARCO_TABLE == 0 then return end
-   
     local jsonData = HttpService:JSONEncode(MARCO_TABLE)
     local TARGET = MarcoFile .. "/" .. "unit_macro.json"
     writefile(TARGET, jsonData)
