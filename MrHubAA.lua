@@ -130,7 +130,7 @@ local Auto_Retry_Toggle = AutoFarm:CreateToggle({
 --###############################################################################################################################################################################################################################################################-End All Menu
 --###############################################################################################################################################################################################################################################################-Load MARCO ZONE
 local TargetEventNames = {"spawn_unit"}
-local MARCO_TABLE = {}
+local MARCO_TABLE = {["Units"] = {}}
 local Curret_Marco = {}
 local Negative_Money_List = {}
 local Record_Marco_BOOLEAN = true -- Giả sử biến này được điều khiển bởi GUI
@@ -158,8 +158,6 @@ end
 -- Hàm lưu dữ liệu với kiểm tra trùng lặp
 local function saveMacroData()
     if #MARCO_TABLE == 0 then return end
-
-    MARCO_TABLE["Units"] = {}
    
     local jsonData = HttpService:JSONEncode(MARCO_TABLE)
     local TARGET = MarcoFile .. "/" .. "unit_macro.json"
