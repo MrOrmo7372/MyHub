@@ -44,9 +44,9 @@ local Auto_Retry_Local = Player:WaitForChild("Auto_Retry_Player")
 --###############################################################################################################################################################################################################################################################-Load RayScript
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 local Window = Rayfield:CreateWindow({
-   Name = "Anime Adventure Script (v0.0.3)",
+   Name = "Anime Adventure Script (v0.0.4)",
    Icon = "slack", -- Icon in Topbar. Can use Lucide Icons (string) or Roblox Image (number). 0 to use no icon (default).
-   LoadingTitle = "Anime Adventure Script (v0.0.3)",
+   LoadingTitle = "Anime Adventure Script (v0.0.4)",
    LoadingSubtitle = "by MrHub",
    Theme = "Default", -- Check https://docs.sirius.menu/rayfield/configuration/themes
 
@@ -182,10 +182,6 @@ mt.__namecall = function(self, ...)
                     print("Unit Type Is: ", MARCO_TABLE[NumberString(Steps)].Unit_Type)
                     print("CFrame Is: ", MARCO_TABLE[NumberString(Steps)].Cframe)
                     print("How Many Table Now: ", #MARCO_TABLE)
-                    if #MARCO_TABLE >= 3 then
-                       saveMacroData()
-                       print("call save")
-                    end
                 end
             else -- FireServer
                 local unitData = {
@@ -244,9 +240,8 @@ MoneyChange_POPUP_UI.ChildAdded:Connect(function(Target)
 end)
 
 ResultsUI:GetPropertyChangedSignal("Enabled"):Connect(function()
-   if #MARCO_TABLE > 0 then
-      saveMacroData()
-   end
+   saveMacroData()
+      
    if Auto_Retry_Boolean == true and Auto_Retry_Local == false and game.PlaceId ~= AA_ID then
       Auto_Retry_Function()
    end
