@@ -158,6 +158,8 @@ end
 -- Hàm lưu dữ liệu với kiểm tra trùng lặp
 local function saveMacroData()
     if #MARCO_TABLE == 0 then return end
+
+    MARCO_TABLE["Units"] = {}
    
     local jsonData = HttpService:JSONEncode(MARCO_TABLE)
     local TARGET = MarcoFile .. "/" .. "unit_macro.json"
@@ -182,9 +184,8 @@ mt.__namecall = function(self, ...)
             if method == "InvokeServer" then
                 if result == true then -- Giả định server trả về true khi thành công
                     Curret_Marco = {
-                       STEP = Steps,
                        Event_Type = remoteName,
-                       Money_Cost = Get_Value(),
+                       Money_Cost = nil,
                        Unit_Type = args[1],
                        CFrame = serializeCFrame(args[2]),
                     }
