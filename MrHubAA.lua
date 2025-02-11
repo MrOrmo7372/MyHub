@@ -181,7 +181,7 @@ mt.__namecall = function(self, ...)
                     Curret_Marco = {
                        STEP = Steps,
                        Event_Type = remoteName,
-                       Money_Cost = Get_Value()
+                       Money_Cost = Get_Value(),
                        Unit_Type = args[1],
                        CFrame = serializeCFrame(args[2]),
                     }
