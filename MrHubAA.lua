@@ -143,18 +143,6 @@ function Get_Value()
    end
 end
 
--- Hàm chuyển đổi CFrame sang định dạng có thể serialize
-local function serializeCFrame(cf)
-    return {
-        Position = {cf.X, cf.Y, cf.Z},
-        Rotation = {
-            cf.RightVector.X, cf.RightVector.Y, cf.RightVector.Z,
-            cf.UpVector.X, cf.UpVector.Y, cf.UpVector.Z,
-            cf.LookVector.X, cf.LookVector.Y, cf.LookVector.Z
-        }
-    }
-end
-
 -- Hàm lưu dữ liệu với kiểm tra trùng lặp
 local function saveMacroData()
     if #MARCO_TABLE == 0 then return end
@@ -185,7 +173,7 @@ mt.__namecall = function(self, ...)
                        Event_Type = remoteName,
                        Money_Cost = nil,
                        Unit_Type = args[1],
-                       CFrame = serializeCFrame(args[2]),
+                       CFrame = tostring(args[2]),
                     }
                     MARCO_TABLE[tostring(Steps)] = Curret_Marco
                     Steps += 1
