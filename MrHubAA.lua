@@ -178,9 +178,10 @@ mt.__namecall = function(self, ...)
                         Unit_Type = args[1],
                         Cframe = tostring(args[2]),
                     }
-                    print("Remote Name Is: ", MARCO_TABLE[NumberString(Steps)].remoteName)
+                    print("Remote Name Is: ", MARCO_TABLE[NumberString(Steps)].Event_Type)
                     print("Unit Type Is: ", MARCO_TABLE[NumberString(Steps)].Unit_Type)
                     print("CFrame Is: ", MARCO_TABLE[NumberString(Steps)].Cframe)
+                    print("How Many Table Now: ", #MARCO_TABLE)
                     if #MARCO_TABLE >= 3 then
                        saveMacroData()
                        print("call save")
