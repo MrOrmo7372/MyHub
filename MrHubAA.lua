@@ -148,7 +148,6 @@ local function saveMacroData()
     local jsonData = HttpService:JSONEncode(MARCO_TABLE)
     local TARGET = MarcoFile .. "/" .. "unit_macro.json"
     writefile(TARGET, jsonData)
-    print("Đã lưu macro vào unit_macro.json với", #MARCO_TABLE, "bước")
 end
 
 function NumberString(Step)
