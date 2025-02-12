@@ -52,6 +52,8 @@ Auto_Retry_Player.Parent = Player
 
 local Auto_Start_Local = Player:WaitForChild("Auto_Start_Player")
 local Auto_Retry_Local = Player:WaitForChild("Auto_Retry_Player")
+local Reload_List_Marco_Local = Player:WaitForChild("Reload_List_Marco")
+local Clear_Name_Input_Local = Player:WaitForChild("Clear_Name_Input")
 --###############################################################################################################################################################################################################################################################-End Install Setting Game Player
 --###############################################################################################################################################################################################################################################################-Load RayScript
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
@@ -234,14 +236,14 @@ local Create_Config_Marco = Marco:CreateInput({
    end,
 })
 
-Reload_List_Marco.Changed:Connect(function()
+Reload_List_Marco_Local.Changed:Connect(function()
    if Reload_List_Marco.Value == true then
       List_Marco_Config:Refresh(listMacros()) -- The new list of options available.
       Reload_List_Marco.Value = false
    end
 end)
 
-Clear_Name_Input.Changed:Connect(function()
+Clear_Name_Input_Local.Changed:Connect(function()
    if Clear_Name_Input.Value == true then
       Create_Config_Marco:Set("") -- The new input text value
       Clear_Name_Input.Value = false
