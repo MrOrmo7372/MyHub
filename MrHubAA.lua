@@ -128,6 +128,49 @@ local Auto_Retry_Toggle = AutoFarm:CreateToggle({
          end
    end,
 })
+
+local Start_Record = Marco:CreateToggle({
+   Name = "Start Record",
+   CurrentValue = false,
+   Flag = "Start_Record", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Auto_Start_Value)
+   -- The function that takes place when the toggle is pressed
+   -- The variable (Value) is a boolean on whether the toggle is true or false
+   end,
+})
+
+local Start_Replay = Marco:CreateToggle({
+   Name = "Start Replay",
+   CurrentValue = false,
+   Flag = "Start_Replay", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Auto_Start_Value)
+   -- The function that takes place when the toggle is pressed
+   -- The variable (Value) is a boolean on whether the toggle is true or false
+   end,
+})
+
+local Create_Config_Marco = Marco:CreateInput({
+   Name = "Create File Marco",
+   CurrentValue = "",
+   PlaceholderText = "Enter Name",
+   RemoveTextAfterFocusLost = true,
+   Flag = "Create_File_Marco",
+   Callback = function(Text)
+   -- The function that takes place when the input is changed
+   -- The variable (Text) is a string for the value in the text box
+         if Text ~= nil and Text ~= "" then
+            if not Text:endswith(".json") then
+               Text = Text .. ".json"
+            end
+
+            Local Target_File_Config_Create = MarcoFile .. "/" .. Text
+            if not Target_File_Config_Create then
+               makefolder(Target_File_Config_Create)
+            end
+            Text = ""
+         end
+   end,
+})
 --###############################################################################################################################################################################################################################################################-End All Menu
 --###############################################################################################################################################################################################################################################################-Load MARCO ZONE
 local TargetEventNames = {"spawn_unit"}
