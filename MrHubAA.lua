@@ -211,10 +211,10 @@ function Play_Marco()
             if Replay_Table[Key].Money_Cost <= tonumber(MoneyPlayerText.Text) then
                Spawn_Unit:InvokeServer(Replay_Table[Key].Unit_Type, Return_Origin_CFrame(Replay_Table[Key].Cframe))
                Steps_Do_Replay += 1
-               Place_Now = false
-               task.wait(1)
-               Place_Now = true
             end
+            Place_Now = false
+            task.wait(1)
+            Place_Now = true
          end
       end
    end
