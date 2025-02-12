@@ -269,18 +269,17 @@ function Get_TARGET_UPGRADE(cframe)
 
    local targetCFrame = Return_Origin_CFrame(cframe)
 
-	-- Dùng FindPartsInBox thay vì Region3
-	local parts = workspace:GetPartBoundsInBox(targetCFrame, regionSize, nil)
+   -- Dùng FindPartsInBox thay vì Region3
+   local parts = workspace:GetPartBoundsInBox(targetCFrame, regionSize, nil)
 
-	for _, part in pairs(parts) do
-	    if part.Name == "HumanoidRootPart" then
-	    	local Unit = part.Parent
-         	local Unit_Parent = game.Workspace._UNITS:FindFirstChild(Unit)
-         	upgrade_unit_ingame:InvokeServer(Unit_Parent)
-	    end
+   for _, part in pairs(parts) do
+   	if part.Name == "HumanoidRootPart" then
+	    local Unit = part.Parent
+            local Unit_Parent = game.Workspace._UNITS:FindFirstChild(Unit)
+            upgrade_unit_ingame:InvokeServer(Unit_Parent)
+	    break
 	end
-
-	return filteredParts
+    end
 end
 
 local Place_Now = true
