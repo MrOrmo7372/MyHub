@@ -45,9 +45,9 @@ local Auto_Retry_Local = Player:WaitForChild("Auto_Retry_Player")
 --###############################################################################################################################################################################################################################################################-Load RayScript
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 local Window = Rayfield:CreateWindow({
-   Name = "Anime Adventure Script (v0.0.7)",
+   Name = "Anime Adventure Script (v0.0.6)",
    Icon = "slack", -- Icon in Topbar. Can use Lucide Icons (string) or Roblox Image (number). 0 to use no icon (default).
-   LoadingTitle = "Anime Adventure Script (v0.0.7)",
+   LoadingTitle = "Anime Adventure Script (v0.0.6)",
    LoadingSubtitle = "by MrHub",
    Theme = "Default", -- Check https://docs.sirius.menu/rayfield/configuration/themes
 
@@ -138,6 +138,9 @@ local Negative_Money_List = {}
 local Record_Marco_BOOLEAN = false -- Giả sử biến này được điều khiển bởi GUI
 local Replay_Marco_BOOLEAN = true
 local Steps = 1
+local Replay_Steps = 1
+local Steps_Do_Replay = 1
+local Break_Check = false
 
 --###############################################################################################################################################################################################################################################################-Load PLAY RECORD ZONE
 function Read_Json_Marco(File_Json)
@@ -161,6 +164,60 @@ function Return_Origin_CFrame(Text_CFrame)
    local cf = CFrame.new(values[1], values[2], values[3])  -- Chỉ dùng X, Y, Z
    print(cf)  -- Kết quả: CFrame.new(-3007.05859, 33.7417984, -719.764465)
    return cf
+end
+
+--MoneyPlayerText:GetPropertyChangedSignal("Text"):Connect(function()
+   --if Replay_Marco_BOOLEAN == true then
+      --local Replay_Table = Read_Json_Marco("unit_macro.json")
+      --for index, value in pairs(Replay_Table) do
+          --if Break_Check then
+             --break
+          --end
+          --Replay_Steps += 1
+          --print("How Many Step Now: ", Replay_Steps)
+      --end
+      --Break_Check = true
+      --if Steps_Do_Replay <= Replay_Steps then
+          --print("Call When True")
+          --Key = tostring(Steps_Do_Replay)
+          --print("key Here")
+          --print("Unit_Cost: ", Replay_Table[Key].Money_Cost)
+          --print("Your Money: ", tonumber(MoneyPlayerText.Text))
+          --if Replay_Table[Key].Money_Cost <= tonumber(MoneyPlayerText.Text) then
+              --print("Accept Unit")
+              --Spawn_Unit:InvokeServer(Replay_Table[Key].Unit_Type, Return_Origin_CFrame(Replay_Table[Key].Cframe))
+              --Steps_Do_Replay += 1
+          --end
+      --end
+   --end
+--end)
+
+local Place_Now = true
+
+function Play_Marco()
+   while Replay_Marco_BOOLEAN then
+      if Place_Now then
+         local Replay_Table = Read_Json_Marco("unit_macro.json")
+         for index, value in pairs(Replay_Table) do
+            if Break_Check then
+               break
+            end
+            Replay_Steps += 1
+            print("How Many Step Now: ", Replay_Steps)
+         end
+         Break_Check = true
+         if Steps_Do_Replay <= Replay_Steps then
+            Key = tostring(Steps_Do_Replay)
+            if Replay_Table[Key].Money_Cost <= tonumber(MoneyPlayerText.Text) then
+               Spawn_Unit:InvokeServer(Replay_Table[Key].Unit_Type, Return_Origin_CFrame(Replay_Table[Key].Cframe))
+               Steps_Do_Replay += 1
+               Place_Now = false
+               task.wait(1)
+               Place_Now = true
+            end
+         end
+      end
+   end
 end
 --###############################################################################################################################################################################################################################################################-End PLAY RECORD ZONE
 
@@ -264,42 +321,16 @@ function Check_Negative_Money(Target_Check)
    return false
 end
 
+if Replay_Marco_BOOLEAN = true then
+   Play_Marco()
+end
+
 MoneyChange_POPUP_UI.ChildAdded:Connect(function(Target)
    print("CALL")
    task.wait(0.1)
    if Target:IsA("Frame") and Target:FindFirstChild("text") and Target.Visible == true and tonumber(Target.text.Text) < 0 and not Check_Target(Target) and not Check_Negative_Money(Target) then
       table.insert(Negative_Money_List, tonumber(Target.text.Text))
       print("Money Save: ", math.abs(tonumber(Target.text.Text)))
-   end
-end)
-
-local Replay_Steps = 1
-local Steps_Do_Replay = 1
-local Break_Check = false
-
-MoneyPlayerText:GetPropertyChangedSignal("Text"):Connect(function()
-   if Replay_Marco_BOOLEAN == true then
-      local Replay_Table = Read_Json_Marco("unit_macro.json")
-      for index, value in pairs(Replay_Table) do
-          if Break_Check then
-             break
-          end
-          Replay_Steps += 1
-          print("How Many Step Now: ", Replay_Steps)
-      end
-      Break_Check = true
-      if Steps_Do_Replay <= Replay_Steps then
-          print("Call When True")
-          Key = tostring(Steps_Do_Replay)
-          print("key Here")
-          print("Unit_Cost: ", Replay_Table[Key].Money_Cost)
-          print("Your Money: ", tonumber(MoneyPlayerText.Text))
-          if Replay_Table[Key].Money_Cost <= tonumber(MoneyPlayerText.Text) then
-              print("Accept Unit")
-              Spawn_Unit:InvokeServer(Replay_Table[Key].Unit_Type, Return_Origin_CFrame(Replay_Table[Key].Cframe))
-              Steps_Do_Replay += 1
-          end
-      end
    end
 end)
 
