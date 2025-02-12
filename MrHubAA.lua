@@ -214,7 +214,7 @@ local List_Marco_Config = Marco:CreateDropdown({
    Options = listMacros(),
    CurrentOption = {""},
    MultipleOptions = false,
-   Flag = ""List_Marco_Config", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Flag = "List_Marco_Config", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
    Callback = function(Options)
    -- The function that takes place when the selected option is changed
    -- The variable (Options) is a table of strings for the current selected options
