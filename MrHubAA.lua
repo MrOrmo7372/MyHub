@@ -293,7 +293,7 @@ function Return_Origin_CFrame(Text_CFrame)
 end
 
 function Get_TARGET_UPGRADE(cframe)
-   local regionSize = Vector3.new(0.01, 0.01, 0.01) -- Mặc định kích thước nhỏ nếu không có giá trị
+   local regionSize = Vector3.new(0.1, 0.1, 0.1) -- Mặc định kích thước nhỏ nếu không có giá trị
    local workspace = game.Workspace
 
    local targetCFrame = Return_Origin_CFrame(cframe)
@@ -303,7 +303,7 @@ function Get_TARGET_UPGRADE(cframe)
 
    for _, part in pairs(parts) do
       print(part.Name)
-      if part.Name == "HumanoidRootPart" then
+      if part.Name == "HumanoidRootPart" or part.Name == "Torso" then
          local Unit = part.Parent
          upgrade_unit_ingame:InvokeServer(Unit)
 	 print("Invoke Upgrade")
