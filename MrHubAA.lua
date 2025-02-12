@@ -45,9 +45,9 @@ local Auto_Retry_Local = Player:WaitForChild("Auto_Retry_Player")
 --###############################################################################################################################################################################################################################################################-Load RayScript
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 local Window = Rayfield:CreateWindow({
-   Name = "Anime Adventure Script (v0.0.8)",
+   Name = "Anime Adventure Script (v0.0.9)",
    Icon = "slack", -- Icon in Topbar. Can use Lucide Icons (string) or Roblox Image (number). 0 to use no icon (default).
-   LoadingTitle = "Anime Adventure Script (v0.0.8)",
+   LoadingTitle = "Anime Adventure Script (v0.0.9)",
    LoadingSubtitle = "by MrHub",
    Theme = "Default", -- Check https://docs.sirius.menu/rayfield/configuration/themes
 
@@ -368,6 +368,8 @@ function Check_Negative_Money(Target_Check)
    end
    return false
 end
+
+Create_Config_Marco:Set("")
 
 if Replay_Marco_BOOLEAN == true and game.PlaceId ~= AA_ID then
    Play_Marco()
