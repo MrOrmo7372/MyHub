@@ -11,6 +11,7 @@ local Not_Target = {}
 local Client_to_Server_File_Location = ReplicatedStorage:WaitForChild("endpoints"):WaitForChild("client_to_server")
    local Vote_Start = Client_to_Server_File_Location:WaitForChild("vote_start")
    local Spawn_Unit = Client_to_Server_File_Location:WaitForChild("spawn_unit")
+   local upgrade_unit_ingame = Client_to_Server_File_Location:WaitForChild("upgrade_unit_ingame")
    local Set_Game_Finish_Vote = Client_to_Server_File_Location:WaitForChild("set_game_finished_vote")
 
 local PlayerGui = Player:WaitForChild("PlayerGui")
@@ -45,9 +46,9 @@ local Auto_Retry_Local = Player:WaitForChild("Auto_Retry_Player")
 --###############################################################################################################################################################################################################################################################-Load RayScript
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 local Window = Rayfield:CreateWindow({
-   Name = "Anime Adventure Script (v0.1.0)",
+   Name = "Anime Adventure Script (v0.1.1)",
    Icon = "slack", -- Icon in Topbar. Can use Lucide Icons (string) or Roblox Image (number). 0 to use no icon (default).
-   LoadingTitle = "Anime Adventure Script (v0.1.0)",
+   LoadingTitle = "Anime Adventure Script (v0.1.1)",
    LoadingSubtitle = "by MrHub",
    Theme = "Default", -- Check https://docs.sirius.menu/rayfield/configuration/themes
 
@@ -103,7 +104,6 @@ end
 --###############################################################################################################################################################################################################################################################-Load All Menu
 local Place_Cooldown = 4
 local Chose_Marco = nil
-local TargetEventNames = {"spawn_unit"}
 local MARCO_TABLE = {}
 local REPLAY_MARCO_TABLE = {}
 local Curret_Marco = {}
@@ -263,31 +263,25 @@ function Return_Origin_CFrame(Text_CFrame)
    return cf
 end
 
---MoneyPlayerText:GetPropertyChangedSignal("Text"):Connect(function()
-   --if Replay_Marco_BOOLEAN == true then
-      --local Replay_Table = Read_Json_Marco("unit_macro.json")
-      --for index, value in pairs(Replay_Table) do
-          --if Break_Check then
-             --break
-          --end
-          --Replay_Steps += 1
-          --print("How Many Step Now: ", Replay_Steps)
-      --end
-      --Break_Check = true
-      --if Steps_Do_Replay <= Replay_Steps then
-          --print("Call When True")
-          --Key = tostring(Steps_Do_Replay)
-          --print("key Here")
-          --print("Unit_Cost: ", Replay_Table[Key].Money_Cost)
-          --print("Your Money: ", tonumber(MoneyPlayerText.Text))
-          --if Replay_Table[Key].Money_Cost <= tonumber(MoneyPlayerText.Text) then
-              --print("Accept Unit")
-              --Spawn_Unit:InvokeServer(Replay_Table[Key].Unit_Type, Return_Origin_CFrame(Replay_Table[Key].Cframe))
-              --Steps_Do_Replay += 1
-          --end
-      --end
-   --end
---end)
+function Get_TARGET_UPGRADE(cframe)
+   local regionSize = Vector3.new(0.01, 0.01, 0.01) -- Mặc định kích thước nhỏ nếu không có giá trị
+	local workspace = game.Workspace
+
+   local targetCFrame = Return_Origin_CFrame(cframe)
+
+	-- Dùng FindPartsInBox thay vì Region3
+	local parts = workspace:GetPartBoundsInBox(targetCFrame, regionSize, nil)
+
+	for _, part in pairs(parts) do
+		if part.Name = "HumanoidRootPart" then
+			local Unit = part.Parent
+         local Unit_Parent = game.Workspace._UNITS:FindFirstChild(Unit)
+         upgrade_unit_ingame:InvokeServer(Unit_Parent)
+		end
+	end
+
+	return filteredParts
+end
 
 local Place_Now = true
 local BREAK_PLACE = false
@@ -308,8 +302,11 @@ function Play_Marco()
          if Steps_Do_Replay <= Replay_Steps then
             Key = tostring(Steps_Do_Replay)
             if Replay_Table[Key].Money_Cost ~= nil then
-               if Replay_Table[Key].Money_Cost <= tonumber(MoneyPlayerText.Text) then
+               if Replay_Table[Key].Money_Cost <= tonumber(MoneyPlayerText.Text) and Replay_Table[Key].Event_Type == "spawn_unit" then
                   Spawn_Unit:InvokeServer(Replay_Table[Key].Unit_Type, Return_Origin_CFrame(Replay_Table[Key].Cframe))
+                  Steps_Do_Replay += 1
+               elseif Replay_Table[Key].Money_Cost <= tonumber(MoneyPlayerText.Text) and Replay_Table[Key].Event_Type == "upgrade_unit_ingame" then
+                  Get_TARGET_UPGRADE(Replay_Table[Key].Cframe)
                   Steps_Do_Replay += 1
                end
             end
@@ -323,7 +320,7 @@ function Play_Marco()
    end
 end
 --###############################################################################################################################################################################################################################################################-End PLAY RECORD ZONE
-
+local TargetEventNames = {"spawn_unit", "upgrade_unit_ingame"}
 
 function Get_Value()
    for index, Money in ipairs(Negative_Money_List) do
@@ -360,7 +357,7 @@ mt.__namecall = function(self, ...)
         
         -- Chỉ ghi lại khi request thành công và có đủ tiền
         if success then
-            if method == "InvokeServer" then
+            if method == "InvokeServer" and remoteName == "spawn_unit" then
                 if result == true then -- Giả định server trả về true khi thành công
                     MARCO_TABLE[NumberString(Steps)] = {
                         Event_Type = remoteName,
@@ -374,14 +371,17 @@ mt.__namecall = function(self, ...)
                     print("How Many Table Now: ", #MARCO_TABLE)
                     Steps += 1
                 end
-            else -- FireServer
-                local unitData = {
-                    Event_Type = remoteName,
-                    Unit_Type = args[1],
-                    CFrame = serializeCFrame(args[2]),
-                }
-                table.insert(MARCO_TABLE, unitData)
-                print("Đã ghi lại đợt đặt Unit:", unitData.Unit_Type)
+            elseif method == "InvokeServer" and remoteName == "upgrade_unit_ingame" then
+               if result == true then -- Giả định server trả về true khi thành công
+                   MARCO_TABLE[NumberString(Steps)] = {
+                       Event_Type = remoteName,
+                       Money_Cost = 0,
+                       Cframe = tostring(args[1].HumanoidRootPart.CFrame),
+                   }
+                   print("Remote Name Is: ", MARCO_TABLE[NumberString(Steps)].Event_Type)
+                   print("CFrame Is: ", MARCO_TABLE[NumberString(Steps)].Cframe)
+                   Steps += 1
+               end
             end
         end
 
