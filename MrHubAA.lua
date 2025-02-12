@@ -332,9 +332,11 @@ function Play_Marco()
             Key = tostring(Steps_Do_Replay)
             if Replay_Table[Key].Money_Cost ~= nil then
                if Replay_Table[Key].Money_Cost <= tonumber(MoneyPlayerText.Text) and Replay_Table[Key].Event_Type == "spawn_unit" then
+		  task.wait()
                   Spawn_Unit:InvokeServer(Replay_Table[Key].Unit_Type, Return_Origin_CFrame(Replay_Table[Key].Cframe))
                   Steps_Do_Replay += 1
                elseif Replay_Table[Key].Money_Cost <= tonumber(MoneyPlayerText.Text) and Replay_Table[Key].Event_Type == "upgrade_unit_ingame" then
+		  task.wait()
                   Get_TARGET_UPGRADE(Replay_Table[Key].Cframe)
                   Steps_Do_Replay += 1
                end
