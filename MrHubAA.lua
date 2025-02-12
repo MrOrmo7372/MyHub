@@ -281,7 +281,9 @@ MoneyPlayerText:GetPropertyChangedSignal("Text"):Connect(function()
    if Replay_Marco_BOOLEAN == true then
       local Replay_Table = Read_Json_Marco("unit_macro.json")
       for index, value in ipairs(Replay_Table) do
-          if Break_Check then break
+          if Break_Check then
+             break
+          end
           Replay_Steps += 1
           print("How Many Step Now: ", Replay_Steps)
       end
