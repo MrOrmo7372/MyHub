@@ -433,7 +433,7 @@ end
 MoneyChange_POPUP_UI.ChildAdded:Connect(function(Target)
    task.wait(0.1)
    if Target:IsA("Frame") and Target:FindFirstChild("text") and Target.Visible == true and tonumber(Target.text.Text) < 0 and not Check_Target(Target) and not Check_Negative_Money(Target) then
-      table.insert(Negative_Money_List, tonumber(Target.text.Text))
+      table.insert(Negative_Money_List, math.abs(tonumber(Target.text.Text)))
       print("Money Save: ", math.abs(tonumber(Target.text.Text)))
    end
 end)
