@@ -45,9 +45,9 @@ local Auto_Retry_Local = Player:WaitForChild("Auto_Retry_Player")
 --###############################################################################################################################################################################################################################################################-Load RayScript
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 local Window = Rayfield:CreateWindow({
-   Name = "Anime Adventure Script (v0.0.5)",
+   Name = "Anime Adventure Script (v0.0.6)",
    Icon = "slack", -- Icon in Topbar. Can use Lucide Icons (string) or Roblox Image (number). 0 to use no icon (default).
-   LoadingTitle = "Anime Adventure Script (v0.0.5)",
+   LoadingTitle = "Anime Adventure Script (v0.0.6)",
    LoadingSubtitle = "by MrHub",
    Theme = "Default", -- Check https://docs.sirius.menu/rayfield/configuration/themes
 
@@ -150,8 +150,8 @@ function Read_Json_Marco(File_Json)
     end
 end
 
-function Replay_Marco()
-   local data = "-3007.05859, 33.7417984, -719.764465, 1, 0, -0, -0, 1, -0, 0, 0, 1"
+function Return_Origin_CFrame(Text_CFrame)
+   local data = Text_CFrame
    local values = {}
 
    for num in data:gmatch("[^, ]+") do
@@ -160,6 +160,7 @@ function Replay_Marco()
 
    local cf = CFrame.new(values[1], values[2], values[3])  -- Chỉ dùng X, Y, Z
    print(cf)  -- Kết quả: CFrame.new(-3007.05859, 33.7417984, -719.764465)
+   return cf
 end
 --###############################################################################################################################################################################################################################################################-End PLAY RECORD ZONE
 
@@ -288,7 +289,8 @@ MoneyPlayerText:GetPropertyChangedSignal("Text"):Connect(function()
       if Steps_Do_Replay <= Replay_Steps then
           Key = tostring(Steps_Do_Replay)
           if Replay_Table[Key].Money_Cost >= tonumber(MoneyPlayerText.Text) then
-              print()
+              Spawn_Unit:InvokeServer(Replay_Table[Key].Unit_Type, Return_Origin_CFrame(Replay_Table[Key].Cframe))
+              Steps_Do_Replay += 1
           end
       end
    end
