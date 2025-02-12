@@ -165,48 +165,6 @@ local Start_Replay = Marco:CreateToggle({
    end,
 })
 
-local Create_Config_Marco = Marco:CreateInput({
-   Name = "Create File Marco",
-   CurrentValue = "",
-   PlaceholderText = "Enter Name",
-   RemoveTextAfterFocusLost = true,
-   Flag = "Create_File_Marco",
-   Callback = function(Text)
-   -- The function that takes place when the input is changed
-   -- The variable (Text) is a string for the value in the text box
-         if Text ~= nil and Text ~= "" then
-            if string.sub(Text, -5) ~= ".json" then
-               Text = Text .. ".json"
-            end
-            local Target_File_Config_Create = MarcoFile .. "/" .. Text
-
-            if isfile(Target_File_Config_Create) then
-               print("File already exists, skipping save:", Text)
-               return -- Thoát hàm nếu file đã tồn tại
-            end
-            
-            if not isfile(Target_File_Config_Create) then
-               writefile(Target_File_Config_Create, "{}")
-            end
-            Text = ""
-         end
-   end,
-})
-
-local Slider_Place_Cooldown = Marco:CreateSlider({
-   Name = "Place Cooldown",
-   Range = {0, 4},
-   Increment = 1,
-   Suffix = "Cooldown",
-   CurrentValue = 4,
-   Flag = "Place_Cooldown", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
-   Callback = function(Value)
-   -- The function that takes place when the slider changes
-   -- The variable (Value) is a number which correlates to the value the slider is currently at
-         Place_Cooldown = Value
-   end,
-})
-
 -- Liệt kê các file macro
 local function listMacros()
     if isfolder(MarcoFile) then
@@ -235,6 +193,51 @@ local List_Marco_Config = Marco:CreateDropdown({
          print(Options)
    end,
 })
+
+local Create_Config_Marco = Marco:CreateInput({
+   Name = "Create File Marco",
+   CurrentValue = "",
+   PlaceholderText = "Enter Name",
+   RemoveTextAfterFocusLost = true,
+   Flag = "Create_File_Marco",
+   Callback = function(Text)
+   -- The function that takes place when the input is changed
+   -- The variable (Text) is a string for the value in the text box
+         if Text ~= nil and Text ~= "" then
+            if string.sub(Text, -5) ~= ".json" then
+               Text = Text .. ".json"
+            end
+            local Target_File_Config_Create = MarcoFile .. "/" .. Text
+
+            if isfile(Target_File_Config_Create) then
+               print("File already exists, skipping save:", Text)
+               return -- Thoát hàm nếu file đã tồn tại
+            end
+            
+            if not isfile(Target_File_Config_Create) then
+               writefile(Target_File_Config_Create, "{}")
+            end
+            Text = ""
+         end
+
+	 Create_Config_Marco:Refresh(listMacros()) -- The new list of options available.
+   end,
+})
+
+local Slider_Place_Cooldown = Marco:CreateSlider({
+   Name = "Place Cooldown",
+   Range = {0, 4},
+   Increment = 1,
+   Suffix = "Cooldown",
+   CurrentValue = 4,
+   Flag = "Place_Cooldown", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+   -- The function that takes place when the slider changes
+   -- The variable (Value) is a number which correlates to the value the slider is currently at
+         Place_Cooldown = Value
+   end,
+})
+
 --###############################################################################################################################################################################################################################################################-End All Menu
 --###############################################################################################################################################################################################################################################################-Load MARCO ZONE
 
