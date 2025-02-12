@@ -321,7 +321,7 @@ function Check_Negative_Money(Target_Check)
    return false
 end
 
-if Replay_Marco_BOOLEAN = true then
+if Replay_Marco_BOOLEAN == true then
    Play_Marco()
 end
 
