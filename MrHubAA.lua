@@ -132,6 +132,7 @@ local Auto_Retry_Toggle = AutoFarm:CreateToggle({
 --###############################################################################################################################################################################################################################################################-Load MARCO ZONE
 local TargetEventNames = {"spawn_unit"}
 local MARCO_TABLE = {}
+local REPLAY_MARCO_TABLE = {}
 local Curret_Marco = {}
 local Negative_Money_List = {}
 local Record_Marco_BOOLEAN = false -- Giả sử biến này được điều khiển bởi GUI
@@ -276,7 +277,7 @@ local Replay_Steps = 1
 MoneyPlayerText:GetPropertyChangedSignal("Text"):Connect(function()
    if Replay_Marco_BOOLEAN == true then
       local Replay_Table = Read_Json_Marco("unit_macro.json")
-      print("Still Test")
+      print("Test")
    end
 end)
 
