@@ -164,8 +164,8 @@ local Create_Config_Marco = Marco:CreateInput({
             end
 
             local Target_File_Config_Create = MarcoFile .. "/" .. Text
-            if not isfolder(Target_File_Config_Create) then
-               makefolder(Target_File_Config_Create)
+            if not isfile(Target_File_Config_Create) then
+               writefile(Target_File_Config_Create, "{}")
             end
             Text = ""
          end
