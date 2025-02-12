@@ -40,6 +40,16 @@ Auto_Retry_Player.Name = "Auto_Retry_Player"
 Auto_Retry_Player.Value = false
 Auto_Retry_Player.Parent = Player
 
+local Reload_List_Marco = Instance.new("BoolValue")
+Auto_Retry_Player.Name = "Reload_List_Marco"
+Auto_Retry_Player.Value = false
+Auto_Retry_Player.Parent = Player
+
+local Clear_Name_Input = Instance.new("BoolValue")
+Auto_Retry_Player.Name = "Clear_Name_Input"
+Auto_Retry_Player.Value = false
+Auto_Retry_Player.Parent = Player
+
 local Auto_Start_Local = Player:WaitForChild("Auto_Start_Player")
 local Auto_Retry_Local = Player:WaitForChild("Auto_Retry_Player")
 --###############################################################################################################################################################################################################################################################-End Install Setting Game Player
@@ -219,10 +229,24 @@ local Create_Config_Marco = Marco:CreateInput({
             end
             Text = ""
          end
-
-	 Create_Config_Marco:Refresh(listMacros()) -- The new list of options available.
+	 Clear_Name_Input.Value = true
+	 Reload_List_Marco.Value = true
    end,
 })
+
+Reload_List_Marco.Changed:Connect(function())
+   if Reload_List_Marco.Value == true then
+      List_Marco_Config:Refresh(listMacros()) -- The new list of options available.
+      Reload_List_Marco.Value = false
+   end
+end)
+
+Clear_Name_Input.Changed:Connect(function())
+   if Clear_Name_Input.Value == true then
+      Create_Config_Marco:Set("") -- The new input text value
+      Clear_Name_Input.Value = false
+   end
+end)
 
 local Slider_Place_Cooldown = Marco:CreateSlider({
    Name = "Place Cooldown",
