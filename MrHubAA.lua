@@ -41,14 +41,14 @@ Auto_Retry_Player.Value = false
 Auto_Retry_Player.Parent = Player
 
 local Reload_List_Marco = Instance.new("BoolValue")
-Auto_Retry_Player.Name = "Reload_List_Marco"
-Auto_Retry_Player.Value = false
-Auto_Retry_Player.Parent = Player
+Reload_List_Marco.Name = "Reload_List_Marco"
+Reload_List_Marco.Value = false
+Reload_List_Marco.Parent = Player
 
 local Clear_Name_Input = Instance.new("BoolValue")
-Auto_Retry_Player.Name = "Clear_Name_Input"
-Auto_Retry_Player.Value = false
-Auto_Retry_Player.Parent = Player
+Clear_Name_Input.Name = "Clear_Name_Input"
+Clear_Name_Input.Value = false
+Clear_Name_Input.Parent = Player
 
 local Auto_Start_Local = Player:WaitForChild("Auto_Start_Player")
 local Auto_Retry_Local = Player:WaitForChild("Auto_Retry_Player")
