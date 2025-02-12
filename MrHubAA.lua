@@ -303,11 +303,14 @@ function Get_TARGET_UPGRADE(cframe)
 
    for _, part in pairs(parts) do
       print(part.Name)
-      if part.Name == "HumanoidRootPart" or part.Name == "Torso" then
-         local Unit = part.Parent
-         upgrade_unit_ingame:InvokeServer(Unit)
-	 print("Invoke Upgrade")
-	 break
+      if part.Name == "_hitbox" then
+	 local Hitbox = part
+	 if (targetCFrame.Position - Hitbox.Position).magnitude < 1 then
+            local Unit = part.Parent
+            upgrade_unit_ingame:InvokeServer(Unit)
+	    print("Invoke Upgrade")
+	    break
+	 end
       end
    end
 end
