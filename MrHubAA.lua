@@ -193,9 +193,10 @@ end
 --end)
 
 local Place_Now = true
+local BREAK_PLACE = false
 
 function Play_Marco()
-   while Replay_Marco_BOOLEAN do
+   while Replay_Marco_BOOLEAN and not BREAK_PLACE do
       if Place_Now then
          local Replay_Table = Read_Json_Marco("unit_macro.json")
          for index, value in pairs(Replay_Table) do
@@ -217,6 +218,8 @@ function Play_Marco()
             Place_Now = false
             task.wait(1)
             Place_Now = true
+         else
+            BREAK_PLACE = true
          end
       end
    end
