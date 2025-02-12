@@ -45,9 +45,9 @@ local Auto_Retry_Local = Player:WaitForChild("Auto_Retry_Player")
 --###############################################################################################################################################################################################################################################################-Load RayScript
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 local Window = Rayfield:CreateWindow({
-   Name = "Anime Adventure Script (v0.0.9)",
+   Name = "Anime Adventure Script (v0.1.0)",
    Icon = "slack", -- Icon in Topbar. Can use Lucide Icons (string) or Roblox Image (number). 0 to use no icon (default).
-   LoadingTitle = "Anime Adventure Script (v0.0.9)",
+   LoadingTitle = "Anime Adventure Script (v0.1.0)",
    LoadingSubtitle = "by MrHub",
    Theme = "Default", -- Check https://docs.sirius.menu/rayfield/configuration/themes
 
@@ -102,7 +102,18 @@ end
 --###############################################################################################################################################################################################################################################################-End All Function
 --###############################################################################################################################################################################################################################################################-Load All Menu
 local Place_Cooldown = 4
-local Chose_Marco = {}
+local Chose_Marco = nil
+local TargetEventNames = {"spawn_unit"}
+local MARCO_TABLE = {}
+local REPLAY_MARCO_TABLE = {}
+local Curret_Marco = {}
+local Negative_Money_List = {}
+local Record_Marco_BOOLEAN = false -- Giả sử biến này được điều khiển bởi GUI
+local Replay_Marco_BOOLEAN = true
+local Steps = 1
+local Replay_Steps = 0
+local Steps_Do_Replay = 1
+local Break_Check = false
 
 local Auto_Start_Toggle = AutoFarm:CreateToggle({
    Name = "Auto Start",
@@ -136,9 +147,10 @@ local Start_Record = Marco:CreateToggle({
    Name = "Start Record",
    CurrentValue = false,
    Flag = "Start_Record", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
-   Callback = function(Auto_Start_Value)
+   Callback = function(Start_Record)
    -- The function that takes place when the toggle is pressed
    -- The variable (Value) is a boolean on whether the toggle is true or false
+         Record_Marco_BOOLEAN = Start_Record
    end,
 })
 
@@ -146,9 +158,10 @@ local Start_Replay = Marco:CreateToggle({
    Name = "Start Replay",
    CurrentValue = false,
    Flag = "Start_Replay", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
-   Callback = function(Auto_Start_Value)
+   Callback = function(Start_Replay_Marco)
    -- The function that takes place when the toggle is pressed
    -- The variable (Value) is a boolean on whether the toggle is true or false
+         Replay_Marco_BOOLEAN = Start_Replay_Marco
    end,
 })
 
@@ -183,8 +196,8 @@ local Create_Config_Marco = Marco:CreateInput({
 local Slider_Place_Cooldown = Marco:CreateSlider({
    Name = "Place Cooldown",
    Range = {0, 4},
-   Increment = 4,
-   Suffix = "Bananas",
+   Increment = 1,
+   Suffix = "Cooldown",
    CurrentValue = 4,
    Flag = "Place_Cooldown", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
    Callback = function(Value)
@@ -224,17 +237,7 @@ local List_Marco_Config = Marco:CreateDropdown({
 })
 --###############################################################################################################################################################################################################################################################-End All Menu
 --###############################################################################################################################################################################################################################################################-Load MARCO ZONE
-local TargetEventNames = {"spawn_unit"}
-local MARCO_TABLE = {}
-local REPLAY_MARCO_TABLE = {}
-local Curret_Marco = {}
-local Negative_Money_List = {}
-local Record_Marco_BOOLEAN = false -- Giả sử biến này được điều khiển bởi GUI
-local Replay_Marco_BOOLEAN = true
-local Steps = 1
-local Replay_Steps = 0
-local Steps_Do_Replay = 1
-local Break_Check = false
+
 
 --###############################################################################################################################################################################################################################################################-Load PLAY RECORD ZONE
 function Read_Json_Marco(File_Json)
@@ -292,7 +295,8 @@ local BREAK_PLACE = false
 function Play_Marco()
    while Replay_Marco_BOOLEAN and not BREAK_PLACE do
       if Place_Now then
-         local Replay_Table = Read_Json_Marco("unit_macro.json")
+         if not Chose_Marco then break end
+         local Replay_Table = Read_Json_Marco(Chose_Marco[1])
          for index, value in pairs(Replay_Table) do
             if Break_Check then
                break
@@ -334,7 +338,7 @@ local function saveMacroData()
     Get_Value()
     
     local jsonData = HttpService:JSONEncode(MARCO_TABLE)
-    local TARGET = MarcoFile .. "/" .. "unit_macro.json"
+    local TARGET = MarcoFile .. "/" .. Chose_Marco[1]
     writefile(TARGET, jsonData)
 end
 
