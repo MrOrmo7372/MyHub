@@ -159,7 +159,7 @@ local Create_Config_Marco = Marco:CreateInput({
    -- The function that takes place when the input is changed
    -- The variable (Text) is a string for the value in the text box
          if Text ~= nil and Text ~= "" then
-            if not Text:endswith(".json") then
+            if string.sub(Text, -5) ~= ".json" then
                Text = Text .. ".json"
             end
 
