@@ -208,9 +208,11 @@ function Play_Marco()
          Break_Check = true
          if Steps_Do_Replay <= Replay_Steps then
             Key = tostring(Steps_Do_Replay)
-            if Replay_Table[Key].Money_Cost <= tonumber(MoneyPlayerText.Text) then
-               Spawn_Unit:InvokeServer(Replay_Table[Key].Unit_Type, Return_Origin_CFrame(Replay_Table[Key].Cframe))
-               Steps_Do_Replay += 1
+            if Replay_Table[Key].Money_Cost ~= nil then
+               if Replay_Table[Key].Money_Cost <= tonumber(MoneyPlayerText.Text) then
+                  Spawn_Unit:InvokeServer(Replay_Table[Key].Unit_Type, Return_Origin_CFrame(Replay_Table[Key].Cframe))
+                  Steps_Do_Replay += 1
+               end
             end
             Place_Now = false
             task.wait(1)
