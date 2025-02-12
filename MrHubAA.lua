@@ -138,7 +138,7 @@ local Negative_Money_List = {}
 local Record_Marco_BOOLEAN = false -- Giả sử biến này được điều khiển bởi GUI
 local Replay_Marco_BOOLEAN = true
 local Steps = 1
-local Replay_Steps = 1
+local Replay_Steps = 0
 local Steps_Do_Replay = 1
 local Break_Check = false
 
