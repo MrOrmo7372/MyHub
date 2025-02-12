@@ -163,7 +163,7 @@ local Create_Config_Marco = Marco:CreateInput({
                Text = Text .. ".json"
             end
 
-            Local Target_File_Config_Create = MarcoFile .. "/" .. Text
+            local Target_File_Config_Create = MarcoFile .. "/" .. Text
             if not Target_File_Config_Create then
                makefolder(Target_File_Config_Create)
             end
