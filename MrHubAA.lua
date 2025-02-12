@@ -195,7 +195,7 @@ end
 local Place_Now = true
 
 function Play_Marco()
-   while Replay_Marco_BOOLEAN then
+   while Replay_Marco_BOOLEAN do
       if Place_Now then
          local Replay_Table = Read_Json_Marco("unit_macro.json")
          for index, value in pairs(Replay_Table) do
