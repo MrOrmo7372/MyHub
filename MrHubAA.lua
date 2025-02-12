@@ -268,16 +268,29 @@ MoneyChange_POPUP_UI.ChildAdded:Connect(function(Target)
    task.wait(0.1)
    if Target:IsA("Frame") and Target:FindFirstChild("text") and Target.Visible == true and tonumber(Target.text.Text) < 0 and not Check_Target(Target) and not Check_Negative_Money(Target) then
       table.insert(Negative_Money_List, tonumber(Target.text.Text))
-      print("Money Save: ", tonumber(Target.text.Text))
+      print("Money Save: ", math.abs(tonumber(Target.text.Text)))
    end
 end)
 
 local Replay_Steps = 1
+local Steps_Do_Replay = 1
+local Break_Check = false
 
 MoneyPlayerText:GetPropertyChangedSignal("Text"):Connect(function()
    if Replay_Marco_BOOLEAN == true then
       local Replay_Table = Read_Json_Marco("unit_macro.json")
-      print("Test")
+      for index, value in ipairs(Replay_Table) do
+          if Break_Check then break
+          Replay_Steps += 1
+          print("How Many Step Now: ", Replay_Steps)
+      end
+      Break_Check = true
+      if Steps_Do_Replay <= Replay_Steps then
+          Key = tostring(Steps_Do_Replay)
+          if Replay_Table[Key].Money_Cost >= tonumber(MoneyPlayerText.Text) then
+              print()
+          end
+      end
    end
 end)
 
