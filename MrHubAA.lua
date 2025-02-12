@@ -101,6 +101,9 @@ function Auto_Retry_Function()
 end
 --###############################################################################################################################################################################################################################################################-End All Function
 --###############################################################################################################################################################################################################################################################-Load All Menu
+local Place_Cooldown = 4
+local Chose_Marco = {}
+
 local Auto_Start_Toggle = AutoFarm:CreateToggle({
    Name = "Auto Start",
    CurrentValue = false,
@@ -174,6 +177,49 @@ local Create_Config_Marco = Marco:CreateInput({
             end
             Text = ""
          end
+   end,
+})
+
+local Slider_Place_Cooldown = Marco:CreateSlider({
+   Name = "Place Cooldown",
+   Range = {0, 4},
+   Increment = 4,
+   Suffix = "Bananas",
+   CurrentValue = 4,
+   Flag = "Place_Cooldown", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+   -- The function that takes place when the slider changes
+   -- The variable (Value) is a number which correlates to the value the slider is currently at
+         Place_Cooldown = Value
+   end,
+})
+
+-- Liệt kê các file macro
+local function listMacros()
+    if isfolder(MarcoFile) then
+        local files = listfiles(MarcoFile)
+        local fileNames = {}
+        for _, filePath in ipairs(files) do
+            table.insert(fileNames, filePath:match("([^/]+)$")) -- Lấy tên file
+        end
+        return fileNames
+    else
+        print("Folder not found!")
+        return {}
+    end
+end
+
+local List_Marco_Config = Marco:CreateDropdown({
+   Name = "List Marco Config",
+   Options = listMacros(),
+   CurrentOption = {""},
+   MultipleOptions = false,
+   Flag = ""List_Marco_Config", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Options)
+   -- The function that takes place when the selected option is changed
+   -- The variable (Options) is a table of strings for the current selected options
+         Chose_Marco = Options
+         print(Options)
    end,
 })
 --###############################################################################################################################################################################################################################################################-End All Menu
@@ -264,7 +310,7 @@ function Play_Marco()
                end
             end
             Place_Now = false
-            task.wait(1)
+            task.wait(Place_Cooldown)
             Place_Now = true
          else
             BREAK_PLACE = true
