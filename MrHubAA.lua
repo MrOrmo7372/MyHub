@@ -273,7 +273,7 @@ function Get_TARGET_UPGRADE(cframe)
 	local parts = workspace:GetPartBoundsInBox(targetCFrame, regionSize, nil)
 
 	for _, part in pairs(parts) do
-		if part.Name = "HumanoidRootPart" then
+		if part.Name == "HumanoidRootPart" then
 			local Unit = part.Parent
          local Unit_Parent = game.Workspace._UNITS:FindFirstChild(Unit)
          upgrade_unit_ingame:InvokeServer(Unit_Parent)
