@@ -162,8 +162,13 @@ local Create_Config_Marco = Marco:CreateInput({
             if string.sub(Text, -5) ~= ".json" then
                Text = Text .. ".json"
             end
-
             local Target_File_Config_Create = MarcoFile .. "/" .. Text
+
+            if isfile(Target_File_Config_Create) then
+               print("File already exists, skipping save:", Text)
+               return -- Thoát hàm nếu file đã tồn tại
+            end
+            
             if not isfile(Target_File_Config_Create) then
                writefile(Target_File_Config_Create, "{}")
             end
