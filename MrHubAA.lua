@@ -208,12 +208,12 @@ function Play_Marco()
          Break_Check = true
          if Steps_Do_Replay <= Replay_Steps then
             Key = tostring(Steps_Do_Replay)
-            if Replay_Table[Key].Money_Cost ~= nil then
-               if Replay_Table[Key].Money_Cost <= tonumber(MoneyPlayerText.Text) then
-                  Spawn_Unit:InvokeServer(Replay_Table[Key].Unit_Type, Return_Origin_CFrame(Replay_Table[Key].Cframe))
-                  Steps_Do_Replay += 1
-               end
+            --if Replay_Table[Key].Money_Cost ~= nil then
+            if Replay_Table[Key].Money_Cost <= tonumber(MoneyPlayerText.Text) then
+               Spawn_Unit:InvokeServer(Replay_Table[Key].Unit_Type, Return_Origin_CFrame(Replay_Table[Key].Cframe))
+               Steps_Do_Replay += 1
             end
+            --end
             Place_Now = false
             task.wait(1)
             Place_Now = true
@@ -328,7 +328,6 @@ if Replay_Marco_BOOLEAN == true and game.PlaceId ~= AA_ID then
 end
 
 MoneyChange_POPUP_UI.ChildAdded:Connect(function(Target)
-   print("CALL")
    task.wait(0.1)
    if Target:IsA("Frame") and Target:FindFirstChild("text") and Target.Visible == true and tonumber(Target.text.Text) < 0 and not Check_Target(Target) and not Check_Negative_Money(Target) then
       table.insert(Negative_Money_List, tonumber(Target.text.Text))
