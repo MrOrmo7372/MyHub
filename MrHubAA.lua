@@ -265,7 +265,7 @@ end
 
 function Get_TARGET_UPGRADE(cframe)
    local regionSize = Vector3.new(0.01, 0.01, 0.01) -- Mặc định kích thước nhỏ nếu không có giá trị
-	local workspace = game.Workspace
+   local workspace = game.Workspace
 
    local targetCFrame = Return_Origin_CFrame(cframe)
 
@@ -273,13 +273,13 @@ function Get_TARGET_UPGRADE(cframe)
    local parts = workspace:GetPartBoundsInBox(targetCFrame, regionSize, nil)
 
    for _, part in pairs(parts) do
-   	if part.Name == "HumanoidRootPart" then
-	    local Unit = part.Parent
-            local Unit_Parent = game.Workspace._UNITS:FindFirstChild(Unit)
-            upgrade_unit_ingame:InvokeServer(Unit_Parent)
-	    break
-	end
-    end
+      if part.Name == "HumanoidRootPart" then
+         local Unit = part.Parent
+         local Unit_Parent = game.Workspace._UNITS:FindFirstChild(Unit)
+         upgrade_unit_ingame:InvokeServer(Unit_Parent)
+	 break
+      end
+   end
 end
 
 local Place_Now = true
