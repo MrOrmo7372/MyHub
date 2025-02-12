@@ -289,8 +289,11 @@ MoneyPlayerText:GetPropertyChangedSignal("Text"):Connect(function()
       end
       Break_Check = true
       if Steps_Do_Replay <= Replay_Steps then
+          print("Call When True")
           Key = tostring(Steps_Do_Replay)
+          print("key Here")
           if Replay_Table[Key].Money_Cost >= tonumber(MoneyPlayerText.Text) then
+              print("Accept Unit")
               Spawn_Unit:InvokeServer(Replay_Table[Key].Unit_Type, Return_Origin_CFrame(Replay_Table[Key].Cframe))
               Steps_Do_Replay += 1
           end
