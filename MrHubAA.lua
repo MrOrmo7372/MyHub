@@ -292,6 +292,10 @@ function Return_Origin_CFrame(Text_CFrame)
    return cf
 end
 
+local overlapParams = OverlapParams.new()
+overlapParams.FilterType = Enum.RaycastFilterType.Include  -- Chỉ lấy phần tử trong danh sách
+overlapParams.FilterDescendantsInstances = {game.Workspace._UNITS}  -- Chỉ lấy phần trong MyModel
+
 function Get_TARGET_UPGRADE(cframe)
    local regionSize = Vector3.new(8, 8, 8) -- Mặc định kích thước nhỏ nếu không có giá trị
    local workspace = game.Workspace
@@ -299,7 +303,7 @@ function Get_TARGET_UPGRADE(cframe)
    local targetCFrame = Return_Origin_CFrame(cframe)
 
    -- Dùng FindPartsInBox thay vì Region3
-   local parts = workspace:GetPartBoundsInBox(targetCFrame, regionSize, nil)
+   local parts = workspace:GetPartBoundsInBox(targetCFrame, regionSize, overlapParams)
 
    for _, part in pairs(parts) do
       print(part.Name)
