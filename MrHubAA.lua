@@ -219,6 +219,10 @@ local Create_Config_Marco = Marco:CreateInput({
             if string.sub(Text, -5) ~= ".json" then
                Text = Text .. ".json"
             end
+	    local MarcoFile = FileName_User .. "/" .. "Marco"
+            if not isfolder(MarcoFile) then
+               makefolder(MarcoFile)
+	    end
             local Target_File_Config_Create = MarcoFile .. "/" .. Text
 
             if isfile(Target_File_Config_Create) then
