@@ -149,7 +149,7 @@ local Auto_Retry_Toggle = AutoFarm:CreateToggle({
    -- The function that takes place when the toggle is pressed
    -- The variable (Value) is a boolean on whether the toggle is true or false
          Auto_Retry_Boolean = Auto_Retry_Value
-         if Auto_Retry_Local == false and ResultsUI.Visible == true then
+         if Auto_Retry_Local == false and ResultsUI.Enabled == true then
             Auto_Retry_Function()
          end
    end,
