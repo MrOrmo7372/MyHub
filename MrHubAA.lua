@@ -299,7 +299,7 @@ overlapParams.FilterDescendantsInstances = {game.Workspace._UNITS}  -- Chỉ l�
 function Get_TARGET_UPGRADE(cframe)
    local Close_Target = nil
    local Range_Find = math.huge
-   local regionSize = Vector3.new(8, 8, 8) -- Mặc định kích thước nhỏ nếu không có giá trị
+   local regionSize = Vector3.new(20, 20, 20) -- Mặc định kích thước nhỏ nếu không có giá trị
    local workspace = game.Workspace
 
    local targetCFrame = Return_Origin_CFrame(cframe)
