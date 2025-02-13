@@ -293,7 +293,7 @@ function Return_Origin_CFrame(Text_CFrame)
 end
 
 function Get_TARGET_UPGRADE(cframe)
-   local regionSize = Vector3.new(8, 8, 8) -- Mặc định kích thước nhỏ nếu không có giá trị
+   local regionSize = Vector3.new(4, 4, 4) -- Mặc định kích thước nhỏ nếu không có giá trị
    local workspace = game.Workspace
 
    local targetCFrame = Return_Origin_CFrame(cframe)
@@ -303,12 +303,12 @@ function Get_TARGET_UPGRADE(cframe)
 
    for _, part in pairs(parts) do
       print(part.Name)
-      if part.Name == "_hitbox" then
+      if part.Name == "HumanoidRootPart" then
 	 print("Find Target")
-	 local Hitbox = part
+	 local Hitbox = part.Parent:FindFirstChild("_hitbox")
 	 print((targetCFrame.Position - Hitbox.Position).magnitude)
 	 if (targetCFrame.Position - Hitbox.Position).magnitude < 1 then
-            local Unit = part.Parent
+            local Unit = Hitbox.Parent
             upgrade_unit_ingame:InvokeServer(Unit)
 	    print("Invoke Upgrade")
 	    break
