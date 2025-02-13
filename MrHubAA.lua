@@ -384,6 +384,10 @@ end
 -- Hàm lưu dữ liệu với kiểm tra trùng lặp
 local function saveMacroData()
     Get_Value()
+
+    if next(MARCO_TABLE) == nil then
+	return
+    end
     
     local jsonData = HttpService:JSONEncode(MARCO_TABLE)
     local TARGET = MarcoFile .. "/" .. Chose_Marco[1]
@@ -490,6 +494,7 @@ MoneyChange_POPUP_UI.ChildAdded:Connect(function(Target)
 end)
 
 ResultsUI:GetPropertyChangedSignal("Enabled"):Connect(function()
+   Start_Record:Set(false)
    saveMacroData()
       
    if Auto_Retry_Boolean == true and Auto_Retry_Local == false and game.PlaceId ~= AA_ID then
