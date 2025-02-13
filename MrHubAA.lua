@@ -109,6 +109,7 @@ function Auto_Start_Fucntion()
 end
 
 function Auto_Retry_Function()
+   task.wait(2)
    local Auto_Retry_Call = Set_Game_Finish_Vote:InvokeServer("replay")
    Auto_Retry_Local.Value = true
 end
