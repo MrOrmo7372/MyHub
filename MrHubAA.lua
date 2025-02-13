@@ -122,6 +122,11 @@ local function optimizeEverything()
         Map:Destroy()
     end
 
+    local Water_Block = game.Workspace:WaitForChild("_water_blocks")
+    if Water_Block then
+        Water_Block:Destroy()
+    end
+
     -- Xử lý tất cả vật thể trong Workspace
     for _, obj in ipairs(workspace:GetDescendants()) do
         -- Xử lý vật thể cơ bản
