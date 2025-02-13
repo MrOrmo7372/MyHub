@@ -197,6 +197,14 @@ local function optimizeEverything()
         terrain.WaterTransparency = 0.9
         terrain.WaterWaveSize = 0
     end
+
+    settings().Rendering.QualityLevel = 1
+    settings().Rendering.MeshCacheSize = 0
+    settings().Rendering.TextureCacheSize = 0
+    
+    -- Tắt FX
+    game:GetService("Lighting").GlobalShadows = false
+    game:GetService("Lighting").Technology = Enum.Technology.Shadowless
 end
 --###############################################################################################################################################################################################################################################################-End All Function
 --###############################################################################################################################################################################################################################################################-Load All Menu
