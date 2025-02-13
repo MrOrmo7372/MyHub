@@ -293,7 +293,7 @@ function Return_Origin_CFrame(Text_CFrame)
 end
 
 function Get_TARGET_UPGRADE(cframe)
-   local regionSize = Vector3.new(1, 1, 1) -- Mặc định kích thước nhỏ nếu không có giá trị
+   local regionSize = Vector3.new(8, 8, 8) -- Mặc định kích thước nhỏ nếu không có giá trị
    local workspace = game.Workspace
 
    local targetCFrame = Return_Origin_CFrame(cframe)
