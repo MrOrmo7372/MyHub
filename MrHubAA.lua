@@ -58,9 +58,9 @@ local Clear_Name_Input_Local = Player:WaitForChild("Clear_Name_Input")
 --###############################################################################################################################################################################################################################################################-Load RayScript
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 local Window = Rayfield:CreateWindow({
-   Name = "Anime Adventure Script (v0.1.1)",
+   Name = "Anime Adventure Script (v0.1.2)",
    Icon = "slack", -- Icon in Topbar. Can use Lucide Icons (string) or Roblox Image (number). 0 to use no icon (default).
-   LoadingTitle = "Anime Adventure Script (v0.1.1)",
+   LoadingTitle = "Anime Adventure Script (v0.1.2)",
    LoadingSubtitle = "by MrHub",
    Theme = "Default", -- Check https://docs.sirius.menu/rayfield/configuration/themes
 
@@ -304,7 +304,9 @@ function Get_TARGET_UPGRADE(cframe)
    for _, part in pairs(parts) do
       print(part.Name)
       if part.Name == "_hitbox" then
+	 print("Find Target")
 	 local Hitbox = part
+	 print((targetCFrame.Position - Hitbox.Position).magnitude)
 	 if (targetCFrame.Position - Hitbox.Position).magnitude < 1 then
             local Unit = part.Parent
             upgrade_unit_ingame:InvokeServer(Unit)
