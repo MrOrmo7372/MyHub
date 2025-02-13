@@ -494,8 +494,12 @@ MoneyChange_POPUP_UI.ChildAdded:Connect(function(Target)
 end)
 
 ResultsUI:GetPropertyChangedSignal("Enabled"):Connect(function()
-   Start_Record:Set(false)
-   saveMacroData()
+   if next(MARCO_TABLE) ~= nil then
+      Start_Record:Set(false)
+      saveMacroData()
+   else
+      Start_Record:Set(false)
+   end
       
    if Auto_Retry_Boolean == true and Auto_Retry_Local == false and game.PlaceId ~= AA_ID then
       Auto_Retry_Function()
