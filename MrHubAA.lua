@@ -194,7 +194,6 @@ local function optimizeEverything()
     -- Tối ưu Terrain
     local terrain = workspace:FindFirstChildOfClass("Terrain")
     if terrain then
-        terrain.Decoration = false
         terrain.WaterTransparency = 0.9
         terrain.WaterWaveSize = 0
     end
