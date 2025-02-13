@@ -297,6 +297,8 @@ overlapParams.FilterType = Enum.RaycastFilterType.Include  -- Chỉ lấy phần
 overlapParams.FilterDescendantsInstances = {game.Workspace._UNITS}  -- Chỉ lấy phần trong MyModel
 
 function Get_TARGET_UPGRADE(cframe)
+   local Close_Target = nil
+   local Range_Find = math.huge
    local regionSize = Vector3.new(8, 8, 8) -- Mặc định kích thước nhỏ nếu không có giá trị
    local workspace = game.Workspace
 
@@ -310,14 +312,23 @@ function Get_TARGET_UPGRADE(cframe)
       if part.Name == "HumanoidRootPart" then
 	 print("Find Target")
 	 local Hitbox = part.Parent:FindFirstChild("_hitbox")
-	 print((targetCFrame.Position - Hitbox.Position).magnitude)
-	 if (targetCFrame.Position - Hitbox.Position).magnitude < 2.8 then
-            local Unit = Hitbox.Parent
-            upgrade_unit_ingame:InvokeServer(Unit)
-	    print("Invoke Upgrade")
-	    break
-	 end
+	 print((targetCFrame.Position - Hitbox.Position).magnitude)	
+	 --if (targetCFrame.Position - Hitbox.Position).magnitude < 2.8 then
+            --local Unit = Hitbox.Parent
+            --upgrade_unit_ingame:InvokeServer(Unit)
+	    --print("Invoke Upgrade")
+	    --break
+	 --end	
+	if (targetCFrame.Position - Hitbox.Position).magnitude < Range_Find then
+	   Range_Find = (targetCFrame.Position - Hitbox.Position).magnitude
+	   Close_Target = part.Parent
+	end
       end
+   end
+
+   if Close_Target then
+      upgrade_unit_ingame:InvokeServer(Close_Target)
+      print("Invoke Upgrade")
    end
 end
 
