@@ -99,6 +99,7 @@ local Marco = Window:CreateTab("Marco", "bot")
 --###############################################################################################################################################################################################################################################################-Load All Local Setting
 local Auto_Start_Boolean = false
 local Auto_Retry_Boolean = false
+local Low_End_Android = false
 --###############################################################################################################################################################################################################################################################-End All Local Setting
 --###############################################################################################################################################################################################################################################################-Load All Function
 function Auto_Start_Fucntion()
@@ -112,6 +113,91 @@ function Auto_Retry_Function()
    task.wait(2)
    local Auto_Retry_Call = Set_Game_Finish_Vote:InvokeServer("replay")
    Auto_Retry_Local.Value = true
+end
+
+-- Đặt script này trong ServerScriptService
+local function optimizeEverything()
+    local Map = game.Workspace:WaitForChild("_map")
+    if Map then
+        Map:Destroy()
+    end
+
+    -- Xử lý tất cả vật thể trong Workspace
+    for _, obj in ipairs(workspace:GetDescendants()) do
+        -- Xử lý vật thể cơ bản
+        if obj:IsA("BasePart") then
+            obj.Material = Enum.Material.Plastic
+            obj.Color = Color3.new(1, 1, 1)
+            obj.Reflectance = 0
+            obj.Transparency = 0
+            obj.CastShadow = false
+            
+            -- Xóa texture của MeshPart
+            if obj:IsA("MeshPart") then
+                obj.TextureID = ""
+            end
+            
+            -- Xóa SurfaceAppearance
+            for _, v in ipairs(obj:GetChildren()) do
+                if v:IsA("SurfaceAppearance") then
+                    v:Destroy()
+                end
+            end
+        end
+        
+        -- Xóa decal và texture
+        if obj:IsA("Decal") or obj:IsA("Texture") then
+            obj:Destroy()
+        end
+        
+        -- Xóa hiệu ứng particle
+        if obj:IsA("ParticleEmitter") or obj:IsA("Fire") or obj:IsA("Smoke") or obj:IsA("Sparkles") then
+            pcall(function()
+                obj.Enabled = false
+                obj:Destroy()
+            end)
+        end
+        
+        -- Xóa âm thanh
+        if obj:IsA("Sound") then
+            pcall(function()
+                obj:Stop()
+                obj:Destroy()
+            end)
+        end
+        
+        -- Xóa texture từ Mesh/SpecialMesh
+        if obj:IsA("Mesh") or obj:IsA("SpecialMesh") then
+            pcall(function()
+                obj.TextureId = ""
+            end)
+        end
+    end
+    
+    -- Xử lý Lighting
+    local lighting = game:GetService("Lighting")
+    
+    -- Xóa tất cả hiệu ứng trong Lighting
+    for _, effect in ipairs(lighting:GetChildren()) do
+        effect:Destroy()
+    end
+    
+    -- Reset cài đặt Lighting
+    lighting.Ambient = Color3.new(0.5, 0.5, 0.5)
+    lighting.Brightness = 1
+    lighting.GlobalShadows = false
+    lighting.FogEnd = 100000
+    lighting.OutdoorAmbient = Color3.new(0.5, 0.5, 0.5)
+    lighting.ClockTime = 12
+    lighting.Technology = Enum.Technology.Compatibility
+    
+    -- Tối ưu Terrain
+    local terrain = workspace:FindFirstChildOfClass("Terrain")
+    if terrain then
+        terrain.Decoration = false
+        terrain.WaterTransparency = 0.9
+        terrain.WaterWaveSize = 0
+    end
 end
 --###############################################################################################################################################################################################################################################################-End All Function
 --###############################################################################################################################################################################################################################################################-Load All Menu
@@ -153,6 +239,20 @@ local Auto_Retry_Toggle = AutoFarm:CreateToggle({
          if Auto_Retry_Local.Value == false and ResultsUI.Enabled == true then
             Auto_Retry_Function()
          end
+   end,
+})
+
+local Low_End_Toggle = AutoFarm:CreateToggle({
+   Name = "More FPS",
+   CurrentValue = false,
+   Flag = "Low_End_Toggle", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Low_End_Value)
+   -- The function that takes place when the toggle is pressed
+   -- The variable (Value) is a boolean on whether the toggle is true or false
+         Low_End_Android = Low_End_Value
+	 if Low_End_Android == true and game.PlaceId ~= AA_ID then
+	     optimizeEverything()
+	 end
    end,
 })
 
