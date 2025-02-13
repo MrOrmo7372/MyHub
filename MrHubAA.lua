@@ -110,7 +110,7 @@ end
 
 function Auto_Retry_Function()
    local Auto_Retry_Call = Set_Game_Finish_Vote:InvokeServer("replay")
-   Auto_Retry_Local = true
+   Auto_Retry_Local.Value = true
 end
 --###############################################################################################################################################################################################################################################################-End All Function
 --###############################################################################################################################################################################################################################################################-Load All Menu
@@ -149,7 +149,7 @@ local Auto_Retry_Toggle = AutoFarm:CreateToggle({
    -- The function that takes place when the toggle is pressed
    -- The variable (Value) is a boolean on whether the toggle is true or false
          Auto_Retry_Boolean = Auto_Retry_Value
-         if Auto_Retry_Local == false and ResultsUI.Enabled == true then
+         if Auto_Retry_Local.Value == false and ResultsUI.Enabled == true then
             Auto_Retry_Function()
          end
    end,
@@ -505,7 +505,7 @@ ResultsUI:GetPropertyChangedSignal("Enabled"):Connect(function()
       Start_Record:Set(false)
    end
       
-   if Auto_Retry_Boolean == true and Auto_Retry_Local == false and game.PlaceId ~= AA_ID then
+   if Auto_Retry_Boolean == true and Auto_Retry_Local.Value == false and game.PlaceId ~= AA_ID then
       Auto_Retry_Function()
    end
 end)
