@@ -200,7 +200,6 @@ local function optimizeEverything()
 
     settings().Rendering.QualityLevel = 1
     settings().Rendering.MeshCacheSize = 0
-    settings().Rendering.TextureCacheSize = 0
     
     -- Tắt FX
     game:GetService("Lighting").GlobalShadows = false
