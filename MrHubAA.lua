@@ -208,6 +208,31 @@ local function optimizeEverything()
     
     -- Tắt FX
     game:GetService("Lighting").GlobalShadows = false
+    game:GetService("RunService"):Set3dRenderingEnabled(false)
+    game.Workspace.CurrentCamera.CameraType = Enum.CameraType.Scriptable
+
+    local player = game.Players.LocalPlayer
+    local gui = Instance.new("ScreenGui")
+    gui.Parent = player:FindFirstChild("PlayerGui") or Instance.new("PlayerGui", player)
+   
+    -- Tạo Background đen
+    local blackBackground = Instance.new("Frame")
+    blackBackground.Size = UDim2.new(10, 0, 10, 0) -- Full màn hình
+    blackBackground.BackgroundColor3 = Color3.fromRGB(0, 0, 0) -- Màu đen
+    blackBackground.BorderSizePixel = 0
+    blackBackground.Parent = gui
+
+    -- Tạo Text hiển thị số Gems
+    local gemsText = Instance.new("TextLabel")
+    gemsText.Size = UDim2.new(0.3, 0, 0.1, 0) -- Kích thước
+    gemsText.Position = UDim2.new(0.35, 0, 0.45, 0) -- Canh giữa màn hình
+    gemsText.BackgroundTransparency = 1 -- Trong suốt
+    gemsText.TextColor3 = Color3.fromRGB(255, 255, 255) -- Màu chữ trắng
+    gemsText.TextScaled = true
+    gemsText.Font = Enum.Font.SourceSansBold
+    gemsText.Parent = gui
+
+    gemsText.Text = "Gems: ", game.Players.LocalPlayer:WaitForChild("_stats"):WaitForChild("gem_amount").Value
 end
 --###############################################################################################################################################################################################################################################################-End All Function
 --###############################################################################################################################################################################################################################################################-Load All Menu
