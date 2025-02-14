@@ -58,9 +58,9 @@ local Clear_Name_Input_Local = Player:WaitForChild("Clear_Name_Input")
 --###############################################################################################################################################################################################################################################################-Load RayScript
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 local Window = Rayfield:CreateWindow({
-   Name = "Anime Adventure Script (v0.1.2)",
+   Name = "Anime Adventure Script (v0.1.4)",
    Icon = "slack", -- Icon in Topbar. Can use Lucide Icons (string) or Roblox Image (number). 0 to use no icon (default).
-   LoadingTitle = "Anime Adventure Script (v0.1.2)",
+   LoadingTitle = "Anime Adventure Script (v0.1.4)",
    LoadingSubtitle = "by MrHub",
    Theme = "Default", -- Check https://docs.sirius.menu/rayfield/configuration/themes
 
@@ -444,8 +444,13 @@ function Get_TARGET_UPGRADE(cframe)
    local Range_Find = math.huge
    local regionSize = Vector3.new(20, 20, 20) -- Mặc định kích thước nhỏ nếu không có giá trị
    local workspace = game.Workspace
+   local targetCFrame = nil
 
-   local targetCFrame = Return_Origin_CFrame(cframe)
+   if not Map_Ice then
+      targetCFrame = Return_Origin_CFrame(cframe)
+   if Map_Ice then
+      targetCFrame = CFrame.new(Map_Ice - Return_Origin_CFrame(cframe))
+   end
 
    -- Dùng FindPartsInBox thay vì Region3
    local parts = workspace:GetPartBoundsInBox(targetCFrame, regionSize, overlapParams)
@@ -494,15 +499,27 @@ function Play_Marco()
          if Steps_Do_Replay <= Replay_Steps then
             Key = tostring(Steps_Do_Replay)
             if Replay_Table[Key].Money_Cost ~= nil then
-                if Replay_Table[Key].Money_Cost <= tonumber(MoneyPlayerText.Text) and Replay_Table[Key].Event_Type == "spawn_unit" then
-	            task.wait()
-                    Spawn_Unit:InvokeServer(Replay_Table[Key].Unit_Type, Return_Origin_CFrame(Replay_Table[Key].Cframe))
-                    Steps_Do_Replay += 1
-                elseif Replay_Table[Key].Money_Cost <= tonumber(MoneyPlayerText.Text) and Replay_Table[Key].Event_Type == "upgrade_unit_ingame" then
-		    task.wait()
-                    Get_TARGET_UPGRADE(Replay_Table[Key].Cframe)
-                    Steps_Do_Replay += 1
-                end
+	        if not Map_Ice then
+                    if Replay_Table[Key].Money_Cost <= tonumber(MoneyPlayerText.Text) and Replay_Table[Key].Event_Type == "spawn_unit" then
+	                task.wait()
+                        Spawn_Unit:InvokeServer(Replay_Table[Key].Unit_Type, Return_Origin_CFrame(Replay_Table[Key].Cframe))
+                        Steps_Do_Replay += 1
+                    elseif Replay_Table[Key].Money_Cost <= tonumber(MoneyPlayerText.Text) and Replay_Table[Key].Event_Type == "upgrade_unit_ingame" then
+		        task.wait()
+                        Get_TARGET_UPGRADE(Replay_Table[Key].Cframe)
+                        Steps_Do_Replay += 1
+                    end
+		elseif Map_Ice then
+		    if Replay_Table[Key].Money_Cost <= tonumber(MoneyPlayerText.Text) and Replay_Table[Key].Event_Type == "spawn_unit" then
+	                task.wait()
+                        Spawn_Unit:InvokeServer(Replay_Table[Key].Unit_Type, CFrame.New(Map_Ice + Return_Origin_CFrame(Replay_Table[Key].Cframe)))
+                        Steps_Do_Replay += 1
+                    elseif Replay_Table[Key].Money_Cost <= tonumber(MoneyPlayerText.Text) and Replay_Table[Key].Event_Type == "upgrade_unit_ingame" then
+		        task.wait()
+                        Get_TARGET_UPGRADE(Replay_Table[Key].Cframe)
+                        Steps_Do_Replay += 1
+                    end			
+		end
             end
             Place_Now = false
             task.wait(Place_Cooldown)
@@ -567,6 +584,11 @@ mt.__namecall = function(self, ...)
                     print("Unit Type Is: ", MARCO_TABLE[NumberString(Steps)].Unit_Type)
                     print("CFrame Is: ", MARCO_TABLE[NumberString(Steps)].Cframe)
                     print("How Many Table Now: ", #MARCO_TABLE)
+
+		    if Map_Ice ~= nil then
+		        local Adapt_CFrame = (Return_Origin_CFrame(MARCO_TABLE[NumberString(Steps)].Cframe) - Map_Ice)
+			MARCO_TABLE[NumberString(Steps)].Cframe = tostring(Map_Ice - Adapt_CFrame)
+		    end
                     Steps += 1
                 end
             elseif method == "InvokeServer" and remoteName == "upgrade_unit_ingame" then
@@ -578,6 +600,11 @@ mt.__namecall = function(self, ...)
                    }
                    print("Remote Name Is: ", MARCO_TABLE[NumberString(Steps)].Event_Type)
                    print("CFrame Is: ", MARCO_TABLE[NumberString(Steps)].Cframe)
+
+		   if Map_Ice ~= nil then
+		      local Adapt_CFrame = (Return_Origin_CFrame(MARCO_TABLE[NumberString(Steps)].Cframe) - Map_Ice)
+		      MARCO_TABLE[NumberString(Steps)].Cframe = tostring(Map_Ice - Adapt_CFrame)
+		   end
                    Steps += 1
                end
             end
