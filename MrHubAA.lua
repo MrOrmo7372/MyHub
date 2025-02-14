@@ -469,6 +469,17 @@ function CreatePart()
     return Part
 end
 
+function CreatePart_TEST()
+    local Part = Instance.new("Part")
+    Part.Size = Vector3.new(5,5,5)
+    Part.Transparency = 0
+    Part.Parent = workspace
+    Part.Anchored = true
+    Part.CanCollide = false
+	
+    return Part
+end
+
 function Play_Marco()
    while Replay_Marco_BOOLEAN and not BREAK_PLACE do
       if Place_Now then
@@ -505,10 +516,12 @@ function Play_Marco()
 						
 		  if Replay_Table[Key].Money_Cost <= tonumber(MoneyPlayerText.Text) and Replay_Table[Key].Event_Type == "spawn_unit" then
 		     task.wait()
+		     CreatePart_TEST(FRAME_TARGET)
                      Spawn_Unit:InvokeServer(Replay_Table[Key].Unit_Type, FRAME_TARGET)
                      Steps_Do_Replay += 1
                   elseif Replay_Table[Key].Money_Cost <= tonumber(MoneyPlayerText.Text) and Replay_Table[Key].Event_Type == "upgrade_unit_ingame" then
 		     task.wait()
+		     CreatePart_TEST(FRAME_TARGET)
                      Get_TARGET_UPGRADE(FRAME_TARGET)
                      Steps_Do_Replay += 1
                   end				
