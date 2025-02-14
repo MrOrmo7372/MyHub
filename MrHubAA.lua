@@ -448,7 +448,7 @@ function Get_TARGET_UPGRADE(cframe)
 
    if not Map_Ice then
       targetCFrame = Return_Origin_CFrame(cframe)
-   if Map_Ice then
+   elseif Map_Ice then
       targetCFrame = CFrame.new(Map_Ice - Return_Origin_CFrame(cframe))
    end
 
