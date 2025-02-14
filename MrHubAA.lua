@@ -220,6 +220,7 @@ local Steps = 1
 local Replay_Steps = 0
 local Steps_Do_Replay = 1
 local Break_Check = false
+local Erwin_Unit = {}
 
 local Map_Ice = nil
 
@@ -248,6 +249,25 @@ if game.PlaceId ~= AA_ID then
                 attachment:Destroy()
             end
         end
+    end
+end
+
+function GetBuff_Erwin()
+    function Check_TableErwin(Unit_Erwin)
+        for _, Erwin in ipairs(Erwin_Unit) do
+            if Erwin == Unit_Erwin then
+	        return false
+	    end
+	end
+	return true
+    end
+    
+    for _, Unit in ipairs(Workspace._UNITS:GetChildren()) do
+        if Unit.Name == "erwin" then
+	    if GetBuff_Erwin(Unit) then
+		table.insert(Erwin_Unit, Unit)
+	    end
+	end
     end
 end
 
