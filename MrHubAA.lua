@@ -424,11 +424,12 @@ function Return_Origin_CFrame(Text_CFrame)
    local values = {}
 
    for num in data:gmatch("[^, ]+") do
+      print("Return Origin: ", tonumber(num))
       table.insert(values, tonumber(num))
    end
 
    local cf = CFrame.new(values[1], values[2], values[3])  -- Chỉ dùng X, Y, Z
-   print(cf)  -- Kết quả: CFrame.new(-3007.05859, 33.7417984, -719.764465)
+   print("cf: ", cf)  -- Kết quả: CFrame.new(-3007.05859, 33.7417984, -719.764465)
    return cf
 end
 
@@ -511,9 +512,9 @@ function Play_Marco()
 		    local Map_Ice_Position = Map_Ice.Position
 		    if Replay_Table[Key].Money_Cost <= tonumber(MoneyPlayerText.Text) and Replay_Table[Key].Event_Type == "spawn_unit" then
 	                task.wait()
-			print(Map_Ice_Position)
-			print(Return_Origin_CFrame(Replay_Table[Key].Cframe))
-			print(CFrame.New(Return_Origin_CFrame(Replay_Table[Key].Cframe) + Map_Ice_Position))
+			print("Map Ice: ", Map_Ice_Position)
+			print("Call From Map Ice: ", Return_Origin_CFrame(Replay_Table[Key].Cframe))
+			print("Adapt: ", CFrame.New(Return_Origin_CFrame(Replay_Table[Key].Cframe) + Map_Ice_Position))
                         Spawn_Unit:InvokeServer(Replay_Table[Key].Unit_Type, CFrame.New(Return_Origin_CFrame(Replay_Table[Key].Cframe) + Map_Ice_Position))
                         Steps_Do_Replay += 1
                     elseif Replay_Table[Key].Money_Cost <= tonumber(MoneyPlayerText.Text) and Replay_Table[Key].Event_Type == "upgrade_unit_ingame" then
