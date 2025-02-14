@@ -253,8 +253,10 @@ if game.PlaceId ~= AA_ID then
 end
 
 function GetBuff_Erwin()
+    local All_Erwin = 0
     function Check_TableErwin(Unit_Erwin)
         for _, Erwin in ipairs(Erwin_Unit) do
+	    All_Erwin += 1
             if Erwin == Unit_Erwin then
 	        return false
 	    end
@@ -268,6 +270,10 @@ function GetBuff_Erwin()
 		table.insert(Erwin_Unit, Unit)
 	    end
 	end
+    end
+
+    if All_Erwin == 4 then
+        print("Still Test")
     end
 end
 
