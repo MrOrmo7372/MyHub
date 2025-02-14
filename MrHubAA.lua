@@ -58,9 +58,9 @@ local Clear_Name_Input_Local = Player:WaitForChild("Clear_Name_Input")
 --###############################################################################################################################################################################################################################################################-Load RayScript
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 local Window = Rayfield:CreateWindow({
-   Name = "Anime Adventure Script (v0.1.4)",
+   Name = "Anime Adventure Script (v0.1.2)",
    Icon = "slack", -- Icon in Topbar. Can use Lucide Icons (string) or Roblox Image (number). 0 to use no icon (default).
-   LoadingTitle = "Anime Adventure Script (v0.1.4)",
+   LoadingTitle = "Anime Adventure Script (v0.1.2)",
    LoadingSubtitle = "by MrHub",
    Theme = "Default", -- Check https://docs.sirius.menu/rayfield/configuration/themes
 
@@ -102,14 +102,6 @@ local Auto_Retry_Boolean = false
 local Low_End_Android = false
 --###############################################################################################################################################################################################################################################################-End All Local Setting
 --###############################################################################################################################################################################################################################################################-Load All Function
-local Beacon_Ice = nil
-
-if game.PlaceId ~= AA_ID then
-    if workspace._map.player:FindFirstChild("Beacon") then
-        Beacon_Ice = workspace._map.player:FindFirstChild("Beacon").CFrame
-    end
-end
-
 function Auto_Start_Fucntion()
    if Auto_Start_Local.Value == false then
       local Auto_Start_Call = Vote_Start:InvokeServer()
@@ -458,28 +450,6 @@ end
 local Place_Now = true
 local BREAK_PLACE = false
 
-function CreatePart()
-    local Part = Instance.new("Part")
-    Part.Size = Vector3.new(0.1,0.1,0.1)
-    Part.Transparency = 1
-    Part.Parent = workspace
-    Part.Anchored = true
-    Part.CanCollide = false
-	
-    return Part
-end
-
-function CreatePart_TEST()
-    local Part = Instance.new("Part")
-    Part.Size = Vector3.new(5,5,5)
-    Part.Transparency = 0
-    Part.Parent = workspace
-    Part.Anchored = true
-    Part.CanCollide = false
-	
-    return Part
-end
-
 function Play_Marco()
    while Replay_Marco_BOOLEAN and not BREAK_PLACE do
       if Place_Now then
@@ -496,36 +466,15 @@ function Play_Marco()
          if Steps_Do_Replay <= Replay_Steps then
             Key = tostring(Steps_Do_Replay)
             if Replay_Table[Key].Money_Cost ~= nil then
-	       if not Beacon_Ice then
-                  if Replay_Table[Key].Money_Cost <= tonumber(MoneyPlayerText.Text) and Replay_Table[Key].Event_Type == "spawn_unit" then
-		     task.wait()
-                     Spawn_Unit:InvokeServer(Replay_Table[Key].Unit_Type, Return_Origin_CFrame(Replay_Table[Key].Cframe))
-                     Steps_Do_Replay += 1
-                  elseif Replay_Table[Key].Money_Cost <= tonumber(MoneyPlayerText.Text) and Replay_Table[Key].Event_Type == "upgrade_unit_ingame" then
-		     task.wait()
-                     Get_TARGET_UPGRADE(Replay_Table[Key].Cframe)
-                     Steps_Do_Replay += 1
-                  end
-	       elseif Beacon_Ice then
-                  local Part_target = CreatePart()
-		  Part_target.CFrame = Beacon_Ice
-
-		  local Target_Position = Return_Origin_CFrame(Replay_Table[Key].Cframe).Position
-		  local Pivot_Ice = Part_target.CFrame:PointToWorldSpace(Target_Position)
-		  local FRAME_TARGET = CFrame.new(Pivot_Ice)
-						
-		  if Replay_Table[Key].Money_Cost <= tonumber(MoneyPlayerText.Text) and Replay_Table[Key].Event_Type == "spawn_unit" then
-		     task.wait()
-		     CreatePart_TEST(FRAME_TARGET)
-                     Spawn_Unit:InvokeServer(Replay_Table[Key].Unit_Type, FRAME_TARGET)
-                     Steps_Do_Replay += 1
-                  elseif Replay_Table[Key].Money_Cost <= tonumber(MoneyPlayerText.Text) and Replay_Table[Key].Event_Type == "upgrade_unit_ingame" then
-		     task.wait()
-		     CreatePart_TEST(FRAME_TARGET)
-                     Get_TARGET_UPGRADE(FRAME_TARGET)
-                     Steps_Do_Replay += 1
-                  end				
-	       end
+                if Replay_Table[Key].Money_Cost <= tonumber(MoneyPlayerText.Text) and Replay_Table[Key].Event_Type == "spawn_unit" then
+		    task.wait()
+                    Spawn_Unit:InvokeServer(Replay_Table[Key].Unit_Type, Return_Origin_CFrame(Replay_Table[Key].Cframe))
+                    Steps_Do_Replay += 1
+                elseif Replay_Table[Key].Money_Cost <= tonumber(MoneyPlayerText.Text) and Replay_Table[Key].Event_Type == "upgrade_unit_ingame" then
+		    task.wait()
+                    Get_TARGET_UPGRADE(Replay_Table[Key].Cframe)
+                    Steps_Do_Replay += 1
+                end
             end
             Place_Now = false
             task.wait(Place_Cooldown)
