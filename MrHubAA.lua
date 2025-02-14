@@ -511,6 +511,8 @@ function Play_Marco()
 		    local Map_Ice_Position = Map_Ice.Position
 		    if Replay_Table[Key].Money_Cost <= tonumber(MoneyPlayerText.Text) and Replay_Table[Key].Event_Type == "spawn_unit" then
 	                task.wait()
+			print(Map_Ice_Position)
+			print(Return_Origin_CFrame(Replay_Table[Key].Cframe))
 			print(CFrame.New(Return_Origin_CFrame(Replay_Table[Key].Cframe) + Map_Ice_Position))
                         Spawn_Unit:InvokeServer(Replay_Table[Key].Unit_Type, CFrame.New(Return_Origin_CFrame(Replay_Table[Key].Cframe) + Map_Ice_Position))
                         Steps_Do_Replay += 1
