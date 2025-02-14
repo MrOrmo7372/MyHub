@@ -104,7 +104,7 @@ local Low_End_Android = false
 --###############################################################################################################################################################################################################################################################-Load All Function
 local Beacon_Ice = nil
 
-if workspace._map.player:FindFirstChild("Beacon") then
+if game.PlaceId ~= AA_ID and workspace._map.player:FindFirstChild("Beacon") then
     Beacon_Ice = workspace._map.player:FindFirstChild("Beacon").CFrame
 end
 
