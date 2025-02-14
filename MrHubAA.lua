@@ -446,7 +446,8 @@ function Get_TARGET_UPGRADE(cframe)
    if not Map_Ice then
       targetCFrame = Return_Origin_CFrame(cframe)
    elseif Map_Ice then
-      targetCFrame = CFrame.new(Map_Ice - Return_Origin_CFrame(cframe))
+      local Map_Ice_Position = Map_Ice.Position
+      targetCFrame = CFrame.new(Return_Origin_CFrame(cframe) + Map_Ice_Position)
    end
 
    -- Dùng FindPartsInBox thay vì Region3
