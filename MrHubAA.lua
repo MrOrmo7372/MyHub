@@ -118,9 +118,6 @@ end
 -- Đặt script này trong ServerScriptService
 local function optimizeEverything()
     local Map = game.Workspace:WaitForChild("_map")
-    if Map then
-        Map:Destroy()
-    end
 
     local Water_Block = game.Workspace:WaitForChild("_water_blocks")
     if Water_Block then
