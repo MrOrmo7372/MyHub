@@ -226,7 +226,9 @@ local Map_Ice = nil
 if game.PlaceId ~= AA_ID then
     if workspace._map.player:FindFirstChild("Beacon") then
 	Map_Ice =  workspace._map.player.Beacon.CFrame
+	print("Map_Ice Before: ", Map_Ice)
         workspace._map.player.Beacon:Destroy()
+	print("Map_Ice After: ", Map_Ice)
 
 	for _, child in ipairs(workspace._map:GetChildren()) do
             if child:FindFirstChild("snow") then
