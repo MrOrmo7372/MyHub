@@ -586,8 +586,9 @@ mt.__namecall = function(self, ...)
                     print("How Many Table Now: ", #MARCO_TABLE)
 
 		    if Map_Ice ~= nil then
-		        local Adapt_CFrame = (Return_Origin_CFrame(MARCO_TABLE[NumberString(Steps)].Cframe) - Map_Ice)
-			MARCO_TABLE[NumberString(Steps)].Cframe = tostring(Map_Ice - Adapt_CFrame)
+			local Map_Ice_Position = Map_Ice.Position
+		        local Adapt_CFrame = (Return_Origin_CFrame(MARCO_TABLE[NumberString(Steps)].Cframe) - Map_Ice_Position)
+			MARCO_TABLE[NumberString(Steps)].Cframe = tostring(Adapt_CFrame)
 		    end
                     Steps += 1
                 end
@@ -602,8 +603,9 @@ mt.__namecall = function(self, ...)
                    print("CFrame Is: ", MARCO_TABLE[NumberString(Steps)].Cframe)
 
 		   if Map_Ice ~= nil then
-		      local Adapt_CFrame = (Return_Origin_CFrame(MARCO_TABLE[NumberString(Steps)].Cframe) - Map_Ice)
-		      MARCO_TABLE[NumberString(Steps)].Cframe = tostring(Map_Ice - Adapt_CFrame)
+		      local Map_Ice_Position = Map_Ice.Position
+		      local Adapt_CFrame = (Return_Origin_CFrame(MARCO_TABLE[NumberString(Steps)].Cframe) - Map_Ice_Position)
+		      MARCO_TABLE[NumberString(Steps)].Cframe = tostring(Adapt_CFrame)
 		   end
                    Steps += 1
                end
