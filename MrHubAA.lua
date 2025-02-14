@@ -224,6 +224,34 @@ local Replay_Steps = 0
 local Steps_Do_Replay = 1
 local Break_Check = false
 
+local Map_Ice = nil
+
+if game.PlaceId ~= AA_ID then
+    if workspace._map.player:FindFirstChild("Beacon") then
+	Map_Ice =  workspace._map.player.Beacon.CFrame
+        workspace._map.player.Beacon:Destroy()
+
+	for _, child in ipairs(workspace._map:GetChildren()) do
+            if child:FindFirstChild("snow") then
+                child.snow:Destroy()
+            end
+        end
+
+        local area = workspace._map.player:FindFirstChild("area")
+        if area then
+            area.BrickColor = BrickColor.new("Lime green")
+            area.Color = Color3.fromRGB(0, 255, 0)
+            area.Size = Vector3.new(0.3, 15, 15)
+            area.Shape = Enum.PartType.Block
+
+            local attachment = area:FindFirstChild("Attachment")
+            if attachment then
+                attachment:Destroy()
+            end
+        end
+    end
+end
+
 local Auto_Start_Toggle = AutoFarm:CreateToggle({
    Name = "Auto Start",
    CurrentValue = false,
@@ -467,7 +495,7 @@ function Play_Marco()
             Key = tostring(Steps_Do_Replay)
             if Replay_Table[Key].Money_Cost ~= nil then
                 if Replay_Table[Key].Money_Cost <= tonumber(MoneyPlayerText.Text) and Replay_Table[Key].Event_Type == "spawn_unit" then
-		    task.wait()
+	            task.wait()
                     Spawn_Unit:InvokeServer(Replay_Table[Key].Unit_Type, Return_Origin_CFrame(Replay_Table[Key].Cframe))
                     Steps_Do_Replay += 1
                 elseif Replay_Table[Key].Money_Cost <= tonumber(MoneyPlayerText.Text) and Replay_Table[Key].Event_Type == "upgrade_unit_ingame" then
