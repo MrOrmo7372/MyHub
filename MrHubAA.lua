@@ -516,7 +516,7 @@ function Play_Marco()
 	                task.wait()
 			print("Map Ice: ", Map_Ice_Position)
 			print("Call From Map Ice: ", Return_Origin_CFrame(Replay_Table[Key].Cframe))
-			print("Adapt: ", CFrame.New(Return_Origin_CFrame(Replay_Table[Key].Cframe) + Map_Ice_Position))
+			print("Adapt: ", Return_Origin_CFrame(Replay_Table[Key].Cframe) + Map_Ice_Position)
                         Spawn_Unit:InvokeServer(Replay_Table[Key].Unit_Type, Return_Origin_CFrame(Replay_Table[Key].Cframe) + Map_Ice_Position)
                         Steps_Do_Replay += 1
                     elseif Replay_Table[Key].Money_Cost <= tonumber(MoneyPlayerText.Text) and Replay_Table[Key].Event_Type == "upgrade_unit_ingame" then
