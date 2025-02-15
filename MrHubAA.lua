@@ -51,10 +51,16 @@ Clear_Name_Input.Name = "Clear_Name_Input"
 Clear_Name_Input.Value = false
 Clear_Name_Input.Parent = Player
 
+local Turn_Off_Save_Marco_When_On = Instance.new("BoolValue")
+Turn_Off_Save_Marco_When_On.Name = "Turn_Off_Save_Marco_When_On"
+Turn_Off_Save_Marco_When_On.Value = false
+Turn_Off_Save_Marco_When_On.Parent = Player
+
 local Auto_Start_Local = Player:WaitForChild("Auto_Start_Player")
 local Auto_Retry_Local = Player:WaitForChild("Auto_Retry_Player")
 local Reload_List_Marco_Local = Player:WaitForChild("Reload_List_Marco")
 local Clear_Name_Input_Local = Player:WaitForChild("Clear_Name_Input")
+local Turn_Off_Save_Marco_When_On_Local = Player:WaitForChild("Turn_Off_Save_Marco_When_On")
 --###############################################################################################################################################################################################################################################################-End Install Setting Game Player
 --###############################################################################################################################################################################################################################################################-Load RayScript
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
@@ -533,6 +539,9 @@ function Play_Marco()
                     if Replay_Table[Key].Money_Cost <= tonumber(MoneyPlayerText.Text) and Replay_Table[Key].Event_Type == "spawn_unit" then
 	                task.wait()
                         Spawn_Unit:InvokeServer(Replay_Table[Key].Unit_Type, Return_Origin_CFrame(Replay_Table[Key].Cframe))
+			if Replay_Table[Key].Unit_Type == "{f4777064-b97f-4cd8-a069-0389ab9502be}" then
+			    task.spawn(GetBuff_Erwin())
+			end
                         Steps_Do_Replay += 1
                     elseif Replay_Table[Key].Money_Cost <= tonumber(MoneyPlayerText.Text) and Replay_Table[Key].Event_Type == "upgrade_unit_ingame" then
 		        task.wait()
@@ -654,6 +663,33 @@ end
 
 setreadonly(mt, true)
 
+local Save_Record = AutoFarm:CreateToggle({
+   Name = "Auto Start",
+   CurrentValue = false,
+   Flag = "Auto_Start", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Save_Record_Value)
+   -- The function that takes place when the toggle is pressed
+   -- The variable (Value) is a boolean on whether the toggle is true or false
+        if Save_Record_Value == true then
+	    Turn_Off_Save_Marco_When_On_Local.Value = true
+	    if next(MARCO_TABLE) ~= nil then
+                Start_Record:Set(false)
+                saveMacroData()
+                MARCO_TABLE = {}
+            else
+                Start_Record:Set(false)
+            end
+        end
+   end,
+})
+
+Turn_Off_Save_Marco_When_On_Local.Changed:Connect(function()
+    if Turn_Off_Save_Marco_When_On_Local.Value == true then
+	Save_Record:Set(false)
+        Turn_Off_Save_Marco_When_On_Local.Value = false
+    end
+end)
+
 -- Ví dụ sử dụng:
 -- saveMacroData() -- Gọi khi cần lưu dữ liệu
 --###############################################################################################################################################################################################################################################################-End MARCO ZONE
@@ -703,6 +739,7 @@ ResultsUI:GetPropertyChangedSignal("Enabled"):Connect(function()
    if next(MARCO_TABLE) ~= nil then
       Start_Record:Set(false)
       saveMacroData()
+      MARCO_TABLE = {}
    else
       Start_Record:Set(false)
    end
