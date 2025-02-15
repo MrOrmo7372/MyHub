@@ -14,6 +14,7 @@ local Client_to_Server_File_Location = ReplicatedStorage:WaitForChild("endpoints
    local Spawn_Unit = Client_to_Server_File_Location:WaitForChild("spawn_unit")
    local upgrade_unit_ingame = Client_to_Server_File_Location:WaitForChild("upgrade_unit_ingame")
    local Set_Game_Finish_Vote = Client_to_Server_File_Location:WaitForChild("set_game_finished_vote")
+   local use_active_attack = Client_to_Server_File_Location:WaitForChild("use_active_attack")
 
 local PlayerGui = Player:WaitForChild("PlayerGui")
    local ResultsUI = PlayerGui:WaitForChild("ResultsUI")
@@ -283,7 +284,20 @@ All_Erwin_Value.Changed:Connect(function()
 	    end
 	end
 
-	print("Still Test Buff Erwin")
+	function Loop_Buff()
+            local Erwin_Buff = 1
+            while true do
+                use_active_attack:InvokeServer(Erwin_Unit[Erwin_Buff])
+		if Erwin_Buff >= 4 then
+		    Erwin_Buff = 1
+		else
+		    Erwin_Buff += 1
+		end
+                task.wait(15)
+	    end
+	end
+
+	task.spawn(Loop_Buff())
     end
 end)
 
