@@ -275,7 +275,7 @@ function GetBuff_Erwin()
     
     for _, Unit in ipairs(Workspace._UNITS:GetChildren()) do
         if Unit.Name == "erwin" then
-	    if GetBuff_Erwin(Unit) then
+	    if Check_TableErwin(Unit) then
 		table.insert(Erwin_Unit, Unit)
 	    end
 	end
@@ -540,7 +540,7 @@ function Play_Marco()
 	                task.wait()
                         Spawn_Unit:InvokeServer(Replay_Table[Key].Unit_Type, Return_Origin_CFrame(Replay_Table[Key].Cframe))
 			if Replay_Table[Key].Unit_Type == "{f4777064-b97f-4cd8-a069-0389ab9502be}" then
-			    GetBuff_Erwin()
+			    task.spawn(GetBuff_Erwin())
 			end
                         Steps_Do_Replay += 1
                     elseif Replay_Table[Key].Money_Cost <= tonumber(MoneyPlayerText.Text) and Replay_Table[Key].Event_Type == "upgrade_unit_ingame" then
@@ -554,7 +554,7 @@ function Play_Marco()
 	                task.wait()
                         Spawn_Unit:InvokeServer(Replay_Table[Key].Unit_Type, Return_Origin_CFrame(Replay_Table[Key].Cframe) + Map_Ice_Position)
 			if Replay_Table[Key].Unit_Type == "{f4777064-b97f-4cd8-a069-0389ab9502be}" then
-			    GetBuff_Erwin()
+			    task.spawn(GetBuff_Erwin())
 			end
                         Steps_Do_Replay += 1
                     elseif Replay_Table[Key].Money_Cost <= tonumber(MoneyPlayerText.Text) and Replay_Table[Key].Event_Type == "upgrade_unit_ingame" then
