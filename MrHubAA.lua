@@ -56,6 +56,11 @@ Turn_Off_Save_Marco_When_On.Name = "Turn_Off_Save_Marco_When_On"
 Turn_Off_Save_Marco_When_On.Value = false
 Turn_Off_Save_Marco_When_On.Parent = Player
 
+local All_Erwin_Value = Instance.new("IntValue")
+All_Erwin_Value.Name = "All_Erwin_Value"
+All_Erwin_Value.Value = 0
+All_Erwin_Value.Parent = Player
+
 local Auto_Start_Local = Player:WaitForChild("Auto_Start_Player")
 local Auto_Retry_Local = Player:WaitForChild("Auto_Retry_Player")
 local Reload_List_Marco_Local = Player:WaitForChild("Reload_List_Marco")
@@ -228,7 +233,6 @@ local Replay_Steps = 0
 local Steps_Do_Replay = 1
 local Break_Check = false
 local Erwin_Unit = {}
-local All_Erwin = 0
 
 local Map_Ice = nil
 
@@ -262,32 +266,26 @@ if game.PlaceId ~= AA_ID then
     end
 end
 
-function GetBuff_Erwin()
-    All_Erwin = 0
-    function Check_TableErwin(Unit_Erwin)
-        for _, Erwin in ipairs(Erwin_Unit) do
-            if Erwin == Unit_Erwin then
+All_Erwin_Value.Changed:Connect(function()
+    function Check_Erwin(Unit)
+        for _, Unit_Table in ipairs(Erwin_Unit) do
+	    if Unit_Table == Unit then
 	        return false
 	    end
 	end
 	return true
     end
-    
-    for _, Unit in ipairs(Workspace._UNITS:GetChildren()) do
-        if Unit.Name == "erwin" then
-	    All_Erwin += 1
-	    if Check_TableErwin(Unit) then
-		table.insert(Erwin_Unit, Unit)
+
+    if All_Erwin_Value >= 4 then
+        for _, Unit in ipairs(workspace._UNITS) do
+	    if Unit.Name == "erwin" and Check_Erwin(Unit) then
+	        table.insert(Erwin_Unit, Unit)
 	    end
 	end
-    end
 
-    if All_Erwin == 4 then
-        print("Still Test")
-    else
- 	print("Something Wrong: ", All_Erwin)
+	print("Still Test Buff Erwin")
     end
-end
+end)
 
 local Auto_Start_Toggle = AutoFarm:CreateToggle({
    Name = "Auto Start",
@@ -543,7 +541,7 @@ function Play_Marco()
 	                task.wait()
                         Spawn_Unit:InvokeServer(Replay_Table[Key].Unit_Type, Return_Origin_CFrame(Replay_Table[Key].Cframe))
 			if Replay_Table[Key].Unit_Type == "{f4777064-b97f-4cd8-a069-0389ab9502be}" then
-			    GetBuff_Erwin()
+			    All_Erwin_Value += 1
 			end
                         Steps_Do_Replay += 1
                     elseif Replay_Table[Key].Money_Cost <= tonumber(MoneyPlayerText.Text) and Replay_Table[Key].Event_Type == "upgrade_unit_ingame" then
@@ -557,7 +555,7 @@ function Play_Marco()
 	                task.wait()
                         Spawn_Unit:InvokeServer(Replay_Table[Key].Unit_Type, Return_Origin_CFrame(Replay_Table[Key].Cframe) + Map_Ice_Position)
 			if Replay_Table[Key].Unit_Type == "{f4777064-b97f-4cd8-a069-0389ab9502be}" then
-			    GetBuff_Erwin()
+			    All_Erwin_Value += 1
 			end
                         Steps_Do_Replay += 1
                     elseif Replay_Table[Key].Money_Cost <= tonumber(MoneyPlayerText.Text) and Replay_Table[Key].Event_Type == "upgrade_unit_ingame" then
