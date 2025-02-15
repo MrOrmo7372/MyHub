@@ -275,9 +275,9 @@ function GetBuff_Erwin()
     
     for _, Unit in ipairs(Workspace._UNITS:GetChildren()) do
         if Unit.Name == "erwin" then
+	    All_Erwin += 1
 	    if Check_TableErwin(Unit) then
 		table.insert(Erwin_Unit, Unit)
-		All_Erwin += 1
 	    end
 	end
     end
