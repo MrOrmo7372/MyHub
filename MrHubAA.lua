@@ -266,7 +266,6 @@ function GetBuff_Erwin()
     All_Erwin = 0
     function Check_TableErwin(Unit_Erwin)
         for _, Erwin in ipairs(Erwin_Unit) do
-	    All_Erwin += 1
             if Erwin == Unit_Erwin then
 	        return false
 	    end
@@ -278,6 +277,7 @@ function GetBuff_Erwin()
         if Unit.Name == "erwin" then
 	    if Check_TableErwin(Unit) then
 		table.insert(Erwin_Unit, Unit)
+		All_Erwin += 1
 	    end
 	end
     end
