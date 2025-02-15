@@ -228,6 +228,7 @@ local Replay_Steps = 0
 local Steps_Do_Replay = 1
 local Break_Check = false
 local Erwin_Unit = {}
+local All_Erwin = 0
 
 local Map_Ice = nil
 
@@ -262,7 +263,7 @@ if game.PlaceId ~= AA_ID then
 end
 
 function GetBuff_Erwin()
-    local All_Erwin = 0
+    All_Erwin = 0
     function Check_TableErwin(Unit_Erwin)
         for _, Erwin in ipairs(Erwin_Unit) do
 	    All_Erwin += 1
