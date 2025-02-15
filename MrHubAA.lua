@@ -283,6 +283,8 @@ function GetBuff_Erwin()
 
     if All_Erwin == 4 then
         print("Still Test")
+    else
+ 	print("Something Wrong: ", All_Erwin)
     end
 end
 
