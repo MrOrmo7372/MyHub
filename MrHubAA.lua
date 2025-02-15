@@ -276,7 +276,7 @@ All_Erwin_Value.Changed:Connect(function()
 	return true
     end
 
-    if All_Erwin_Value >= 4 then
+    if All_Erwin_Value.Value >= 4 then
         for _, Unit in ipairs(workspace._UNITS) do
 	    if Unit.Name == "erwin" and Check_Erwin(Unit) then
 	        table.insert(Erwin_Unit, Unit)
@@ -541,7 +541,7 @@ function Play_Marco()
 	                task.wait()
                         Spawn_Unit:InvokeServer(Replay_Table[Key].Unit_Type, Return_Origin_CFrame(Replay_Table[Key].Cframe))
 			if Replay_Table[Key].Unit_Type == "{f4777064-b97f-4cd8-a069-0389ab9502be}" then
-			    All_Erwin_Value += 1
+			    All_Erwin_Value.Value += 1
 			end
                         Steps_Do_Replay += 1
                     elseif Replay_Table[Key].Money_Cost <= tonumber(MoneyPlayerText.Text) and Replay_Table[Key].Event_Type == "upgrade_unit_ingame" then
@@ -555,7 +555,7 @@ function Play_Marco()
 	                task.wait()
                         Spawn_Unit:InvokeServer(Replay_Table[Key].Unit_Type, Return_Origin_CFrame(Replay_Table[Key].Cframe) + Map_Ice_Position)
 			if Replay_Table[Key].Unit_Type == "{f4777064-b97f-4cd8-a069-0389ab9502be}" then
-			    All_Erwin_Value += 1
+			    All_Erwin_Value.Value += 1
 			end
                         Steps_Do_Replay += 1
                     elseif Replay_Table[Key].Money_Cost <= tonumber(MoneyPlayerText.Text) and Replay_Table[Key].Event_Type == "upgrade_unit_ingame" then
