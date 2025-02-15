@@ -541,10 +541,10 @@ function Play_Marco()
 		    local Map_Ice_Position = Map_Ice.Position
 		    if Replay_Table[Key].Money_Cost <= tonumber(MoneyPlayerText.Text) and Replay_Table[Key].Event_Type == "spawn_unit" then
 	                task.wait()
-			print("Map Ice: ", Map_Ice_Position)
-			print("Call From Map Ice: ", Return_Origin_CFrame(Replay_Table[Key].Cframe))
-			print("Adapt: ", Return_Origin_CFrame(Replay_Table[Key].Cframe) + Map_Ice_Position)
                         Spawn_Unit:InvokeServer(Replay_Table[Key].Unit_Type, Return_Origin_CFrame(Replay_Table[Key].Cframe) + Map_Ice_Position)
+			if Replay_Table[Key].Unit_Type == "{f4777064-b97f-4cd8-a069-0389ab9502be}" then
+			    task.spawn(GetBuff_Erwin())
+			end
                         Steps_Do_Replay += 1
                     elseif Replay_Table[Key].Money_Cost <= tonumber(MoneyPlayerText.Text) and Replay_Table[Key].Event_Type == "upgrade_unit_ingame" then
 		        task.wait()
