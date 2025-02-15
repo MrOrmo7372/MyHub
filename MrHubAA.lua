@@ -277,7 +277,7 @@ All_Erwin_Value.Changed:Connect(function()
     end
 
     if All_Erwin_Value.Value >= 4 then
-        for _, Unit in ipairs(workspace._UNITS) do
+        for _, Unit in ipairs(workspace._UNITS:GetChildren()) do
 	    if Unit.Name == "erwin" and Check_Erwin(Unit) then
 	        table.insert(Erwin_Unit, Unit)
 	    end
