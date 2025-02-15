@@ -664,9 +664,9 @@ end
 setreadonly(mt, true)
 
 local Save_Record = AutoFarm:CreateToggle({
-   Name = "Auto Start",
+   Name = "Save Record",
    CurrentValue = false,
-   Flag = "Auto_Start", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Flag = "Save_Record", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
    Callback = function(Save_Record_Value)
    -- The function that takes place when the toggle is pressed
    -- The variable (Value) is a boolean on whether the toggle is true or false
