@@ -293,7 +293,7 @@ All_Erwin_Value.Changed:Connect(function()
 		else
 		    Erwin_Buff += 1
 		end
-                task.wait(15)
+                task.wait(16.5)
 	    end
 	end
 
