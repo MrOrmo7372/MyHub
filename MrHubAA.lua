@@ -106,7 +106,7 @@ local Window = Rayfield:CreateWindow({
 --###############################################################################################################################################################################################################################################################-End RayScript
 --###############################################################################################################################################################################################################################################################-Load Menu
 local AutoFarm = Window:CreateTab("Auto Farm", "apple")
-local StillCheck = Window:CreateTab("Still Check", "badge-alert")
+local AutoPlay = Window:CreateTab("Auto Play+", "mouse")
 local Marco = Window:CreateTab("Marco", "bot")
 --###############################################################################################################################################################################################################################################################-End Menu
 --###############################################################################################################################################################################################################################################################-Load All Local Setting
@@ -234,6 +234,7 @@ local Replay_Steps = 0
 local Steps_Do_Replay = 1
 local Break_Check = false
 local Erwin_Unit = {}
+local INF_BUFF_ERWIN = false
 
 local Map_Ice = nil
 
@@ -326,6 +327,17 @@ local Auto_Retry_Toggle = AutoFarm:CreateToggle({
          if Auto_Retry_Local.Value == false and ResultsUI.Enabled == true then
             Auto_Retry_Function()
          end
+   end,
+})
+
+local INF_ERWIN_Toggle = AutoPlay:CreateToggle({
+   Name = "Inf Buff Erwin",
+   CurrentValue = false,
+   Flag = "Inf_Buff_Erwin", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Inf_Buff_Erwin_Toggle)
+   -- The function that takes place when the toggle is pressed
+   -- The variable (Value) is a boolean on whether the toggle is true or false
+         INF_BUFF_ERWIN = Inf_Buff_Erwin_Toggle
    end,
 })
 
@@ -554,7 +566,7 @@ function Play_Marco()
                     if Replay_Table[Key].Money_Cost <= tonumber(MoneyPlayerText.Text) and Replay_Table[Key].Event_Type == "spawn_unit" then
 	                task.wait()
                         Spawn_Unit:InvokeServer(Replay_Table[Key].Unit_Type, Return_Origin_CFrame(Replay_Table[Key].Cframe))
-			if Replay_Table[Key].Unit_Type == "{f4777064-b97f-4cd8-a069-0389ab9502be}" then
+			if Replay_Table[Key].Unit_Type == "{f4777064-b97f-4cd8-a069-0389ab9502be}" and INF_BUFF_ERWIN == true then
 			    All_Erwin_Value.Value += 1
 			end
                         Steps_Do_Replay += 1
@@ -568,7 +580,7 @@ function Play_Marco()
 		    if Replay_Table[Key].Money_Cost <= tonumber(MoneyPlayerText.Text) and Replay_Table[Key].Event_Type == "spawn_unit" then
 	                task.wait()
                         Spawn_Unit:InvokeServer(Replay_Table[Key].Unit_Type, Return_Origin_CFrame(Replay_Table[Key].Cframe) + Map_Ice_Position)
-			if Replay_Table[Key].Unit_Type == "{f4777064-b97f-4cd8-a069-0389ab9502be}" then
+			if Replay_Table[Key].Unit_Type == "{f4777064-b97f-4cd8-a069-0389ab9502be}" and INF_BUFF_ERWIN == true then
 			    All_Erwin_Value.Value += 1
 			end
                         Steps_Do_Replay += 1
@@ -642,6 +654,10 @@ mt.__namecall = function(self, ...)
                     print("Unit Type Is: ", MARCO_TABLE[NumberString(Steps)].Unit_Type)
                     print("CFrame Is: ", MARCO_TABLE[NumberString(Steps)].Cframe)
                     print("How Many Table Now: ", #MARCO_TABLE)
+
+		    if MARCO_TABLE[NumberString(Steps)].Unit_Type == "{f4777064-b97f-4cd8-a069-0389ab9502be}" and INF_BUFF_ERWIN == true then
+		        All_Erwin_Value.Value += 1
+		    end
 
 		    if Map_Ice ~= nil then
 			local Map_Ice_Position = Map_Ice.Position
