@@ -226,30 +226,32 @@ local Erwin_Unit = {}
 local Map_Ice = nil
 
 if game.PlaceId ~= AA_ID then
-    if workspace._map.player:FindFirstChild("Beacon") then
-	Map_Ice =  workspace._map.player.Beacon.CFrame
-	print("Map_Ice Before: ", Map_Ice)
-        workspace._map.player.Beacon:Destroy()
-	print("Map_Ice After: ", Map_Ice)
+    if workspace._map:FindFirstChild("player") then
+	if workspace._map.player:FindFirstChild("Beacon") then
+	    Map_Ice =  workspace._map.player.Beacon.CFrame
+	    print("Map_Ice Before: ", Map_Ice)
+            workspace._map.player.Beacon:Destroy()
+	    print("Map_Ice After: ", Map_Ice)
 
-	for _, child in ipairs(workspace._map:GetChildren()) do
-            if child:FindFirstChild("snow") then
-                child.snow:Destroy()
+	    for _, child in ipairs(workspace._map:GetChildren()) do
+                if child:FindFirstChild("snow") then
+                    child.snow:Destroy()
+                end
             end
-        end
 
-        local area = workspace._map.player:FindFirstChild("area")
-        if area then
-            area.BrickColor = BrickColor.new("Lime green")
-            area.Color = Color3.fromRGB(0, 255, 0)
-            area.Size = Vector3.new(0.3, 15, 15)
-            area.Shape = Enum.PartType.Block
+            local area = workspace._map.player:FindFirstChild("area")
+            if area then
+                area.BrickColor = BrickColor.new("Lime green")
+                area.Color = Color3.fromRGB(0, 255, 0)
+                area.Size = Vector3.new(0.3, 15, 15)
+                area.Shape = Enum.PartType.Block
 
-            local attachment = area:FindFirstChild("Attachment")
-            if attachment then
-                attachment:Destroy()
+                local attachment = area:FindFirstChild("Attachment")
+                if attachment then
+                    attachment:Destroy()
+                end
             end
-        end
+	end
     end
 end
 
