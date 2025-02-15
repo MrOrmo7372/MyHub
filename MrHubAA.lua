@@ -637,53 +637,58 @@ mt.__namecall = function(self, ...)
     local args = {...}
     local remoteName = self.Name
 
-    if table.find(TargetEventNames, remoteName) and (method == "FireServer" or method == "InvokeServer") and Record_Marco_BOOLEAN == true then
+    if table.find(TargetEventNames, remoteName) and (method == "FireServer" or method == "InvokeServer") then
         local success, result = pcall(oldNamecall, self, ...)
         
         -- Chỉ ghi lại khi request thành công và có đủ tiền
         if success then
-            if method == "InvokeServer" and remoteName == "spawn_unit" then
-                if result == true then -- Giả định server trả về true khi thành công
-                    MARCO_TABLE[NumberString(Steps)] = {
-                        Event_Type = remoteName,
-                        Money_Cost = 0,
-                        Unit_Type = args[1],
-                        Cframe = tostring(args[2]),
-                    }
-                    print("Remote Name Is: ", MARCO_TABLE[NumberString(Steps)].Event_Type)
-                    print("Unit Type Is: ", MARCO_TABLE[NumberString(Steps)].Unit_Type)
-                    print("CFrame Is: ", MARCO_TABLE[NumberString(Steps)].Cframe)
-                    print("How Many Table Now: ", #MARCO_TABLE)
+	    if Record_Marco_BOOLEAN == true then
+                if method == "InvokeServer" and remoteName == "spawn_unit" then
+                    if result == true then -- Giả định server trả về true khi thành công
+                        MARCO_TABLE[NumberString(Steps)] = {
+                            Event_Type = remoteName,
+                            Money_Cost = 0,
+                            Unit_Type = args[1],
+                            Cframe = tostring(args[2]),
+                        }
+                        print("Remote Name Is: ", MARCO_TABLE[NumberString(Steps)].Event_Type)
+                        print("Unit Type Is: ", MARCO_TABLE[NumberString(Steps)].Unit_Type)
+                        print("CFrame Is: ", MARCO_TABLE[NumberString(Steps)].Cframe)
+                        print("How Many Table Now: ", #MARCO_TABLE)
 
-		    if MARCO_TABLE[NumberString(Steps)].Unit_Type == "{f4777064-b97f-4cd8-a069-0389ab9502be}" and INF_BUFF_ERWIN == true then
-		        All_Erwin_Value.Value += 1
-		    end
+		        --if MARCO_TABLE[NumberString(Steps)].Unit_Type == "{f4777064-b97f-4cd8-a069-0389ab9502be}" and INF_BUFF_ERWIN == true then
+		            --All_Erwin_Value.Value += 1
+		        --end
 
-		    if Map_Ice ~= nil then
-			local Map_Ice_Position = Map_Ice.Position
-		        local Adapt_CFrame = (Return_Origin_CFrame(MARCO_TABLE[NumberString(Steps)].Cframe) - Map_Ice_Position)
-			MARCO_TABLE[NumberString(Steps)].Cframe = tostring(Adapt_CFrame)
-		    end
-                    Steps += 1
+		        if Map_Ice ~= nil then
+			    local Map_Ice_Position = Map_Ice.Position
+		            local Adapt_CFrame = (Return_Origin_CFrame(MARCO_TABLE[NumberString(Steps)].Cframe) - Map_Ice_Position)
+			    MARCO_TABLE[NumberString(Steps)].Cframe = tostring(Adapt_CFrame)
+		        end
+                        Steps += 1
+                    end
+                elseif method == "InvokeServer" and remoteName == "upgrade_unit_ingame" then
+                    if result == true then -- Giả định server trả về true khi thành công
+                        MARCO_TABLE[NumberString(Steps)] = {
+                            Event_Type = remoteName,
+                            Money_Cost = 0,
+                            Cframe = tostring(args[1].HumanoidRootPart.CFrame),
+                        }
+                        print("Remote Name Is: ", MARCO_TABLE[NumberString(Steps)].Event_Type)
+                        print("CFrame Is: ", MARCO_TABLE[NumberString(Steps)].Cframe)
+
+		        if Map_Ice ~= nil then
+		           local Map_Ice_Position = Map_Ice.Position
+		           local Adapt_CFrame = (Return_Origin_CFrame(MARCO_TABLE[NumberString(Steps)].Cframe) - Map_Ice_Position)
+		           MARCO_TABLE[NumberString(Steps)].Cframe = tostring(Adapt_CFrame)
+		        end
+                        Steps += 1
+                    end
                 end
-            elseif method == "InvokeServer" and remoteName == "upgrade_unit_ingame" then
-               if result == true then -- Giả định server trả về true khi thành công
-                   MARCO_TABLE[NumberString(Steps)] = {
-                       Event_Type = remoteName,
-                       Money_Cost = 0,
-                       Cframe = tostring(args[1].HumanoidRootPart.CFrame),
-                   }
-                   print("Remote Name Is: ", MARCO_TABLE[NumberString(Steps)].Event_Type)
-                   print("CFrame Is: ", MARCO_TABLE[NumberString(Steps)].Cframe)
-
-		   if Map_Ice ~= nil then
-		      local Map_Ice_Position = Map_Ice.Position
-		      local Adapt_CFrame = (Return_Origin_CFrame(MARCO_TABLE[NumberString(Steps)].Cframe) - Map_Ice_Position)
-		      MARCO_TABLE[NumberString(Steps)].Cframe = tostring(Adapt_CFrame)
-		   end
-                   Steps += 1
-               end
-            end
+	    end
+	    if method == "InvokeServer" and remoteName == "spawn_unit" and args[1] == "{f4777064-b97f-4cd8-a069-0389ab9502be}" and INF_BUFF_ERWIN == true then
+	        All_Erwin_Value.Value += 1
+	    end
         end
 
         return result
