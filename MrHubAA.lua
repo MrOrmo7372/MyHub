@@ -545,7 +545,7 @@ function Get_TARGET_UPGRADE(cframe)
 
    for _, part in pairs(parts) do
       print(part.Name)
-      if part.Name == "HumanoidRootPart" then
+      if part.Name == "HumanoidRootPart" and part.Parent:FindFirstChild("_hitbox") then
 	 print("Find Target")
 	 local Hitbox = part.Parent:FindFirstChild("_hitbox")
 	 print((targetCFrame.Position - Hitbox.Position).magnitude)	
