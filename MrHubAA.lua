@@ -572,6 +572,8 @@ local Place_Now = true
 local BREAK_PLACE = false
 
 function Play_Marco()
+   repeat task.wait() until workspace._waves_started.Value == true
+   task.wait(1.7)
    while Replay_Marco_BOOLEAN and not BREAK_PLACE do
       if Place_Now then
          if not Chose_Marco then break end
