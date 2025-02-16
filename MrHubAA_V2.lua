@@ -33,46 +33,30 @@ if not isfolder(MarcoFile) then
 end
 --###############################################################################################################################################################################################################################################################-End Local Info
 --###############################################################################################################################################################################################################################################################-Load Install Setting Game Player
-local Auto_Start_Player = Instance.new("BoolValue")
-Auto_Start_Player.Name = "Auto_Start_Player"
-Auto_Start_Player.Value = false
-Auto_Start_Player.Parent = Player
+function Create_Boolean_Value(name)
+    local Create_Boolean_Value = Instance.new("BoolValue")
+    Create_Boolean_Value.Name = name
+    Create_Boolean_Value.Value = false
+    Create_Boolean_Value.Parent = Player
+    return Create_Boolean_Value
+end
 
-local Auto_Retry_Player = Instance.new("BoolValue")
-Auto_Retry_Player.Name = "Auto_Retry_Player"
-Auto_Retry_Player.Value = false
-Auto_Retry_Player.Parent = Player
+function Create_Int_Value(name)
+    local Create_Int_Value = Instance.new("IntValue")
+    Create_Int_Value.Name = name
+    Create_Int_Value.Value = 0
+    Create_Int_Value.Parent = Player
+    return Create_Int_Value
+end
 
-local Reload_List_Marco = Instance.new("BoolValue")
-Reload_List_Marco.Name = "Reload_List_Marco"
-Reload_List_Marco.Value = false
-Reload_List_Marco.Parent = Player
+local Auto_Start_Player = Create_Boolean_Value("Auto_Start_Player")
+local Auto_Retry_Player = Create_Boolean_Value("Auto_Retry_Player")
+local Reload_List_Marco = Create_Boolean_Value("Reload_List_Marco")
+local Clear_Name_Input = Create_Boolean_Value("Clear_Name_Input")
+local Turn_Off_Save_Marco_When_On = Create_Boolean_Value("Turn_Off_Save_Marco_When_On")
 
-local Clear_Name_Input = Instance.new("BoolValue")
-Clear_Name_Input.Name = "Clear_Name_Input"
-Clear_Name_Input.Value = false
-Clear_Name_Input.Parent = Player
-
-local Turn_Off_Save_Marco_When_On = Instance.new("BoolValue")
-Turn_Off_Save_Marco_When_On.Name = "Turn_Off_Save_Marco_When_On"
-Turn_Off_Save_Marco_When_On.Value = false
-Turn_Off_Save_Marco_When_On.Parent = Player
-
-local All_Erwin_Value = Instance.new("IntValue")
-All_Erwin_Value.Name = "All_Erwin_Value"
-All_Erwin_Value.Value = 0
-All_Erwin_Value.Parent = Player
-
-local All_Stain_Value = Instance.new("IntValue")
-All_Stain_Value.Name = "All_Stain_Value"
-All_Stain_Value.Value = 0
-All_Stain_Value.Parent = Player
-
-local Auto_Start_Local = Player:WaitForChild("Auto_Start_Player")
-local Auto_Retry_Local = Player:WaitForChild("Auto_Retry_Player")
-local Reload_List_Marco_Local = Player:WaitForChild("Reload_List_Marco")
-local Clear_Name_Input_Local = Player:WaitForChild("Clear_Name_Input")
-local Turn_Off_Save_Marco_When_On_Local = Player:WaitForChild("Turn_Off_Save_Marco_When_On")
+local All_Erwin_Value = Create_Int_Value("All_Erwin_Value")
+local All_Stain_Value = Create_Int_Value("All_Stain_Value")
 --###############################################################################################################################################################################################################################################################-End Install Setting Game Player
 --###############################################################################################################################################################################################################################################################-Load RayScript
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
@@ -122,16 +106,16 @@ local Low_End_Android = false
 --###############################################################################################################################################################################################################################################################-End All Local Setting
 --###############################################################################################################################################################################################################################################################-Load All Function
 function Auto_Start_Fucntion()
-   if Auto_Start_Local.Value == false then
+   if Auto_Start_Player.Value == false then
       local Auto_Start_Call = Vote_Start:InvokeServer()
-      Auto_Start_Local.Value = true
+      Auto_Start_Player.Value = true
    end
 end
 
 function Auto_Retry_Function()
    task.wait(2)
    local Auto_Retry_Call = Set_Game_Finish_Vote:InvokeServer("replay")
-   Auto_Retry_Local.Value = true
+   Auto_Retry_Player.Value = true
 end
 
 -- Đặt script này trong ServerScriptService
@@ -353,7 +337,7 @@ local Auto_Retry_Toggle = AutoFarm:CreateToggle({
    -- The function that takes place when the toggle is pressed
    -- The variable (Value) is a boolean on whether the toggle is true or false
          Auto_Retry_Boolean = Auto_Retry_Value
-         if Auto_Retry_Local.Value == false and ResultsUI.Enabled == true then
+         if Auto_Retry_Player.Value == false and ResultsUI.Enabled == true then
             Auto_Retry_Function()
          end
    end,
@@ -468,14 +452,14 @@ local Create_Config_Marco = Marco:CreateInput({
    end,
 })
 
-Reload_List_Marco_Local.Changed:Connect(function()
+Reload_List_Marco.Changed:Connect(function()
    if Reload_List_Marco.Value == true then
       List_Marco_Config:Refresh(listMacros()) -- The new list of options available.
       Reload_List_Marco.Value = false
    end
 end)
 
-Clear_Name_Input_Local.Changed:Connect(function()
+Clear_Name_Input.Changed:Connect(function()
    if Clear_Name_Input.Value == true then
       Create_Config_Marco:Set("") -- The new input text value
       Clear_Name_Input.Value = false
@@ -729,7 +713,7 @@ local Save_Record = AutoFarm:CreateToggle({
    -- The function that takes place when the toggle is pressed
    -- The variable (Value) is a boolean on whether the toggle is true or false
         if Save_Record_Value == true then
-	    Turn_Off_Save_Marco_When_On_Local.Value = true
+	    Turn_Off_Save_Marco_When_On.Value = true
 	    if next(MARCO_TABLE) ~= nil then
                 Start_Record:Set(false)
                 saveMacroData()
@@ -741,10 +725,10 @@ local Save_Record = AutoFarm:CreateToggle({
    end,
 })
 
-Turn_Off_Save_Marco_When_On_Local.Changed:Connect(function()
-    if Turn_Off_Save_Marco_When_On_Local.Value == true then
+Turn_Off_Save_Marco_When_On.Changed:Connect(function()
+    if Turn_Off_Save_Marco_When_On.Value == true then
 	Save_Record:Set(false)
-        Turn_Off_Save_Marco_When_On_Local.Value = false
+        Turn_Off_Save_Marco_When_On.Value = false
     end
 end)
 
@@ -802,7 +786,7 @@ ResultsUI:GetPropertyChangedSignal("Enabled"):Connect(function()
       Start_Record:Set(false)
    end
       
-   if Auto_Retry_Boolean == true and Auto_Retry_Local.Value == false and game.PlaceId ~= AA_ID then
+   if Auto_Retry_Boolean == true and Auto_Retry_Player.Value == false and game.PlaceId ~= AA_ID then
       Auto_Retry_Function()
    end
 end)
