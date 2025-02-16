@@ -219,6 +219,31 @@ local function optimizeEverything()
     -- Tắt FX
     game:GetService("Lighting").GlobalShadows = false
 end
+
+function MoveRoadChildren()
+    local workspace = game:GetService("Workspace")
+    local road = workspace:FindFirstChild("_road")
+
+    if road then
+        -- Tạo thư mục mới tên "RemoveDecteve" nếu chưa có
+        local removeDetective = workspace:FindFirstChild("RemoveDecteve")
+        if not removeDetective then
+            removeDetective = Instance.new("Folder")
+            removeDetective.Name = "RemoveDecteve"
+            removeDetective.Parent = workspace
+        end
+
+        -- Di chuyển tất cả con của _road vào RemoveDecteve
+        for _, child in ipairs(road:GetChildren()) do
+            child.Parent = removeDetective
+        end
+    else
+        warn("_road không tồn tại trong Workspace!")
+    end
+end
+
+-- Gọi function để chạy
+MoveRoadChildren()
 --###############################################################################################################################################################################################################################################################-End All Function
 --###############################################################################################################################################################################################################################################################-Load All Menu
 local Place_Cooldown = 4
