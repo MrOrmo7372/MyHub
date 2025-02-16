@@ -36,6 +36,7 @@ local Create_Player_Value = loadstring([[
         Create_Bool_Value.Name = name
         Create_Bool_Value.Value = false
         Create_Bool_Value.Parent = Player
+        print(Create_Bool_Value)
         return Create_Bool_Value
     end
 
@@ -45,6 +46,7 @@ local Create_Player_Value = loadstring([[
         Create_Int_Value.Value = 0
         Create_Int_Value.Parent = Player
         return Create_Int_Value
+        print(Create_Int_Value)
     end
     
     return Create_Player_Value
