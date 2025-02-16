@@ -267,9 +267,7 @@ if game.PlaceId ~= AA_ID then
     if workspace._map:FindFirstChild("player") then
 	if workspace._map.player:FindFirstChild("Beacon") then
 	    Map_Ice =  workspace._map.player.Beacon.CFrame
-	    print("Map_Ice Before: ", Map_Ice)
             workspace._map.player.Beacon:Destroy()
-	    print("Map_Ice After: ", Map_Ice)
 
 	    for _, child in ipairs(workspace._map:GetChildren()) do
                 if child:FindFirstChild("snow") then
@@ -427,7 +425,6 @@ local List_Marco_Config = Marco:CreateDropdown({
    -- The function that takes place when the selected option is changed
    -- The variable (Options) is a table of strings for the current selected options
          Chose_Marco = Options
-         print(Options)
    end,
 })
 
@@ -513,12 +510,12 @@ function Return_Origin_CFrame(Text_CFrame)
    local values = {}
 
    for num in data:gmatch("[^, ]+") do
-      print("Return Origin: ", tonumber(num))
+      --print("Return Origin: ", tonumber(num))
       table.insert(values, tonumber(num))
    end
 
    local cf = CFrame.new(values[1], values[2], values[3])  -- Chỉ dùng X, Y, Z
-   print("cf: ", cf)  -- Kết quả: CFrame.new(-3007.05859, 33.7417984, -719.764465)
+   --print("cf: ", cf)  -- Kết quả: CFrame.new(-3007.05859, 33.7417984, -719.764465)
    return cf
 end
 
@@ -544,17 +541,9 @@ function Get_TARGET_UPGRADE(cframe)
    local parts = workspace:GetPartBoundsInBox(targetCFrame, regionSize, overlapParams)
 
    for _, part in pairs(parts) do
-      print(part.Name)
       if part.Name == "HumanoidRootPart" and part.Parent:FindFirstChild("_hitbox") then
-	 print("Find Target")
 	 local Hitbox = part.Parent:FindFirstChild("_hitbox")
-	 print((targetCFrame.Position - Hitbox.Position).magnitude)	
-	 --if (targetCFrame.Position - Hitbox.Position).magnitude < 2.8 then
-            --local Unit = Hitbox.Parent
-            --upgrade_unit_ingame:InvokeServer(Unit)
-	    --print("Invoke Upgrade")
-	    --break
-	 --end	
+	 --print((targetCFrame.Position - Hitbox.Position).magnitude)	
 	if (targetCFrame.Position - Hitbox.Position).magnitude < Range_Find then
 	   Range_Find = (targetCFrame.Position - Hitbox.Position).magnitude
 	   Close_Target = part.Parent
@@ -564,7 +553,7 @@ function Get_TARGET_UPGRADE(cframe)
 
    if Close_Target then
       upgrade_unit_ingame:InvokeServer(Close_Target)
-      print("Invoke Upgrade")
+      --print("Invoke Upgrade")
    end
 end
 
@@ -583,7 +572,7 @@ function Play_Marco()
                break
             end
             Replay_Steps += 1
-            print("How Many Step Now: ", Replay_Steps)
+            --print("How Many Step Now: ", Replay_Steps)
          end
          Break_Check = true
          if Steps_Do_Replay <= Replay_Steps then
@@ -678,10 +667,10 @@ mt.__namecall = function(self, ...)
                             Unit_Type = args[1],
                             Cframe = tostring(args[2]),
                         }
-                        print("Remote Name Is: ", MARCO_TABLE[NumberString(Steps)].Event_Type)
-                        print("Unit Type Is: ", MARCO_TABLE[NumberString(Steps)].Unit_Type)
-                        print("CFrame Is: ", MARCO_TABLE[NumberString(Steps)].Cframe)
-                        print("How Many Table Now: ", #MARCO_TABLE)
+                        --print("Remote Name Is: ", MARCO_TABLE[NumberString(Steps)].Event_Type)
+                        --print("Unit Type Is: ", MARCO_TABLE[NumberString(Steps)].Unit_Type)
+                        --print("CFrame Is: ", MARCO_TABLE[NumberString(Steps)].Cframe)
+                        --print("How Many Table Now: ", #MARCO_TABLE)
 
 		        --if MARCO_TABLE[NumberString(Steps)].Unit_Type == "{f4777064-b97f-4cd8-a069-0389ab9502be}" and INF_BUFF_ERWIN == true then
 		            --All_Erwin_Value.Value += 1
@@ -701,8 +690,8 @@ mt.__namecall = function(self, ...)
                             Money_Cost = 0,
                             Cframe = tostring(args[1].HumanoidRootPart.CFrame),
                         }
-                        print("Remote Name Is: ", MARCO_TABLE[NumberString(Steps)].Event_Type)
-                        print("CFrame Is: ", MARCO_TABLE[NumberString(Steps)].Cframe)
+                        --print("Remote Name Is: ", MARCO_TABLE[NumberString(Steps)].Event_Type)
+                        --print("CFrame Is: ", MARCO_TABLE[NumberString(Steps)].Cframe)
 
 		        if Map_Ice ~= nil then
 		           local Map_Ice_Position = Map_Ice.Position
