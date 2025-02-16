@@ -63,6 +63,11 @@ All_Erwin_Value.Name = "All_Erwin_Value"
 All_Erwin_Value.Value = 0
 All_Erwin_Value.Parent = Player
 
+local All_Stain_Value = Instance.new("IntValue")
+All_Stain_Value.Name = "All_Stain_Value"
+All_Stain_Value.Value = 0
+All_Stain_Value.Parent = Player
+
 local Auto_Start_Local = Player:WaitForChild("Auto_Start_Player")
 local Auto_Retry_Local = Player:WaitForChild("Auto_Retry_Player")
 local Reload_List_Marco_Local = Player:WaitForChild("Reload_List_Marco")
