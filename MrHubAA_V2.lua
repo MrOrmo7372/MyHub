@@ -1,6 +1,9 @@
 --"{f4777064-b97f-4cd8-a069-0389ab9502be}"
 --"{ab192659-5a9f-45f6-9fc5-58b5b0c57253}"
 --###############################################################################################################################################################################################################################################################-Load Local Info
+local Table_unit = {
+    ["{f4777064-b97f-4cd8-a069-0389ab9502be}"] = "erwin"
+
 local HttpService = game:GetService("HttpService")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
@@ -105,137 +108,6 @@ local Auto_Retry_Boolean = false
 local Low_End_Android = false
 --###############################################################################################################################################################################################################################################################-End All Local Setting
 --###############################################################################################################################################################################################################################################################-Load All Function
-function Auto_Start_Fucntion()
-   if Auto_Start_Player.Value == false then
-      local Auto_Start_Call = Vote_Start:InvokeServer()
-      Auto_Start_Player.Value = true
-   end
-end
-
-function Auto_Retry_Function()
-   task.wait(2)
-   local Auto_Retry_Call = Set_Game_Finish_Vote:InvokeServer("replay")
-   Auto_Retry_Player.Value = true
-end
-
--- Đặt script này trong ServerScriptService
-local function optimizeEverything()
-    local Map = game.Workspace:WaitForChild("_map")
-
-    local Water_Block = game.Workspace:WaitForChild("_water_blocks")
-    if Water_Block then
-        Water_Block:Destroy()
-    end
-
-    -- Xử lý tất cả vật thể trong Workspace
-    for _, obj in ipairs(workspace:GetDescendants()) do
-        -- Xử lý vật thể cơ bản
-        if obj:IsA("BasePart") then
-            obj.Material = Enum.Material.Plastic
-            obj.Color = Color3.new(1, 1, 1)
-            obj.Reflectance = 0
-            obj.Transparency = 0
-            obj.CastShadow = false
-            
-            -- Xóa texture của MeshPart
-            if obj:IsA("MeshPart") then
-                obj.TextureID = ""
-            end
-            
-            -- Xóa SurfaceAppearance
-            for _, v in ipairs(obj:GetChildren()) do
-                if v:IsA("SurfaceAppearance") then
-                    v:Destroy()
-                end
-            end
-        end
-        
-        -- Xóa decal và texture
-        if obj:IsA("Decal") or obj:IsA("Texture") then
-            obj:Destroy()
-        end
-        
-        -- Xóa hiệu ứng particle
-        if obj:IsA("ParticleEmitter") or obj:IsA("Fire") or obj:IsA("Smoke") or obj:IsA("Sparkles") then
-            pcall(function()
-                obj.Enabled = false
-                obj:Destroy()
-            end)
-        end
-        
-        -- Xóa âm thanh
-        if obj:IsA("Sound") then
-            pcall(function()
-                obj:Stop()
-                obj:Destroy()
-            end)
-        end
-        
-        -- Xóa texture từ Mesh/SpecialMesh
-        if obj:IsA("Mesh") or obj:IsA("SpecialMesh") then
-            pcall(function()
-                obj.TextureId = ""
-            end)
-        end
-    end
-    
-    -- Xử lý Lighting
-    local lighting = game:GetService("Lighting")
-    
-    -- Xóa tất cả hiệu ứng trong Lighting
-    for _, effect in ipairs(lighting:GetChildren()) do
-        effect:Destroy()
-    end
-    
-    -- Reset cài đặt Lighting
-    lighting.Ambient = Color3.new(0.5, 0.5, 0.5)
-    lighting.Brightness = 1
-    lighting.GlobalShadows = false
-    lighting.FogEnd = 100000
-    lighting.OutdoorAmbient = Color3.new(0.5, 0.5, 0.5)
-    lighting.ClockTime = 12
-    lighting.Technology = Enum.Technology.Compatibility
-    
-    -- Tối ưu Terrain
-    local terrain = workspace:FindFirstChildOfClass("Terrain")
-    if terrain then
-        terrain.WaterTransparency = 0.9
-        terrain.WaterWaveSize = 0
-    end
-
-    settings().Rendering.QualityLevel = 1
-    settings().Rendering.MeshCacheSize = 0
-    
-    -- Tắt FX
-    game:GetService("Lighting").GlobalShadows = false
-end
-
-function MoveRoadChildren()
-    local workspace = game:GetService("Workspace")
-    local road = workspace:FindFirstChild("_road")
-
-    if road then
-        -- Tạo thư mục mới tên "RemoveDecteve" nếu chưa có
-        local removeDetective = workspace:FindFirstChild("RemoveDecteve")
-        if not removeDetective then
-            removeDetective = Instance.new("Folder")
-            removeDetective.Name = "RemoveDecteve"
-            removeDetective.Parent = workspace
-        end
-
-        -- Di chuyển tất cả con của _road vào RemoveDecteve
-        for _, child in ipairs(road:GetChildren()) do
-            child.Parent = removeDetective
-        end
-    else
-        warn("_road không tồn tại trong Workspace!")
-    end
-end
-
--- Gọi function để chạy
-MoveRoadChildren()
---###############################################################################################################################################################################################################################################################-End All Function
---###############################################################################################################################################################################################################################################################-Load All Menu
 local Place_Cooldown = 4
 local Chose_Marco = nil
 local MARCO_TABLE = {}
@@ -248,10 +120,303 @@ local Steps = 1
 local Replay_Steps = 0
 local Steps_Do_Replay = 1
 local Break_Check = false
-local Erwin_Unit = {}
 local INF_BUFF_ERWIN = false
-
+local Erwin_Unit = {}
 local Map_Ice = nil
+local Place_Now = true
+local BREAK_PLACE = false
+
+local overlapParams = OverlapParams.new()
+overlapParams.FilterType = Enum.RaycastFilterType.Include  -- Chỉ lấy phần tử trong danh sách
+overlapParams.FilterDescendantsInstances = {game.Workspace._UNITS}  -- Chỉ lấy phần trong MyModel
+
+function Auto_Start_Fucntion()
+   if Auto_Start_Player.Value == false then
+      local Auto_Start_Call = Vote_Start:InvokeServer()
+      Auto_Start_Player.Value = true
+   end
+end
+function Auto_Retry_Function()
+   task.wait(2)
+   local Auto_Retry_Call = Set_Game_Finish_Vote:InvokeServer("replay")
+   Auto_Retry_Player.Value = true
+end
+
+-- Đặt script này trong ServerScriptService
+local function optimizeEverything()
+    local Map = game.Workspace:WaitForChild("_map")
+    local Water_Block = game.Workspace:WaitForChild("_water_blocks")
+    if Water_Block then
+        Water_Block:Destroy()
+    end
+    -- Xử lý tất cả vật thể trong Workspace
+    for _, obj in ipairs(workspace:GetDescendants()) do
+        -- Xử lý vật thể cơ bản
+        if obj:IsA("BasePart") then
+            obj.Material = Enum.Material.Plastic
+            obj.Color = Color3.new(1, 1, 1)
+            obj.Reflectance = 0
+            obj.Transparency = 0
+            obj.CastShadow = false
+            -- Xóa texture của MeshPart
+            if obj:IsA("MeshPart") then
+                obj.TextureID = ""
+            end
+            -- Xóa SurfaceAppearance
+            for _, v in ipairs(obj:GetChildren()) do
+                if v:IsA("SurfaceAppearance") then
+                    v:Destroy()
+                end
+            end
+        end
+        -- Xóa decal và texture
+        if obj:IsA("Decal") or obj:IsA("Texture") then
+            obj:Destroy()
+        end
+        -- Xóa hiệu ứng particle
+        if obj:IsA("ParticleEmitter") or obj:IsA("Fire") or obj:IsA("Smoke") or obj:IsA("Sparkles") then
+            pcall(function()
+                obj.Enabled = false
+                obj:Destroy()
+            end)
+        end
+        -- Xóa âm thanh
+        if obj:IsA("Sound") then
+            pcall(function()
+                obj:Stop()
+                obj:Destroy()
+            end)
+        end
+        -- Xóa texture từ Mesh/SpecialMesh
+        if obj:IsA("Mesh") or obj:IsA("SpecialMesh") then
+            pcall(function()
+                obj.TextureId = ""
+            end)
+        end
+    end
+    -- Xử lý Lighting
+    local lighting = game:GetService("Lighting")
+    -- Xóa tất cả hiệu ứng trong Lighting
+    for _, effect in ipairs(lighting:GetChildren()) do
+        effect:Destroy()
+    end
+    -- Reset cài đặt Lighting
+    lighting.Ambient = Color3.new(0.5, 0.5, 0.5)
+    lighting.Brightness = 1
+    lighting.GlobalShadows = false
+    lighting.FogEnd = 100000
+    lighting.OutdoorAmbient = Color3.new(0.5, 0.5, 0.5)
+    lighting.ClockTime = 12
+    lighting.Technology = Enum.Technology.Compatibility
+    -- Tối ưu Terrain
+    local terrain = workspace:FindFirstChildOfClass("Terrain")
+    if terrain then
+        terrain.WaterTransparency = 0.9
+        terrain.WaterWaveSize = 0
+    end
+    settings().Rendering.QualityLevel = 1
+    settings().Rendering.MeshCacheSize = 0
+    -- Tắt FX
+    game:GetService("Lighting").GlobalShadows = false
+end
+
+function MoveRoadChildren()
+    local workspace = game:GetService("Workspace")
+    local road = workspace:FindFirstChild("_road")
+    if road then
+        -- Tạo thư mục mới tên "RemoveDecteve" nếu chưa có
+        local removeDetective = workspace:FindFirstChild("RemoveDecteve")
+        if not removeDetective then
+            removeDetective = Instance.new("Folder")
+            removeDetective.Name = "RemoveDecteve"
+            removeDetective.Parent = workspace
+        end
+        -- Di chuyển tất cả con của _road vào RemoveDecteve
+        for _, child in ipairs(road:GetChildren()) do
+            child.Parent = removeDetective
+        end
+    else
+        warn("_road không tồn tại trong Workspace!")
+    end
+end
+
+-- Gọi function để chạy
+MoveRoadChildren()
+
+-- Liệt kê các file macro
+local function listMacros()
+    if isfolder(MarcoFile) then
+        local files = listfiles(MarcoFile)
+        local fileNames = {}
+        for _, filePath in ipairs(files) do
+            table.insert(fileNames, filePath:match("([^/]+)$")) -- Lấy tên file
+        end
+        return fileNames
+    else
+        print("Folder not found!")
+        return {}
+    end
+end
+
+function Read_Json_Marco(File_Json)
+   if isfile(MarcoFile .. "/" .. File_Json) then
+        local jsonData = readfile(MarcoFile .. "/" .. File_Json)
+        return HttpService:JSONDecode(jsonData)
+    else
+        print("File not found:", fileName)
+        return nil
+    end
+end
+
+function Return_Origin_CFrame(Text_CFrame)
+   local data = Text_CFrame
+   local values = {}
+
+   for num in data:gmatch("[^, ]+") do
+      --print("Return Origin: ", tonumber(num))
+      table.insert(values, tonumber(num))
+   end
+
+   local cf = CFrame.new(values[1], values[2], values[3])  -- Chỉ dùng X, Y, Z
+   --print("cf: ", cf)  -- Kết quả: CFrame.new(-3007.05859, 33.7417984, -719.764465)
+   return cf
+end
+
+function Get_TARGET_UPGRADE(cframe)
+   local Close_Target = nil
+   local Range_Find = math.huge
+   local regionSize = Vector3.new(20, 20, 20) -- Mặc định kích thước nhỏ nếu không có giá trị
+   local workspace = game.Workspace
+   local targetCFrame = nil
+
+   if not Map_Ice then
+      targetCFrame = Return_Origin_CFrame(cframe)
+   elseif Map_Ice then
+      local Map_Ice_Position = Map_Ice.Position
+      targetCFrame = Return_Origin_CFrame(cframe) + Map_Ice_Position
+   end
+
+   -- Dùng FindPartsInBox thay vì Region3
+   local parts = workspace:GetPartBoundsInBox(targetCFrame, regionSize, overlapParams)
+
+   for _, part in pairs(parts) do
+      if part.Name == "HumanoidRootPart" and part.Parent:FindFirstChild("_hitbox") then
+	 local Hitbox = part.Parent:FindFirstChild("_hitbox")
+	 --print((targetCFrame.Position - Hitbox.Position).magnitude)	
+	if (targetCFrame.Position - Hitbox.Position).magnitude < Range_Find then
+	   Range_Find = (targetCFrame.Position - Hitbox.Position).magnitude
+	   Close_Target = part.Parent
+	end
+      end
+   end
+
+   if Close_Target then
+      upgrade_unit_ingame:InvokeServer(Close_Target)
+      --print("Invoke Upgrade")
+   end
+end
+
+function Play_Marco()
+   repeat task.wait() until workspace._waves_started.Value == true
+   task.wait(1.7)
+   while Replay_Marco_BOOLEAN and not BREAK_PLACE do
+      if Place_Now then
+         if not Chose_Marco then break end
+         local Replay_Table = Read_Json_Marco(Chose_Marco[1])
+         for index, value in pairs(Replay_Table) do
+            if Break_Check then
+               break
+            end
+            Replay_Steps += 1
+            --print("How Many Step Now: ", Replay_Steps)
+         end
+         Break_Check = true
+         if Steps_Do_Replay <= Replay_Steps then
+            Key = tostring(Steps_Do_Replay)
+            if Replay_Table[Key].Money_Cost ~= nil then
+	        if not Map_Ice then
+                    if Replay_Table[Key].Money_Cost <= tonumber(MoneyPlayerText.Text) and Replay_Table[Key].Event_Type == "spawn_unit" then
+	                task.wait()
+                        Spawn_Unit:InvokeServer(Replay_Table[Key].Unit_Type, Return_Origin_CFrame(Replay_Table[Key].Cframe))
+			if Replay_Table[Key].Unit_Type == "{f4777064-b97f-4cd8-a069-0389ab9502be}" and INF_BUFF_ERWIN == true then
+			    All_Erwin_Value.Value += 1
+			end
+                        Steps_Do_Replay += 1
+                    elseif Replay_Table[Key].Money_Cost <= tonumber(MoneyPlayerText.Text) and Replay_Table[Key].Event_Type == "upgrade_unit_ingame" then
+		        task.wait()
+                        Get_TARGET_UPGRADE(Replay_Table[Key].Cframe)
+                        Steps_Do_Replay += 1
+                    end
+		elseif Map_Ice then
+		    local Map_Ice_Position = Map_Ice.Position
+		    if Replay_Table[Key].Money_Cost <= tonumber(MoneyPlayerText.Text) and Replay_Table[Key].Event_Type == "spawn_unit" then
+	                task.wait()
+                        Spawn_Unit:InvokeServer(Replay_Table[Key].Unit_Type, Return_Origin_CFrame(Replay_Table[Key].Cframe) + Map_Ice_Position)
+			if Replay_Table[Key].Unit_Type == "{f4777064-b97f-4cd8-a069-0389ab9502be}" and INF_BUFF_ERWIN == true then
+			    All_Erwin_Value.Value += 1
+			end
+                        Steps_Do_Replay += 1
+                    elseif Replay_Table[Key].Money_Cost <= tonumber(MoneyPlayerText.Text) and Replay_Table[Key].Event_Type == "upgrade_unit_ingame" then
+		        task.wait()
+                        Get_TARGET_UPGRADE(Replay_Table[Key].Cframe)
+                        Steps_Do_Replay += 1
+                    end			
+		end
+            end
+            Place_Now = false
+            task.wait(Place_Cooldown)
+            Place_Now = true
+         else
+            BREAK_PLACE = true
+         end
+      end
+   end
+end
+
+function Get_Value()
+   for index, Money in ipairs(Negative_Money_List) do
+      local Key = tostring(index)
+      
+      MARCO_TABLE[Key].Money_Cost = Negative_Money_List[index]
+   end
+end
+
+-- Hàm lưu dữ liệu với kiểm tra trùng lặp
+local function saveMacroData()
+    Get_Value()
+
+    if next(MARCO_TABLE) == nil then
+	return
+    end
+    
+    local jsonData = HttpService:JSONEncode(MARCO_TABLE)
+    local TARGET = MarcoFile .. "/" .. Chose_Marco[1]
+    writefile(TARGET, jsonData)
+end
+
+function NumberString(Step)
+    return tostring(Step)
+end
+
+function Check_Target(Target_Check)
+   for _, Target in ipairs(Not_Target) do
+      if Target == Target_Check then
+         return true
+      end
+   end
+   return false
+end
+
+function Check_Negative_Money(Target_Check)
+   for _, Target in ipairs(Negative_Money_List) do
+      if Target == Target_Check then
+         return true
+      end
+   end
+   return false
+end
+--###############################################################################################################################################################################################################################################################-End All Function
+--###############################################################################################################################################################################################################################################################-Load All Menu
 
 if game.PlaceId ~= AA_ID then
     if workspace._map:FindFirstChild("player") then
@@ -280,7 +445,7 @@ if game.PlaceId ~= AA_ID then
 	end
     end
 end
-
+	
 All_Erwin_Value.Changed:Connect(function()
     function Check_Erwin(Unit)
         for _, Unit_Table in ipairs(Erwin_Unit) do
@@ -390,21 +555,6 @@ local Start_Replay = Marco:CreateToggle({
    end,
 })
 
--- Liệt kê các file macro
-local function listMacros()
-    if isfolder(MarcoFile) then
-        local files = listfiles(MarcoFile)
-        local fileNames = {}
-        for _, filePath in ipairs(files) do
-            table.insert(fileNames, filePath:match("([^/]+)$")) -- Lấy tên file
-        end
-        return fileNames
-    else
-        print("Folder not found!")
-        return {}
-    end
-end
-
 local List_Marco_Config = Marco:CreateDropdown({
    Name = "List Marco Config",
    Options = listMacros(),
@@ -479,160 +629,8 @@ local Slider_Place_Cooldown = Marco:CreateSlider({
          Place_Cooldown = Value
    end,
 })
-
---###############################################################################################################################################################################################################################################################-End All Menu
---###############################################################################################################################################################################################################################################################-Load MARCO ZONE
-
-
---###############################################################################################################################################################################################################################################################-Load PLAY RECORD ZONE
-function Read_Json_Marco(File_Json)
-   if isfile(MarcoFile .. "/" .. File_Json) then
-        local jsonData = readfile(MarcoFile .. "/" .. File_Json)
-        return HttpService:JSONDecode(jsonData)
-    else
-        print("File not found:", fileName)
-        return nil
-    end
-end
-
-function Return_Origin_CFrame(Text_CFrame)
-   local data = Text_CFrame
-   local values = {}
-
-   for num in data:gmatch("[^, ]+") do
-      --print("Return Origin: ", tonumber(num))
-      table.insert(values, tonumber(num))
-   end
-
-   local cf = CFrame.new(values[1], values[2], values[3])  -- Chỉ dùng X, Y, Z
-   --print("cf: ", cf)  -- Kết quả: CFrame.new(-3007.05859, 33.7417984, -719.764465)
-   return cf
-end
-
-local overlapParams = OverlapParams.new()
-overlapParams.FilterType = Enum.RaycastFilterType.Include  -- Chỉ lấy phần tử trong danh sách
-overlapParams.FilterDescendantsInstances = {game.Workspace._UNITS}  -- Chỉ lấy phần trong MyModel
-
-function Get_TARGET_UPGRADE(cframe)
-   local Close_Target = nil
-   local Range_Find = math.huge
-   local regionSize = Vector3.new(20, 20, 20) -- Mặc định kích thước nhỏ nếu không có giá trị
-   local workspace = game.Workspace
-   local targetCFrame = nil
-
-   if not Map_Ice then
-      targetCFrame = Return_Origin_CFrame(cframe)
-   elseif Map_Ice then
-      local Map_Ice_Position = Map_Ice.Position
-      targetCFrame = Return_Origin_CFrame(cframe) + Map_Ice_Position
-   end
-
-   -- Dùng FindPartsInBox thay vì Region3
-   local parts = workspace:GetPartBoundsInBox(targetCFrame, regionSize, overlapParams)
-
-   for _, part in pairs(parts) do
-      if part.Name == "HumanoidRootPart" and part.Parent:FindFirstChild("_hitbox") then
-	 local Hitbox = part.Parent:FindFirstChild("_hitbox")
-	 --print((targetCFrame.Position - Hitbox.Position).magnitude)	
-	if (targetCFrame.Position - Hitbox.Position).magnitude < Range_Find then
-	   Range_Find = (targetCFrame.Position - Hitbox.Position).magnitude
-	   Close_Target = part.Parent
-	end
-      end
-   end
-
-   if Close_Target then
-      upgrade_unit_ingame:InvokeServer(Close_Target)
-      --print("Invoke Upgrade")
-   end
-end
-
-local Place_Now = true
-local BREAK_PLACE = false
-
-function Play_Marco()
-   repeat task.wait() until workspace._waves_started.Value == true
-   task.wait(1.7)
-   while Replay_Marco_BOOLEAN and not BREAK_PLACE do
-      if Place_Now then
-         if not Chose_Marco then break end
-         local Replay_Table = Read_Json_Marco(Chose_Marco[1])
-         for index, value in pairs(Replay_Table) do
-            if Break_Check then
-               break
-            end
-            Replay_Steps += 1
-            --print("How Many Step Now: ", Replay_Steps)
-         end
-         Break_Check = true
-         if Steps_Do_Replay <= Replay_Steps then
-            Key = tostring(Steps_Do_Replay)
-            if Replay_Table[Key].Money_Cost ~= nil then
-	        if not Map_Ice then
-                    if Replay_Table[Key].Money_Cost <= tonumber(MoneyPlayerText.Text) and Replay_Table[Key].Event_Type == "spawn_unit" then
-	                task.wait()
-                        Spawn_Unit:InvokeServer(Replay_Table[Key].Unit_Type, Return_Origin_CFrame(Replay_Table[Key].Cframe))
-			if Replay_Table[Key].Unit_Type == "{f4777064-b97f-4cd8-a069-0389ab9502be}" and INF_BUFF_ERWIN == true then
-			    All_Erwin_Value.Value += 1
-			end
-                        Steps_Do_Replay += 1
-                    elseif Replay_Table[Key].Money_Cost <= tonumber(MoneyPlayerText.Text) and Replay_Table[Key].Event_Type == "upgrade_unit_ingame" then
-		        task.wait()
-                        Get_TARGET_UPGRADE(Replay_Table[Key].Cframe)
-                        Steps_Do_Replay += 1
-                    end
-		elseif Map_Ice then
-		    local Map_Ice_Position = Map_Ice.Position
-		    if Replay_Table[Key].Money_Cost <= tonumber(MoneyPlayerText.Text) and Replay_Table[Key].Event_Type == "spawn_unit" then
-	                task.wait()
-                        Spawn_Unit:InvokeServer(Replay_Table[Key].Unit_Type, Return_Origin_CFrame(Replay_Table[Key].Cframe) + Map_Ice_Position)
-			if Replay_Table[Key].Unit_Type == "{f4777064-b97f-4cd8-a069-0389ab9502be}" and INF_BUFF_ERWIN == true then
-			    All_Erwin_Value.Value += 1
-			end
-                        Steps_Do_Replay += 1
-                    elseif Replay_Table[Key].Money_Cost <= tonumber(MoneyPlayerText.Text) and Replay_Table[Key].Event_Type == "upgrade_unit_ingame" then
-		        task.wait()
-                        Get_TARGET_UPGRADE(Replay_Table[Key].Cframe)
-                        Steps_Do_Replay += 1
-                    end			
-		end
-            end
-            Place_Now = false
-            task.wait(Place_Cooldown)
-            Place_Now = true
-         else
-            BREAK_PLACE = true
-         end
-      end
-   end
-end
---###############################################################################################################################################################################################################################################################-End PLAY RECORD ZONE
+	
 local TargetEventNames = {"spawn_unit", "upgrade_unit_ingame"}
-
-function Get_Value()
-   for index, Money in ipairs(Negative_Money_List) do
-      local Key = tostring(index)
-      
-      MARCO_TABLE[Key].Money_Cost = Negative_Money_List[index]
-   end
-end
-
--- Hàm lưu dữ liệu với kiểm tra trùng lặp
-local function saveMacroData()
-    Get_Value()
-
-    if next(MARCO_TABLE) == nil then
-	return
-    end
-    
-    local jsonData = HttpService:JSONEncode(MARCO_TABLE)
-    local TARGET = MarcoFile .. "/" .. Chose_Marco[1]
-    writefile(TARGET, jsonData)
-end
-
-function NumberString(Step)
-    return tostring(Step)
-end
 
 local mt = getrawmetatable(game)
 setreadonly(mt, false)
@@ -743,24 +741,6 @@ Rayfield:LoadConfiguration()
 --###############################################################################################################################################################################################################################################################-Load All Condition
 if Auto_Start_Boolean == true and game.PlaceId ~= AA_ID then
    Auto_Start_Fucntion()
-end
-
-function Check_Target(Target_Check)
-   for _, Target in ipairs(Not_Target) do
-      if Target == Target_Check then
-         return true
-      end
-   end
-   return false
-end
-
-function Check_Negative_Money(Target_Check)
-   for _, Target in ipairs(Negative_Money_List) do
-      if Target == Target_Check then
-         return true
-      end
-   end
-   return false
 end
 
 Create_Config_Marco:Set("")
