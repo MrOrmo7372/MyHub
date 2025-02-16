@@ -130,6 +130,25 @@ local overlapParams = OverlapParams.new()
 overlapParams.FilterType = Enum.RaycastFilterType.Include  -- Chỉ lấy phần tử trong danh sách
 overlapParams.FilterDescendantsInstances = {game.Workspace._UNITS}  -- Chỉ lấy phần trong MyModel
 
+function NumberString(Step)
+    return tostring(Step)
+end
+function Check_Target(Target_Check)
+   for _, Target in ipairs(Not_Target) do
+      if Target == Target_Check then
+         return true
+      end
+   end
+   return false
+end
+function Check_Negative_Money(Target_Check)
+   for _, Target in ipairs(Negative_Money_List) do
+      if Target == Target_Check then
+         return true
+      end
+   end
+   return false
+end
 function Auto_Start_Fucntion()
    if Auto_Start_Player.Value == false then
       local Auto_Start_Call = Vote_Start:InvokeServer()
@@ -141,6 +160,77 @@ function Auto_Retry_Function()
    local Auto_Retry_Call = Set_Game_Finish_Vote:InvokeServer("replay")
    Auto_Retry_Player.Value = true
 end
+-- Liệt kê các file macro
+local function listMacros()
+    if isfolder(MarcoFile) then
+        local files = listfiles(MarcoFile)
+        local fileNames = {}
+        for _, filePath in ipairs(files) do
+            table.insert(fileNames, filePath:match("([^/]+)$")) -- Lấy tên file
+        end
+        return fileNames
+    else
+        print("Folder not found!")
+        return {}
+    end
+end
+function Read_Json_Marco(File_Json)
+   if isfile(MarcoFile .. "/" .. File_Json) then
+        local jsonData = readfile(MarcoFile .. "/" .. File_Json)
+        return HttpService:JSONDecode(jsonData)
+    else
+        print("File not found:", fileName)
+        return nil
+    end
+end
+function Return_Origin_CFrame(Text_CFrame)
+   local data = Text_CFrame
+   local values = {}
+   for num in data:gmatch("[^, ]+") do
+      --print("Return Origin: ", tonumber(num))
+      table.insert(values, tonumber(num))
+   end
+   local cf = CFrame.new(values[1], values[2], values[3])  -- Chỉ dùng X, Y, Z
+   --print("cf: ", cf)  -- Kết quả: CFrame.new(-3007.05859, 33.7417984, -719.764465)
+   return cf
+end
+function Get_Value()
+   for index, Money in ipairs(Negative_Money_List) do
+      local Key = tostring(index)
+      MARCO_TABLE[Key].Money_Cost = Negative_Money_List[index]
+   end
+end
+-- Hàm lưu dữ liệu với kiểm tra trùng lặp
+local function saveMacroData()
+    Get_Value()
+    if next(MARCO_TABLE) == nil then
+	return
+    end
+    local jsonData = HttpService:JSONEncode(MARCO_TABLE)
+    local TARGET = MarcoFile .. "/" .. Chose_Marco[1]
+    writefile(TARGET, jsonData)
+end
+function MoveRoadChildren()
+    local workspace = game:GetService("Workspace")
+    local road = workspace:FindFirstChild("_road")
+    if road then
+        -- Tạo thư mục mới tên "RemoveDecteve" nếu chưa có
+        local removeDetective = workspace:FindFirstChild("RemoveDecteve")
+        if not removeDetective then
+            removeDetective = Instance.new("Folder")
+            removeDetective.Name = "RemoveDecteve"
+            removeDetective.Parent = workspace
+        end
+        -- Di chuyển tất cả con của _road vào RemoveDecteve
+        for _, child in ipairs(road:GetChildren()) do
+            child.Parent = removeDetective
+        end
+    else
+        warn("_road không tồn tại trong Workspace!")
+    end
+end
+-- Gọi function để chạy
+MoveRoadChildren()
 
 -- Đặt script này trong ServerScriptService
 local function optimizeEverything()
@@ -218,68 +308,6 @@ local function optimizeEverything()
     settings().Rendering.MeshCacheSize = 0
     -- Tắt FX
     game:GetService("Lighting").GlobalShadows = false
-end
-
-function MoveRoadChildren()
-    local workspace = game:GetService("Workspace")
-    local road = workspace:FindFirstChild("_road")
-    if road then
-        -- Tạo thư mục mới tên "RemoveDecteve" nếu chưa có
-        local removeDetective = workspace:FindFirstChild("RemoveDecteve")
-        if not removeDetective then
-            removeDetective = Instance.new("Folder")
-            removeDetective.Name = "RemoveDecteve"
-            removeDetective.Parent = workspace
-        end
-        -- Di chuyển tất cả con của _road vào RemoveDecteve
-        for _, child in ipairs(road:GetChildren()) do
-            child.Parent = removeDetective
-        end
-    else
-        warn("_road không tồn tại trong Workspace!")
-    end
-end
-
--- Gọi function để chạy
-MoveRoadChildren()
-
--- Liệt kê các file macro
-local function listMacros()
-    if isfolder(MarcoFile) then
-        local files = listfiles(MarcoFile)
-        local fileNames = {}
-        for _, filePath in ipairs(files) do
-            table.insert(fileNames, filePath:match("([^/]+)$")) -- Lấy tên file
-        end
-        return fileNames
-    else
-        print("Folder not found!")
-        return {}
-    end
-end
-
-function Read_Json_Marco(File_Json)
-   if isfile(MarcoFile .. "/" .. File_Json) then
-        local jsonData = readfile(MarcoFile .. "/" .. File_Json)
-        return HttpService:JSONDecode(jsonData)
-    else
-        print("File not found:", fileName)
-        return nil
-    end
-end
-
-function Return_Origin_CFrame(Text_CFrame)
-   local data = Text_CFrame
-   local values = {}
-
-   for num in data:gmatch("[^, ]+") do
-      --print("Return Origin: ", tonumber(num))
-      table.insert(values, tonumber(num))
-   end
-
-   local cf = CFrame.new(values[1], values[2], values[3])  -- Chỉ dùng X, Y, Z
-   --print("cf: ", cf)  -- Kết quả: CFrame.new(-3007.05859, 33.7417984, -719.764465)
-   return cf
 end
 
 function Get_TARGET_UPGRADE(cframe)
@@ -373,48 +401,6 @@ function Play_Marco()
    end
 end
 
-function Get_Value()
-   for index, Money in ipairs(Negative_Money_List) do
-      local Key = tostring(index)
-      
-      MARCO_TABLE[Key].Money_Cost = Negative_Money_List[index]
-   end
-end
-
--- Hàm lưu dữ liệu với kiểm tra trùng lặp
-local function saveMacroData()
-    Get_Value()
-
-    if next(MARCO_TABLE) == nil then
-	return
-    end
-    
-    local jsonData = HttpService:JSONEncode(MARCO_TABLE)
-    local TARGET = MarcoFile .. "/" .. Chose_Marco[1]
-    writefile(TARGET, jsonData)
-end
-
-function NumberString(Step)
-    return tostring(Step)
-end
-
-function Check_Target(Target_Check)
-   for _, Target in ipairs(Not_Target) do
-      if Target == Target_Check then
-         return true
-      end
-   end
-   return false
-end
-
-function Check_Negative_Money(Target_Check)
-   for _, Target in ipairs(Negative_Money_List) do
-      if Target == Target_Check then
-         return true
-      end
-   end
-   return false
-end
 --###############################################################################################################################################################################################################################################################-End All Function
 --###############################################################################################################################################################################################################################################################-Load All Menu
 
