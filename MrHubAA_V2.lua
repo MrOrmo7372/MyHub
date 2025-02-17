@@ -84,20 +84,19 @@ local AutoFarm = Window:CreateTab("Auto Farm", "apple")
 local AutoPlay = Window:CreateTab("Auto Play+", "mouse")
 local Marco = Window:CreateTab("Marco", "bot")
 --#################################################################################################################################################################################################################################################################
---ALL LOCAL TOOGLE SCRIPT IN GAME
+--ALL FUNCTION AND IT LOCAL ATTACHED
 --#################################################################################################################################################################################################################################################################
 local Auto_Start_Boolean = false
-local Auto_Retry_Boolean = false
---#################################################################################################################################################################################################################################################################
---ALL FUNCTION
---#################################################################################################################################################################################################################################################################
+local DB_AUTO_START = true
 function Auto_Start_Fucntion()
 	local Auto_Start_Call = Vote_Start:InvokeServer()
 end
 
-function Auto_Retry_Function()
+local Auto_Replay_Boolean = false
+local DB_AUTO_REPLAY = true
+function Auto_Replay_Function()
 	task.wait(2)
-	local Auto_Retry_Call = Set_Game_Finish_Vote:InvokeServer("replay")
+	local Auto_Replay_Call = Set_Game_Finish_Vote:InvokeServer("replay")
 end
 --#################################################################################################################################################################################################################################################################
 --ALL TOOGLE AND OTHER BUTTON IN SCRIPT MENU
@@ -110,8 +109,9 @@ local Auto_Start_Toggle = AutoFarm:CreateToggle({
 	--The function that takes place when the toggle is pressed
 	--The variable (Value) is a boolean on whether the toggle is true or false
 		Auto_Start_Boolean = Auto_Start_Value
-		if Auto_Start_Boolean == true --[[OTHER/]] and game.PlaceId ~= AA_ID then
+		if Auto_Start_Boolean --[[OTHER/]] and DB_AUTO_START --[[FORCED/]] and game.PlaceId ~= AA_ID then
 			Auto_Start_Fucntion()
+			DB_AUTO_START = false
 		end
 	end,
 })
@@ -120,12 +120,13 @@ local Auto_Retry_Toggle = AutoFarm:CreateToggle({
 	Name = "Auto Retry",
 	CurrentValue = false,
 	Flag = "Auto_Retry", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
-	Callback = function(Auto_Retry_Value)
+	Callback = function(Auto_Replay_Value)
 	--The function that takes place when the toggle is pressed
 	--The variable (Value) is a boolean on whether the toggle is true or false
-		Auto_Retry_Boolean = Auto_Retry_Value
-		if Auto_Retry_Boolean == true --[[OTHER/]] and ResultsUI.Enabled == true then
-			Auto_Retry_Function()
+		Auto_Replay_Boolean = Auto_Replay_Value
+		if Auto_Replay_Boolean --[[OTHER/]] and DB_AUTO_REPLAY --[[FORCED/]] and ResultsUI.Enabled == true then
+			Auto_Replay_Function()
+			DB_AUTO_REPLAY = false
 		end
 	end,
 })
