@@ -124,7 +124,7 @@ local Auto_Retry_Toggle = AutoFarm:CreateToggle({
 	--The function that takes place when the toggle is pressed
 	--The variable (Value) is a boolean on whether the toggle is true or false
 		Auto_Replay_Boolean = Auto_Replay_Value
-		if Auto_Replay_Boolean --[[OTHER/]] and DB_AUTO_REPLAY --[[FORCED/]] and ResultsUI.Enabled == true then
+		if Auto_Replay_Boolean --[[OTHER/]] and DB_AUTO_REPLAY --[[FORCED/]] and ResultsUI.Enabled then
 			Auto_Replay_Function()
 			DB_AUTO_REPLAY = false
 		end
@@ -137,7 +137,12 @@ Rayfield:LoadConfiguration()
 --#################################################################################################################################################################################################################################################################
 --SOME CONDITION ACTIVE FUNCTION
 --#################################################################################################################################################################################################################################################################
-
+ResultsUI:GetPropertyChangedSignal("Enabled"):Connect(function()
+	if Auto_Replay_Boolean --[[OTHER/]] and DB_AUTO_REPLAY --[[FORCED/]] and ResultsUI.Enabled then
+		Auto_Replay_Function()
+		DB_AUTO_REPLAY = false
+	end
+end)
 
 
 
