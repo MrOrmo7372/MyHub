@@ -98,6 +98,8 @@ function Auto_Replay_Function()
 	task.wait()
 	local Auto_Replay_Call = Set_Game_Finish_Vote:InvokeServer("replay")
 end
+
+local Record_Marco_BOOLEAN = false
 --#################################################################################################################################################################################################################################################################
 --ALL TOOGLE AND OTHER BUTTON IN SCRIPT MENU
 --#################################################################################################################################################################################################################################################################
@@ -130,6 +132,17 @@ local Auto_Retry_Toggle = AutoFarm:CreateToggle({
 		end
 	end,
 })
+
+local Start_Record = Marco:CreateToggle({
+	Name = "Start Record",
+	CurrentValue = false,
+	Flag = "Start_Record", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+	Callback = function(Start_Record_Value)
+	-- The function that takes place when the toggle is pressed
+	-- The variable (Value) is a boolean on whether the toggle is true or false
+		Record_Marco_BOOLEAN = Start_Record_Value
+	end,
+})
 --#################################################################################################################################################################################################################################################################
 --LOAD SAVE CONFIG SCRIPT MENU
 --#################################################################################################################################################################################################################################################################
@@ -137,15 +150,65 @@ Rayfield:LoadConfiguration()
 --#################################################################################################################################################################################################################################################################
 --SOME CONDITION ACTIVE FUNCTION
 --#################################################################################################################################################################################################################################################################
+local MARCO_TABLE = {}
+
+local mt = getrawmetatable(game)
+setreadonly(mt, false)
+local oldNamecall = mt.__namecall
+
+mt.__namecall = function(self, ...)
+	local method = getnamecallmethod()
+	local args = {...}
+	local remoteName = self.Name
+
+	if table.find(TargetEventNames, remoteName) and (method == "FireServer" or method == "InvokeServer") then
+		local success, result = pcall(oldNamecall, self, ...)
+        
+        -- Chỉ ghi lại khi request thành công và có đủ tiền
+		if success then
+			if Record_Marco_BOOLEAN == true then
+				if method == "InvokeServer" and remoteName == "spawn_unit" then
+					if result == true then -- Giả định server trả về true khi thành công
+						MARCO_TABLE[NumberString(Steps)] = {
+							Event_Type = remoteName,
+							Money_Cost = 0,
+							Unit_Type = args[1],
+							Cframe = tostring(args[2]),
+						}
+						print("Remote Name Is: ", MARCO_TABLE[NumberString(Steps)].Event_Type)
+						print("Unit Type Is: ", MARCO_TABLE[NumberString(Steps)].Unit_Type)
+						print("CFrame Is: ", MARCO_TABLE[NumberString(Steps)].Cframe)
+						print("How Many Table Now: ", #MARCO_TABLE)
+						Steps += 1
+					end
+				elseif method == "InvokeServer" and remoteName == "upgrade_unit_ingame" then
+					if result == true then -- Giả định server trả về true khi thành công
+						MARCO_TABLE[NumberString(Steps)] = {
+							Event_Type = remoteName,
+							Money_Cost = 0,
+							Cframe = tostring(args[1].HumanoidRootPart.CFrame),
+						}
+						print("Remote Name Is: ", MARCO_TABLE[NumberString(Steps)].Event_Type)
+						print("CFrame Is: ", MARCO_TABLE[NumberString(Steps)].Cframe)
+						Steps += 1
+					end
+				end
+			end
+		end
+		return result
+	end
+
+	return oldNamecall(self, ...)
+end
+
+setreadonly(mt, true)
+
 ResultsUI:GetPropertyChangedSignal("Enabled"):Connect(function()
 	if Auto_Replay_Boolean --[[OTHER/]] and DB_AUTO_REPLAY --[[FORCED/]] and ResultsUI.Enabled then
 		Auto_Replay_Function()
 		DB_AUTO_REPLAY = false
 	end
 end)
-
-
-
 
 
 
