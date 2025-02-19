@@ -95,7 +95,7 @@ end
 local Auto_Replay_Boolean = false
 local DB_AUTO_REPLAY = true
 function Auto_Replay_Function()
-	task.wait(2)
+	task.wait()
 	local Auto_Replay_Call = Set_Game_Finish_Vote:InvokeServer("replay")
 end
 --#################################################################################################################################################################################################################################################################
