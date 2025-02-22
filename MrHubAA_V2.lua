@@ -1,3 +1,4 @@
+local Player = game.Players.LocalPlayer
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Client_to_Server_File_Location = ReplicatedStorage:WaitForChild("endpoints"):WaitForChild("client_to_server")
 	local Vote_Start = Client_to_Server_File_Location:WaitForChild("vote_start")
