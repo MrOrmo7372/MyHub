@@ -16,6 +16,7 @@ local PlayerGui = Player:WaitForChild("PlayerGui")
 local GameFinished = game.workspace:WaitForChild("_DATA").GameFinished
 
 VoteStart:GetPropertyChangedSignal("Enabled"):Connect(function()
+	print("call")
 	local Auto_Replay_Call = Vote_Start:InvokeServer()
 end)
 
