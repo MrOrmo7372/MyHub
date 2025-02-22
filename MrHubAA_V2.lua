@@ -13,12 +13,11 @@ local PlayerGui = Player:WaitForChild("PlayerGui")
 	local MoneyPlayerText = PlayerGui:WaitForChild("spawn_units").Lives.Frame.Resource.Money.text
 	local VoteStart = PlayerGui:WaitForChild("VoteStart")
 
-ResultsUI:GetPropertyChangedSignal("Enabled"):Connect(function()
-	if VoteStart.Enabled == true then
-		local Auto_Start_Call = VoteStart:InvokeServer()
-	end
-end)
+local GameFinished = game.workspace:WaitForChild("_DATA").GameFinished
 
-ResultsUI:GetPropertyChangedSignal("Enabled"):Connect(function()
+GameFinished.Changed:Connect(function()
 	local Auto_Retry_Call = Set_Game_Finish_Vote:InvokeServer("replay")
 end)
+--ResultsUI:GetPropertyChangedSignal("Enabled"):Connect(function()
+	--local Auto_Retry_Call = Set_Game_Finish_Vote:InvokeServer("replay")
+--end)
